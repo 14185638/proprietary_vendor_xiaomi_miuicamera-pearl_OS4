@@ -1,0 +1,22 @@
+--- a/smali/r2/f0.smali
++++ b/smali/r2/f0.smali
+@@ -599,7 +599,7 @@
+     return p0
+ 
+     :cond_2
+-    const/4 p0, 0x0
++    const/4 p0, 0x1
+ 
+     return p0
+ 
+--- a/smali_classes3/䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻.smali
++++ b/smali_classes3/䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻.smali
+@@ -2447,7 +2447,7 @@
+ .method public b6()Z
+     .locals 0
+ 
+-    instance-of p0, p0, L쵡쵭쵯촬쵯쵫촬쵦쵧쵴쵫쵡쵧촬쵄쵷쵺쵫;
++    const/4 p0, 0x1
+ 
+     return p0
+ .end method

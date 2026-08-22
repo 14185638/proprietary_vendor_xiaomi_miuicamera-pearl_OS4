@@ -1,0 +1,12 @@
+allow priv_app vendor_camera_data_file:dir { append map r_dir_perms write };
+allow priv_app vendor_camera_data_file:file { getattr open read };
+
+allow priv_app apusys_device:chr_file rw_file_perms;
+
+allow priv_app proc_stat:file r_file_perms;
+
+# Properties
+get_prop(priv_app, vendor_mtk_camera_prop)
+allow priv_app apusys_device:chr_file rw_file_perms;
+allow priv_app unlabeled:filesystem getattr;
+typeattribute apusys_device mlstrustedobject;

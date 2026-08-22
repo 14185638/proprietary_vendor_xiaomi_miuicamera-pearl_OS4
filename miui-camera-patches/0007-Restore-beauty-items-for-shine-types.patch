@@ -1,0 +1,76 @@
+From pearl-miui-camera-6.6-compat
+Subject: [PATCH] Restore base beauty items for shine types 1 and 2
+
+On pearl, the 6.6 HAL does not provide the JSON beauty list used by
+shineType 1 and 2. Use the built-in base beauty array and bypass the
+vendor-tag filter for these two types, matching the verified camera
+candidate while keeping other shine types unchanged.
+
+---
+ smali_classes10/Nu/a.smali | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+
+diff --git a/smali_classes10/Nu/a.smali b/smali_classes10/Nu/a.smali
+index 6.6-original..6.6-compat 100644
+--- a/smali_classes10/Nu/a.smali
++++ b/smali_classes10/Nu/a.smali
+@@ -2044,6 +2044,22 @@
+     goto :goto_0
+ 
+     :cond_5
++    const-string v0, "1"
++
++    invoke-virtual {p0, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v0
++
++    if-nez v0, :goto_0
++
++    const-string v0, "2"
++
++    invoke-virtual {p0, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v0
++
++    if-nez v0, :goto_0
++
+     sget-object v0, Lur/a;->a:Ljava/util/Map;
+ 
+     invoke-interface {v0, p1}, Ljava/util/Map;->containsKey(Ljava/lang/Object;)Z
+@@ -2580,4 +2592,36 @@
+     :goto_1
+     packed-switch v22, :pswitch_data_0
+ 
++    const-string v3, "1"
++
++    invoke-virtual {v3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v3
++
++    if-nez v3, :cond_pearl_beauty
++
++    const-string v3, "2"
++
++    invoke-virtual {v3, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v3
++
++    if-eqz v3, :cond_pearl_beauty_fallback
++
++    :cond_pearl_beauty
++    move-object/from16 v6, v21
++
++    move-object/from16 v8, p2
++
++    sget-object v7, Le2/b;->n:[Ljava/lang/String;
++
++    const/4 v5, 0x1
++
++    invoke-static {v2, v7, v6, v5, v8}, LNu/a;->i(Ljava/lang/String;[Ljava/lang/String;Ljava/util/List;ZLj9/e;)V
++
++    move-object/from16 v5, v6
++
++    goto/16 :goto_b
++
++    :cond_pearl_beauty_fallback
+     invoke-static {v2}, LF1/u0;->e(Ljava/lang/String;)Z

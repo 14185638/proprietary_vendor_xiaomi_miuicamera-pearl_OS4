@@ -1,0 +1,24 @@
+From pearl-miui-camera-6.6-compat
+Subject: [PATCH] Extend 6.6 settings content behind navigation bar
+
+Do not pass the navigation-bar bottom inset to the MIUI settings content.
+
+---
+ smali_classes2/miuix/appcompat/internal/app/widget/ActionBarOverlayLayout.smali | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/smali_classes2/miuix/appcompat/internal/app/widget/ActionBarOverlayLayout.smali b/smali_classes2/miuix/appcompat/internal/app/widget/ActionBarOverlayLayout.smali
+index pearl..compat 100644
+--- a/smali_classes2/miuix/appcompat/internal/app/widget/ActionBarOverlayLayout.smali
++++ b/smali_classes2/miuix/appcompat/internal/app/widget/ActionBarOverlayLayout.smali
+@@ -5373,6 +5373,10 @@
+ 
+     iget-object v1, v0, Lmiuix/appcompat/internal/app/widget/ActionBarOverlayLayout;->J:Landroid/graphics/Rect;
+ 
++    const/4 v2, 0x0
++
++    iput v2, v1, Landroid/graphics/Rect;->bottom:I
++
+     invoke-static {v6, v1, v8, v8}, Lmiuix/appcompat/internal/app/widget/ActionBarOverlayLayout;->f(Landroid/view/View;Landroid/graphics/Rect;ZZ)Z
+ 
+     const/4 v1, 0x0

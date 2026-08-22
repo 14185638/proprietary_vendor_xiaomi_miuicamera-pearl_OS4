@@ -1,0 +1,32 @@
+From pearl-miui-camera-6.6-compat
+Subject: [PATCH] Drop null capture result safely
+
+Some pearl capture paths deliver a null CaptureResult to the 6.6 saver.
+Return empty metadata instead of dereferencing the null result and
+terminating the camera process after the shutter is pressed.
+
+---
+ smali/S8/e.smali | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/smali/S8/e.smali b/smali/S8/e.smali
+index 6fa1396..compat 100644
+--- a/smali/S8/e.smali
++++ b/smali/S8/e.smali
+@@ -150,6 +150,16 @@
+ .method public static c(Landroid/hardware/camera2/CaptureResult;)Lxi/b;
+     .registers 7
+ 
++    if-nez p0, :capture_result_present
++
++    new-instance v5, Lxi/b;
++
++    invoke-direct {v5}, Ljava/lang/Object;-><init>()V
++
++    return-object v5
++
++    :capture_result_present
++
+     sget-object v0, Landroid/hardware/camera2/CaptureResult;->SENSOR_EXPOSURE_TIME:Landroid/hardware/camera2/CaptureResult$Key;
+ 
+     invoke-virtual {p0, v0}, Landroid/hardware/camera2/CaptureResult;->get(Landroid/hardware/camera2/CaptureResult$Key;)Ljava/lang/Object;

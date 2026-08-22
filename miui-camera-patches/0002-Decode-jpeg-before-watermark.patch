@@ -1,0 +1,30 @@
+From pearl-miui-camera-6.6-compat
+Subject: [PATCH] Decode JPEG input before applying watermark
+
+The 6.6 watermark saver receives encoded JPEG bytes. Feeding those bytes
+to the I420 YUV decoder produces a green image while the watermark itself
+still renders. Decode the JPEG with BitmapFactory before handing the image
+to the watermark pipeline.
+
+---
+ smali/S8/d.smali | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/smali/S8/d.smali b/smali/S8/d.smali
+index 02b58d3..compat 100644
+--- a/smali/S8/d.smali
++++ b/smali/S8/d.smali
+@@ -450,6 +450,12 @@
+ 
+     move-result-object v12
+ 
+-    invoke-static {v12, v8, v9}, Lcom/xiaomi/libyuv/YuvUtils;->I420ToBitmap(Landroid/graphics/Bitmap;[BI)I
++    const/4 v11, 0x0
++
++    array-length v13, v8
++
++    invoke-static {v8, v11, v13}, Landroid/graphics/BitmapFactory;->decodeByteArray([BII)Landroid/graphics/Bitmap;
++
++    move-result-object v12
+ 
+     iget-object v5, v0, Lxi/a;->a:Ljava/lang/String;

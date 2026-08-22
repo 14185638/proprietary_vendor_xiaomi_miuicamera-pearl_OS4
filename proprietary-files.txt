@@ -1,0 +1,11 @@
+# The six libraries below are shared with the 6.1 MIUI Camera integration.
+# The APK is the patched 6.6.000460.0 build currently staged in this tree.
+# Source-side paths will be finalized together with extract-files.sh.
+
+product/priv-app/MiuiCamera/MiuiCamera.apk:system/priv-app/MiuiCamera/MiuiCamera.apk;OVERRIDES=GoogleCamera,Camera2,Aperture,Flash
+system_ext/lib64/libcamera_algoup_jni.xiaomi.so:system/lib64/libcamera_algoup_jni.xiaomi.so
+system_ext/lib64/libcamera_mianode_jni.xiaomi.so:system/lib64/libcamera_mianode_jni.xiaomi.so
+system_ext/lib64/libcamera_ispinterface_jni.xiaomi.so:system/lib64/libcamera_ispinterface_jni.xiaomi.so
+system_ext/lib64/libmtkisp_metadata_sys.so:system/lib64/libmtkisp_metadata_sys.so
+system_ext/lib64/vendor.mediatek.hardware.camera.isphal@1.0.so:system/lib64/vendor.mediatek.hardware.camera.isphal@1.0.so;MODULE_SUFFIX=_system
+system_ext/lib64/vendor.mediatek.hardware.camera.isphal-V1-ndk.so:system/lib64/vendor.mediatek.hardware.camera.isphal-V1-ndk.so

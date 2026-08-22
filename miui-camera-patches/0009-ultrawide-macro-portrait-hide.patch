@@ -1,0 +1,3532 @@
+--- a/smali/H4/h0.smali
++++ b/smali/H4/h0.smali
+@@ -15,6 +15,21 @@
+ .method public static a(IZZ)Lcom/android/camera/ui/zoom/ZoomRatioToggleView$f;
+     .locals 2
+ 
++    const/16 v0, 0xab
++
++    if-ne p0, v0, :cond_0
++
++    new-instance v0, Lcom/android/camera/ui/zoom/ZoomRatioToggleView$f;
++
++    const/4 v1, -0x1
++
++    const/4 p0, 0x0
++
++    invoke-direct {v0, v1, p0, p0, p0}, Lcom/android/camera/ui/zoom/ZoomRatioToggleView$f;-><init>(IIZZ)V
++
++    return-object v0
++
++    :cond_0
+     new-instance v0, LH4/h0$a;
+ 
+     invoke-direct {v0}, LH4/h0$a;-><init>()V
+@@ -31,22 +46,22 @@
+ 
+     iget-boolean v0, v0, LH4/h0$a;->d:Z
+ 
+-    if-nez v0, :cond_0
++    if-nez v0, :cond_1
+ 
+     const/4 v0, 0x0
+ 
+     goto :goto_1
+ 
+-    :cond_0
++    :cond_1
+     invoke-static {}, Lcom/android/camera/data/data/r;->o()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_1
++    if-eqz v0, :cond_2
+ 
+     goto :goto_0
+ 
+-    :cond_1
++    :cond_2
+     sget-object v0, LJe/c$b;->a:LJe/c;
+ 
+     invoke-virtual {v0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+@@ -55,14 +70,14 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_2
++    if-eqz v0, :cond_3
+ 
+     :goto_0
+     const/4 v0, 0x2
+ 
+     goto :goto_1
+ 
+-    :cond_2
++    :cond_3
+     const/4 v0, 0x1
+ 
+     :goto_1
+--- a/smali/com/android/camera/data/data/E.smali
++++ b/smali/com/android/camera/data/data/E.smali
+@@ -2078,20 +2078,9 @@
+ 
+     check-cast v0, Lv2/m;
+ 
+-    iget-byte v0, v0, Lv2/m;->b:B
+-
+-    const/4 v1, 0x2
+-
+-    if-lt v0, v1, :cond_0
+-
+     const/4 v0, 0x1
+ 
+     return v0
+-
+-    :cond_0
+-    const/4 v0, 0x0
+-
+-    return v0
+ .end method
+ 
+ .method public static i(F)F
+--- a/smali/com/android/camera/data/data/j.smali
++++ b/smali/com/android/camera/data/data/j.smali
+@@ -3960,19 +3960,49 @@
+ 
+     if-eqz v2, :cond_0
+ 
+-    new-array v2, v3, [Ljava/lang/Float;
++    const/4 v7, 0x5
++
++    new-array v2, v7, [Ljava/lang/Float;
++
++    const v7, 0x3f19999a    # 0.6f
++
++    invoke-static {v7}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
++
++    move-result-object v11
++
++    aput-object v11, v2, v6
+ 
+     invoke-static {v5}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+-    move-result-object v7
++    move-result-object v11
+ 
+-    aput-object v7, v2, v6
++    aput-object v11, v2, v0
+ 
+     invoke-static {v4}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+-    move-result-object v7
++    move-result-object v11
++
++    aput-object v11, v2, v3
++
++    const/high16 v7, 0x40a00000    # 5.0f
++
++    invoke-static {v7}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
++
++    move-result-object v11
++
++    const/4 p0, 0x3
++
++    aput-object v11, v2, p0
++
++    const/high16 v7, 0x41200000    # 10.0f
+ 
+-    aput-object v7, v2, v0
++    invoke-static {v7}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
++
++    move-result-object v11
++
++    const/4 p0, 0x4
++
++    aput-object v11, v2, p0
+ 
+     goto :goto_0
+ 
+@@ -4089,7 +4119,7 @@
+ 
+     move-result v11
+ 
+-    if-eqz v11, :cond_3
++    goto :goto_3
+ 
+     invoke-static {}, Lj9/q0;->e()Z
+ 
+@@ -4510,8 +4540,6 @@
+     :cond_18
+     return-object p0
+ 
+-    nop
+-
+     :pswitch_data_0
+     .packed-switch 0xa1
+         :pswitch_4
+@@ -5411,7 +5439,7 @@
+ .end method
+ 
+ .method public static T(I)[F
+-    .locals 3
++    .locals 4
+ 
+     const/4 v0, 0x0
+ 
+@@ -5508,16 +5536,16 @@
+ 
+     new-array p0, p0, [F
+ 
+-    fill-array-data p0, :array_0
++    fill-array-data p0, :array_1
+ 
+     return-object p0
+ 
+     :cond_4
+-    new-array p0, v1, [F
++    const/4 v1, 0x5
+ 
+-    const/high16 v1, 0x3f800000    # 1.0f
++    new-array p0, v1, [F
+ 
+-    aput v1, p0, v0
++    fill-array-data p0, :array_0
+ 
+     return-object p0
+ 
+@@ -5525,6 +5553,15 @@
+ 
+     :array_0
+     .array-data 4
++        0x3f19999a    # 0.6f
++        0x3f800000    # 1.0f
++        0x40000000    # 2.0f
++        0x40a00000    # 5.0f
++        0x41200000    # 10.0f
++    .end array-data
++
++    :array_1
++    .array-data 4
+         0x3f800000    # 1.0f
+         0x40000000    # 2.0f
+     .end array-data
+@@ -5600,9 +5637,110 @@
+ 
+     const/4 v2, 0x0
+ 
++    const/16 v3, 0xe8
++
++    if-ne p0, v3, :cond_0
++
++    const/4 v3, 0x4
++
++    new-array p1, v3, [F
++
++    const/high16 v3, 0x3f800000    # 1.0f
++
++    aput v3, p1, v2
++
++    const/high16 v3, 0x40000000    # 2.0f
++
++    const/4 v4, 0x1
++
++    aput v3, p1, v4
++
++    const/high16 v3, 0x40a00000    # 5.0f
++
++    const/4 v4, 0x2
++
++    aput v3, p1, v4
++
++    const/high16 v3, 0x41200000    # 10.0f
++
++    const/4 v4, 0x3
++
++    aput v3, p1, v4
++
++    return-object p1
++
++    const/16 v3, 0xa3
++
++    if-ne p0, v3, :cond_0
++
++    const/4 v3, 0x5
++
++    new-array p1, v3, [F
++
++    const v3, 0x3f19999a    # 0.6f
++
++    aput v3, p1, v2
++
++    const/high16 v3, 0x3f800000    # 1.0f
++
++    const/4 v4, 0x1
++
++    aput v3, p1, v4
++
++    const/high16 v3, 0x40000000    # 2.0f
++
++    const/4 v4, 0x2
++
++    aput v3, p1, v4
++
++    const/high16 v3, 0x40a00000    # 5.0f
++
++    const/4 v4, 0x3
++
++    aput v3, p1, v4
++
++    const/high16 v3, 0x41200000    # 10.0f
++
++    const/4 v4, 0x4
++
++    aput v3, p1, v4
++
++    move-object p0, p1
++
++    return-object p0
++
++    :cond_0
+     const/16 v3, 0xab
+ 
+-    if-ne p0, v3, :cond_5
++    if-ne p0, v3, :cond_6
++
++    const/4 v3, 0x4
++
++    new-array p1, v3, [F
++
++    const/high16 v3, 0x3f800000    # 1.0f
++
++    aput v3, p1, v2
++
++    const/high16 v3, 0x40000000    # 2.0f
++
++    const/4 v4, 0x1
++
++    aput v3, p1, v4
++
++    const/high16 v3, 0x40a00000    # 5.0f
++
++    const/4 v4, 0x2
++
++    aput v3, p1, v4
++
++    const/high16 v3, 0x41200000    # 10.0f
++
++    const/4 v4, 0x3
++
++    aput v3, p1, v4
++
++    return-object p1
+ 
+     invoke-static {}, Lcom/android/camera/data/data/j;->v0()Z
+ 
+@@ -5612,15 +5718,15 @@
+ 
+     move-result v4
+ 
+-    if-nez v4, :cond_1
++    if-nez v4, :cond_2
+ 
+     invoke-static {}, Lcom/android/camera/data/data/E;->i0()Z
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_0
++    if-eqz v4, :cond_1
+ 
+-    if-eqz v1, :cond_1
++    if-eqz v1, :cond_2
+ 
+     sget-boolean v4, LJe/c;->k:Z
+ 
+@@ -5632,9 +5738,9 @@
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_1
++    if-eqz v4, :cond_2
+ 
+-    :cond_0
++    :cond_1
+     sget-boolean v4, LJe/c;->k:Z
+ 
+     sget-object v4, LJe/c$b;->a:LJe/c;
+@@ -5645,14 +5751,14 @@
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_5
++    if-eqz v4, :cond_6
+ 
+-    :cond_1
++    :cond_2
+     invoke-static {}, Lcom/android/camera/data/data/E;->i0()Z
+ 
+     move-result p0
+ 
+-    if-nez p0, :cond_2
++    if-nez p0, :cond_3
+ 
+     sget-boolean p0, LJe/c;->k:Z
+ 
+@@ -5664,9 +5770,9 @@
+ 
+     move-result p0
+ 
+-    if-eqz p0, :cond_4
++    if-eqz p0, :cond_5
+ 
+-    :cond_2
++    :cond_3
+     sget-boolean p0, LJe/c;->k:Z
+ 
+     sget-object p0, LJe/c$b;->a:LJe/c;
+@@ -5677,13 +5783,13 @@
+ 
+     move-result-object p0
+ 
+-    if-eqz p0, :cond_4
++    if-eqz p0, :cond_5
+ 
+     invoke-virtual {p0, v3}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+ 
+     move-result-object p1
+ 
+-    if-eqz p1, :cond_4
++    if-eqz p1, :cond_5
+ 
+     invoke-virtual {p0, v3}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+ 
+@@ -5698,7 +5804,7 @@
+     :goto_0
+     array-length v1, p0
+ 
+-    if-ge v2, v1, :cond_3
++    if-ge v2, v1, :cond_4
+ 
+     aget-object v1, p0, v2
+ 
+@@ -5712,10 +5818,10 @@
+ 
+     goto :goto_0
+ 
+-    :cond_3
++    :cond_4
+     return-object p1
+ 
+-    :cond_4
++    :cond_5
+     invoke-static {}, Lg2/a;->j()Lv2/C0;
+ 
+     move-result-object p0
+@@ -5734,8 +5840,8 @@
+ 
+     return-object p0
+ 
+-    :cond_5
+-    if-eqz v1, :cond_6
++    :cond_6
++    if-eqz v1, :cond_7
+ 
+     invoke-static {p0}, Lcom/android/camera/data/data/j;->T(I)[F
+ 
+@@ -5743,21 +5849,21 @@
+ 
+     return-object p0
+ 
+-    :cond_6
+-    if-nez p1, :cond_8
++    :cond_7
++    if-nez p1, :cond_9
+ 
+     invoke-static {}, Lcom/android/camera/data/data/j;->F1()Z
+ 
+     move-result p1
+ 
+-    if-nez p1, :cond_7
++    if-nez p1, :cond_8
+ 
+     goto :goto_1
+ 
+-    :cond_7
++    :cond_8
+     move v0, v2
+ 
+-    :cond_8
++    :cond_9
+     :goto_1
+     invoke-static {p0, v0}, Lcom/android/camera/data/data/j;->S(IZ)[F
+ 
+--- a/smali/com/android/camera/module/Camera2Module.smali
++++ b/smali/com/android/camera/module/Camera2Module.smali
+@@ -23733,6 +23733,8 @@
+     return v1
+ 
+     :cond_1
++    return v2
++
+     invoke-static {}, Lcom/android/camera/data/data/r;->o()Z
+ 
+     move-result v0
+@@ -23762,8 +23764,11 @@
+ 
+     move-result v0
+ 
++    goto :goto_0
++
+     if-nez v0, :cond_3
+ 
++    :goto_0
+     invoke-static {}, Lcom/android/camera/module/a0;->i()Z
+ 
+     move-result v0
+@@ -24958,96 +24963,20 @@
+         type = 0x0
+     .end annotation
+ 
+-    invoke-static {}, LJe/c;->d0()Z
+-
+-    move-result v0
+-
+-    if-eqz v0, :cond_0
+-
+-    goto :goto_0
+-
+-    :cond_0
+-    invoke-static {}, Lcom/android/camera/data/data/j;->o0()Z
+-
+-    move-result v0
+-
+-    if-nez v0, :cond_1
+-
+-    goto :goto_0
+-
+-    :cond_1
+-    iget-object v0, p0, Lcom/android/camera/module/s;->mCameraManager:Lj6/j;
+-
+-    invoke-interface {v0}, Lj6/j;->getActualCameraId()I
+-
+-    move-result v0
+-
+-    invoke-static {v0}, Lu6/f;->f0(I)Z
+-
+-    move-result v0
+-
+-    if-eqz v0, :cond_2
+-
+-    sget-object v0, LJe/c$b;->a:LJe/c;
+-
+-    invoke-virtual {v0}, LJe/c;->o0()Z
+-
+-    move-result v0
+-
+-    if-nez v0, :cond_2
+-
+-    goto :goto_0
+-
+-    :cond_2
+-    iget-object v0, p0, Lcom/android/camera/module/s;->mCameraManager:Lj6/j;
+-
+-    invoke-interface {v0}, Lj6/j;->getActualCameraId()I
+-
+-    move-result v0
+-
+-    invoke-static {v0}, Lu6/f;->h0(I)Z
+-
+-    move-result v0
+-
+-    if-eqz v0, :cond_3
++    iget p0, p0, Lcom/android/camera/module/s;->mModuleIndex:I
+ 
+-    sget-object v0, LJe/c$b;->a:LJe/c;
++    const/16 v0, 0xab
+ 
+-    invoke-virtual {v0}, LJe/c;->R1()Z
++    if-ne p0, v0, :cond_0
+ 
+-    move-result v0
+-
+-    if-nez v0, :cond_3
++    const/4 p0, 0x1
+ 
+     goto :goto_0
+ 
+-    :cond_3
+-    invoke-virtual {p0}, Lcom/android/camera/module/s;->getAppStateMgr()Lj6/b;
+-
+-    move-result-object p0
+-
+-    check-cast p0, Lj6/a;
+-
+-    iget-boolean p0, p0, Lj6/a;->i:Z
+-
+-    if-eqz p0, :cond_4
+-
+-    sget-object p0, LJe/c$b;->a:LJe/c;
+-
+-    invoke-virtual {p0}, LJe/c;->I()Z
+-
+-    move-result p0
+-
+-    if-nez p0, :cond_4
+-
+-    :goto_0
++    :cond_0
+     const/4 p0, 0x0
+ 
+-    return p0
+-
+-    :cond_4
+-    const/4 p0, 0x1
+-
++    :goto_0
+     return p0
+ .end method
+ 
+--- a/smali/g9/f.smali
++++ b/smali/g9/f.smali
+@@ -2245,19 +2245,7 @@
+ 
+     if-eqz v5, :cond_1
+ 
+-    invoke-static {}, Lur/i;->j()F
+-
+-    move-result v9
+-
+-    invoke-static {v9}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+-
+-    move-result-object v9
+-
+-    invoke-interface {v0, v9}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
+-
+-    move-result v9
+-
+-    if-eqz v9, :cond_1
++    const/4 v9, 0x1
+ 
+     cmpg-float v9, p2, v8
+ 
+@@ -3840,7 +3828,7 @@
+ 
+     move-result-object v2
+ 
+-    const/high16 v3, 0x3f800000    # 1.0f
++    sget v3, Lur/i;->a:F
+ 
+     invoke-static {v3}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+@@ -6934,7 +6922,7 @@
+ 
+     new-instance v0, Landroid/util/Range;
+ 
+-    const/high16 v1, 0x3f800000    # 1.0f
++    sget v1, Lur/i;->a:F
+ 
+     invoke-static {v1}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+@@ -7234,6 +7222,27 @@
+     :cond_3
+     iget-object v5, v0, Lg9/f;->j:Landroid/util/Range;
+ 
++    invoke-virtual {v5}, Landroid/util/Range;->getLower()Ljava/lang/Comparable;
++
++    move-result-object v6
++
++    check-cast v6, Ljava/lang/Float;
++
++    invoke-virtual {v6}, Ljava/lang/Float;->floatValue()F
++
++    move-result v6
++
++    cmpl-float v6, v3, v6
++
++    if-ltz v6, :cond_4
++
++    const v6, 0x3f19999a    # 0.6f
++
++    cmpl-float v6, v3, v6
++
++    if-gez v6, :cond_5
++
++    :cond_4
+     invoke-static {v3}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+     move-result-object v3
+@@ -7248,20 +7257,21 @@
+ 
+     move-result v3
+ 
++    :cond_5
+     :goto_1
+     cmpl-float v5, v2, v3
+ 
+     const/4 v6, 0x0
+ 
+-    if-nez v5, :cond_5
++    if-nez v5, :cond_7
+ 
+     const/16 v5, 0x8
+ 
+-    if-eq v1, v5, :cond_5
++    if-eq v1, v5, :cond_7
+ 
+     const/16 v5, 0x12
+ 
+-    if-eq v1, v5, :cond_5
++    if-eq v1, v5, :cond_7
+ 
+     sget v1, Lur/i;->a:F
+ 
+@@ -7277,7 +7287,7 @@
+ 
+     cmpg-double v1, v1, v4
+ 
+-    if-ltz v1, :cond_4
++    if-ltz v1, :cond_6
+ 
+     iget-object v1, v0, Lg9/f;->j:Landroid/util/Range;
+ 
+@@ -7293,7 +7303,7 @@
+ 
+     cmpl-float v1, v3, v1
+ 
+-    if-eqz v1, :cond_4
++    if-eqz v1, :cond_6
+ 
+     iget-object v1, v0, Lg9/f;->j:Landroid/util/Range;
+ 
+@@ -7311,12 +7321,12 @@
+ 
+     if-nez v1, :cond_0
+ 
+-    :cond_4
++    :cond_6
+     iput v6, v0, Lg9/f;->m:F
+ 
+     return v14
+ 
+-    :cond_5
++    :cond_7
+     const-string v5, "onZoomingActionUpdate(): changed from "
+ 
+     move/from16 p1, v6
+@@ -7343,7 +7353,7 @@
+ 
+     invoke-virtual {v0, v3}, Lg9/f;->setZoomRatio(F)V
+ 
+-    if-eq v1, v8, :cond_6
++    if-eq v1, v8, :cond_8
+ 
+     invoke-static {}, Lg2/a;->j()Lv2/C0;
+ 
+@@ -7351,7 +7361,7 @@
+ 
+     iput-boolean v9, v5, Lv2/C0;->k:Z
+ 
+-    :cond_6
++    :cond_8
+     invoke-static {}, Lg2/a;->j()Lv2/C0;
+ 
+     move-result-object v5
+@@ -7368,7 +7378,7 @@
+ 
+     move-result v6
+ 
+-    if-eqz v6, :cond_7
++    if-eqz v6, :cond_9
+ 
+     sget-object v6, LN6/h$a;->a:LN6/h;
+ 
+@@ -7400,7 +7410,7 @@
+ 
+     goto :goto_2
+ 
+-    :cond_7
++    :cond_9
+     move/from16 v16, v14
+ 
+     :goto_2
+@@ -7412,7 +7422,7 @@
+ 
+     const/high16 v14, 0x3f800000    # 1.0f
+ 
+-    if-eqz v5, :cond_c
++    if-eqz v5, :cond_e
+ 
+     sget-boolean v2, LJe/c;->k:Z
+ 
+@@ -7424,7 +7434,7 @@
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_8
++    if-eqz v2, :cond_a
+ 
+     sget-object v2, Lcom/xiaomi/camera/rx/CameraSchedulers;->sMainThreadScheduler:Lio/reactivex/v;
+ 
+@@ -7436,7 +7446,7 @@
+ 
+     goto :goto_3
+ 
+-    :cond_8
++    :cond_a
+     invoke-static {}, LV6/e;->a()Ljava/util/Optional;
+ 
+     move-result-object v2
+@@ -7464,7 +7474,7 @@
+ 
+     cmpg-float v2, v3, v14
+ 
+-    if-gez v2, :cond_9
++    if-gez v2, :cond_b
+ 
+     sget-object v2, Lj9/q0;->g:Lj9/q0$p;
+ 
+@@ -7478,21 +7488,21 @@
+ 
+     move-result v2
+ 
+-    if-nez v2, :cond_9
++    if-nez v2, :cond_b
+ 
+     invoke-static {v15}, Lcom/android/camera/data/data/m;->S0(I)V
+ 
+-    :cond_9
+-    if-eqz v1, :cond_a
++    :cond_b
++    if-eqz v1, :cond_c
+ 
+-    if-ne v1, v8, :cond_b
++    if-ne v1, v8, :cond_d
+ 
+-    :cond_a
++    :cond_c
+     iget v1, v0, Lg9/f;->h:F
+ 
+     cmpl-float v1, p1, v1
+ 
+-    if-eqz v1, :cond_b
++    if-eqz v1, :cond_d
+ 
+     invoke-virtual {v12}, Ljava/lang/ref/Reference;->get()Ljava/lang/Object;
+ 
+@@ -7506,24 +7516,24 @@
+ 
+     iput v1, v0, Lg9/f;->h:F
+ 
+-    :cond_b
++    :cond_d
+     :goto_4
+     return v16
+ 
+-    :cond_c
+-    if-eqz v1, :cond_e
++    :cond_e
++    if-eqz v1, :cond_10
+ 
+-    if-ne v1, v8, :cond_d
++    if-ne v1, v8, :cond_f
+ 
+     goto :goto_6
+ 
+-    :cond_d
++    :cond_f
+     :goto_5
+     move/from16 v17, v9
+ 
+     goto :goto_7
+ 
+-    :cond_e
++    :cond_10
+     :goto_6
+     sget-boolean v5, LJe/c;->k:Z
+ 
+@@ -7535,7 +7545,7 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_f
++    if-eqz v5, :cond_11
+ 
+     sget-object v5, Lcom/xiaomi/camera/rx/CameraSchedulers;->sMainThreadScheduler:Lio/reactivex/v;
+ 
+@@ -7547,7 +7557,7 @@
+ 
+     goto :goto_5
+ 
+-    :cond_f
++    :cond_11
+     invoke-static {}, LQ6/G1;->a()Ljava/util/Optional;
+ 
+     move-result-object v5
+@@ -7565,20 +7575,20 @@
+     :goto_7
+     cmpg-float v5, v2, v14
+ 
+-    if-lez v5, :cond_11
++    if-lez v5, :cond_13
+ 
+     cmpg-float v5, v3, v14
+ 
+-    if-gtz v5, :cond_10
++    if-gtz v5, :cond_12
+ 
+     goto :goto_8
+ 
+-    :cond_10
++    :cond_12
+     move/from16 v5, v16
+ 
+     goto :goto_9
+ 
+-    :cond_11
++    :cond_13
+     :goto_8
+     move/from16 v5, v17
+ 
+@@ -7595,20 +7605,20 @@
+ 
+     const/16 v8, 0xa3
+ 
+-    if-lez v7, :cond_15
++    if-lez v7, :cond_17
+ 
+     cmpg-float v7, v9, v14
+ 
+-    if-gtz v7, :cond_12
++    if-gtz v7, :cond_14
+ 
+     goto :goto_a
+ 
+-    :cond_12
+-    if-eq v15, v8, :cond_13
++    :cond_14
++    if-eq v15, v8, :cond_15
+ 
+     goto :goto_b
+ 
+-    :cond_13
++    :cond_15
+     invoke-virtual {v12}, Ljava/lang/ref/Reference;->get()Ljava/lang/Object;
+ 
+     move-result-object v7
+@@ -7627,7 +7637,7 @@
+ 
+     move-result-object v9
+ 
+-    if-eqz v9, :cond_16
++    if-eqz v9, :cond_18
+ 
+     invoke-interface {v7}, Lj6/j;->V()Lj9/a;
+ 
+@@ -7641,16 +7651,16 @@
+ 
+     move-result v7
+ 
+-    if-eqz v18, :cond_14
++    if-eqz v18, :cond_16
+ 
+-    if-eqz v7, :cond_15
++    if-eqz v7, :cond_17
+ 
+-    :cond_14
+-    if-nez v18, :cond_16
++    :cond_16
++    if-nez v18, :cond_18
+ 
+-    if-eqz v7, :cond_16
++    if-eqz v7, :cond_18
+ 
+-    :cond_15
++    :cond_17
+     :goto_a
+     invoke-interface {v13}, Lcom/android/camera/module/Y;->getUserEventMgr()Lj6/i;
+ 
+@@ -7664,23 +7674,23 @@
+ 
+     invoke-interface {v7, v8}, Lj6/i;->updatePreferenceTrampoline([I)V
+ 
+-    :cond_16
++    :cond_18
+     :goto_b
+     invoke-static {v2, v14}, Ljava/lang/Float;->compare(FF)I
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_18
++    if-eqz v2, :cond_1a
+ 
+     invoke-static {v3, v14}, Ljava/lang/Float;->compare(FF)I
+ 
+     move-result v2
+ 
+-    if-nez v2, :cond_17
++    if-nez v2, :cond_19
+ 
+     goto :goto_d
+ 
+-    :cond_17
++    :cond_19
+     move/from16 v2, v16
+ 
+     :goto_c
+@@ -7688,16 +7698,16 @@
+ 
+     goto :goto_e
+ 
+-    :cond_18
++    :cond_1a
+     :goto_d
+     move/from16 v2, v17
+ 
+     goto :goto_c
+ 
+     :goto_e
+-    if-ne v15, v7, :cond_19
++    if-ne v15, v7, :cond_1b
+ 
+-    if-eqz v2, :cond_19
++    if-eqz v2, :cond_1b
+ 
+     invoke-interface {v13}, Lcom/android/camera/module/Y;->getCameraManager()Lj6/j;
+ 
+@@ -7711,7 +7721,7 @@
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_19
++    if-eqz v2, :cond_1b
+ 
+     invoke-interface {v13}, Lcom/android/camera/module/Y;->getCameraManager()Lj6/j;
+ 
+@@ -7725,7 +7735,7 @@
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_19
++    if-eqz v2, :cond_1b
+ 
+     invoke-interface {v13}, Lcom/android/camera/module/Y;->getUserEventMgr()Lj6/i;
+ 
+@@ -7739,8 +7749,8 @@
+ 
+     invoke-interface {v2, v7}, Lj6/i;->updatePreferenceTrampoline([I)V
+ 
+-    :cond_19
+-    if-eqz v5, :cond_1a
++    :cond_1b
++    if-eqz v5, :cond_1c
+ 
+     sget-boolean v2, LJe/c;->k:Z
+ 
+@@ -7750,11 +7760,11 @@
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_1a
++    if-eqz v2, :cond_1c
+ 
+     invoke-virtual {v0, v3}, Lg9/f;->s8(F)V
+ 
+-    :cond_1a
++    :cond_1c
+     sget-boolean v2, LJe/c;->k:Z
+ 
+     sget-object v2, LJe/c$b;->a:LJe/c;
+@@ -7765,13 +7775,13 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_1c
++    if-eqz v5, :cond_1e
+ 
+     invoke-static {}, Lcom/android/camera/data/data/w;->x0()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_1b
++    if-eqz v5, :cond_1d
+ 
+     invoke-interface {v13}, Lcom/android/camera/module/Y;->getUserEventMgr()Lj6/i;
+ 
+@@ -7787,7 +7797,7 @@
+ 
+     goto :goto_f
+ 
+-    :cond_1b
++    :cond_1d
+     invoke-interface {v13}, Lcom/android/camera/module/Y;->getUserEventMgr()Lj6/i;
+ 
+     move-result-object v5
+@@ -7808,7 +7818,7 @@
+ 
+     goto :goto_f
+ 
+-    :cond_1c
++    :cond_1e
+     const/16 v7, 0x18
+ 
+     const/16 v8, 0x70
+@@ -7846,7 +7856,7 @@
+ 
+     iget-object v2, v2, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+ 
+-    if-eqz v5, :cond_1d
++    if-eqz v5, :cond_1f
+ 
+     invoke-virtual {v2}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->u1()I
+ 
+@@ -7854,7 +7864,7 @@
+ 
+     const/4 v7, 0x4
+ 
+-    if-ne v5, v7, :cond_1d
++    if-ne v5, v7, :cond_1f
+ 
+     invoke-interface {v13}, Lcom/android/camera/module/Y;->getUserEventMgr()Lj6/i;
+ 
+@@ -7868,22 +7878,22 @@
+ 
+     invoke-interface {v5, v7}, Lj6/i;->updatePreferenceInWorkThread([I)V
+ 
+-    :cond_1d
++    :cond_1f
+     invoke-virtual {v2}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->M5()Z
+ 
+     move-result v2
+ 
+-    if-nez v2, :cond_1f
++    if-nez v2, :cond_21
+ 
+     invoke-static {}, Lvr/Z;->c()Z
+ 
+     move-result v2
+ 
+-    if-nez v2, :cond_1e
++    if-nez v2, :cond_20
+ 
+     goto :goto_10
+ 
+-    :cond_1e
++    :cond_20
+     invoke-virtual {v0, v1}, Lg9/f;->T8(I)V
+ 
+     invoke-static {}, LR6/a;->a()Ljava/util/Optional;
+@@ -7912,7 +7922,7 @@
+ 
+     goto :goto_11
+ 
+-    :cond_1f
++    :cond_21
+     :goto_10
+     sget-object v2, Lcom/xiaomi/camera/rx/CameraSchedulers;->sMainThreadScheduler:Lio/reactivex/v;
+ 
+@@ -7927,7 +7937,7 @@
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_22
++    if-eqz v2, :cond_24
+ 
+     invoke-static {}, LQ6/C;->a()Ljava/util/Optional;
+ 
+@@ -7937,16 +7947,16 @@
+ 
+     move-result v5
+ 
+-    if-nez v5, :cond_20
++    if-nez v5, :cond_22
+ 
+     return v17
+ 
+-    :cond_20
++    :cond_22
+     invoke-static {}, Lvr/Z;->c()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_21
++    if-eqz v5, :cond_23
+ 
+     invoke-virtual {v2}, Ljava/util/Optional;->get()Ljava/lang/Object;
+ 
+@@ -7968,7 +7978,7 @@
+ 
+     goto :goto_12
+ 
+-    :cond_21
++    :cond_23
+     sget-object v5, Lcom/xiaomi/camera/rx/CameraSchedulers;->sMainThreadScheduler:Lio/reactivex/v;
+ 
+     new-instance v7, LCs/g0;
+@@ -7979,20 +7989,20 @@
+ 
+     invoke-static {v5, v7}, LAr/d;->e(Lio/reactivex/v;Ljava/lang/Runnable;)Lio/reactivex/disposables/b;
+ 
+-    :cond_22
++    :cond_24
+     :goto_12
+-    if-eqz v1, :cond_23
++    if-eqz v1, :cond_25
+ 
+     const/16 v7, 0x18
+ 
+-    if-ne v1, v7, :cond_24
++    if-ne v1, v7, :cond_26
+ 
+-    :cond_23
++    :cond_25
+     iget v1, v0, Lg9/f;->h:F
+ 
+     cmpl-float v1, v3, v1
+ 
+-    if-nez v1, :cond_24
++    if-nez v1, :cond_26
+ 
+     invoke-virtual {v12}, Ljava/lang/ref/Reference;->get()Ljava/lang/Object;
+ 
+@@ -8006,7 +8016,7 @@
+ 
+     iput v1, v0, Lg9/f;->h:F
+ 
+-    :cond_24
++    :cond_26
+     new-instance v0, Ljava/lang/StringBuilder;
+ 
+     const-string v1, "onZoomingActionUpdate():  cost  "
+@@ -8027,8 +8037,6 @@
+ 
+     return v17
+ 
+-    nop
+-
+     :array_0
+     .array-data 4
+         0xb
+--- a/smali/h9/c.smali
++++ b/smali/h9/c.smali
+@@ -108,7 +108,7 @@
+ 
+     move-result v1
+ 
+-    const/high16 v2, 0x3f800000    # 1.0f
++    sget v2, Lur/i;->a:F
+ 
+     if-nez v1, :cond_0
+ 
+--- a/smali/j9/e.smali
++++ b/smali/j9/e.smali
+@@ -9368,1735 +9368,182 @@
+ .end method
+ 
+ .method public final o()Lrh/a;
+-    .locals 24
++    .locals 7
+ 
+-    move-object/from16 v0, p0
++    iget-object v0, p0, Lj9/e;->U5:Lrh/a;
+ 
+-    iget-object v1, v0, Lj9/e;->U5:Lrh/a;
++    if-eqz v0, :cond_0
+ 
+-    if-eqz v1, :cond_0
+-
+-    return-object v1
++    return-object v0
+ 
+     :cond_0
+-    sget-object v1, Lga/w0;->z4:Lga/D0;
+-
+-    invoke-virtual {v1}, Lga/D0;->b()Ljava/lang/String;
+-
+-    move-result-object v2
+-
+-    invoke-virtual {v0, v2}, Lj9/e;->Q0(Ljava/lang/String;)Z
+-
+-    move-result v2
+-
+-    const/4 v3, 0x0
+-
+-    const-string v4, "CameraCapabilities"
+-
+-    const/4 v5, 0x0
+-
+-    if-nez v2, :cond_1
+-
+-    const-string v0, "getBokehCapsInfo: PORTRAIT_BOKEH_CAPS_INFO do not support"
+-
+-    new-array v1, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v0, v1}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    return-object v3
+-
+-    :cond_1
+-    iget-object v2, v0, Lj9/e;->j7:[B
+-
+-    if-nez v2, :cond_3
+-
+-    const v2, 0xdead
+-
+-    iget-object v6, v0, Lj9/e;->d:Landroid/hardware/camera2/CameraCharacteristics;
+-
+-    invoke-static {v6, v1, v2}, Lga/E0;->i(Landroid/hardware/camera2/CameraCharacteristics;Lga/D0;I)Ljava/lang/Object;
+-
+-    move-result-object v1
+-
+-    check-cast v1, [B
+-
+-    if-eqz v1, :cond_2
+-
+-    goto :goto_0
+-
+-    :cond_2
+-    new-array v1, v5, [B
+-
+-    :goto_0
+-    iput-object v1, v0, Lj9/e;->j7:[B
+-
+-    :cond_3
+-    iget-object v1, v0, Lj9/e;->j7:[B
+-
+-    if-eqz v1, :cond_4
+-
+-    array-length v2, v1
+-
+-    if-nez v2, :cond_5
+-
+-    :cond_4
+-    move v12, v5
+-
+-    goto/16 :goto_17
+-
+-    :cond_5
+-    invoke-static {v1}, Ljava/nio/ByteBuffer;->wrap([B)Ljava/nio/ByteBuffer;
+-
+-    move-result-object v1
+-
+-    invoke-static {}, Ljava/nio/ByteOrder;->nativeOrder()Ljava/nio/ByteOrder;
+-
+-    move-result-object v2
+-
+-    invoke-virtual {v1, v2}, Ljava/nio/ByteBuffer;->order(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;
+-
+-    move-result-object v1
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v2
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v3
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v6
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v7
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v8
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v9
+-
+-    const-string v10, "getBokehCapsInfo: mask = "
+-
+-    invoke-static {v2, v10}, Lc/a;->b(ILjava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v10
+-
+-    new-array v11, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v10, v11}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    new-instance v10, Ljava/lang/StringBuilder;
+-
+-    const-string v11, "getBokehCapsInfo: version = "
+-
+-    invoke-direct {v10, v11}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v10, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v10
+-
+-    new-array v11, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v10, v11}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    new-instance v10, Ljava/lang/StringBuilder;
+-
+-    const-string v11, "getBokehCapsInfo: length = "
+-
+-    invoke-direct {v10, v11}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v10, v6}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v10
+-
+-    new-array v11, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v10, v11}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    new-instance v10, Ljava/lang/StringBuilder;
+-
+-    const-string v11, "getBokehCapsInfo: crc32 = "
+-
+-    invoke-direct {v10, v11}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v10, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v10
+-
+-    new-array v11, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v10, v11}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    new-instance v10, Ljava/lang/StringBuilder;
+-
+-    const-string v11, "getBokehCapsInfo: numMax = "
+-
+-    invoke-direct {v10, v11}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v10, v8}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v10
+-
+-    new-array v11, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v10, v11}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    new-instance v10, Ljava/lang/StringBuilder;
+-
+-    const-string v11, "getBokehCapsInfo: num = "
+-
+-    invoke-direct {v10, v11}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v10, v9}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v10
+-
+-    new-array v11, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v10, v11}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getFloat()F
+-
+-    move-result v10
+-
+-    const-string v11, "getBokehCapsInfo: defaultZoom = "
+-
+-    invoke-static {v11, v10}, LP0/g;->e(Ljava/lang/String;F)Ljava/lang/String;
+-
+-    move-result-object v11
+-
+-    new-array v12, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v11, v12}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    new-instance v11, Lrh/a;
+-
+-    invoke-direct {v11}, Ljava/lang/Object;-><init>()V
+-
+-    const/16 v12, 0x5c
+-
+-    iput v12, v11, Lrh/a;->m:I
+-
+-    const/16 v12, 0x7e
+-
+-    iput v12, v11, Lrh/a;->n:I
+-
+-    iput v2, v11, Lrh/a;->a:I
+-
+-    iput v3, v11, Lrh/a;->b:I
+-
+-    iput v6, v11, Lrh/a;->c:I
+-
+-    iput v7, v11, Lrh/a;->d:I
+-
+-    iput v8, v11, Lrh/a;->e:I
+-
+-    iput v9, v11, Lrh/a;->f:I
+-
+-    iput v10, v11, Lrh/a;->g:F
+-
+-    new-instance v2, Ljava/util/ArrayList;
+-
+-    invoke-direct {v2}, Ljava/util/ArrayList;-><init>()V
+-
+-    iput-object v2, v11, Lrh/a;->h:Ljava/util/ArrayList;
+-
+-    new-instance v2, Ljava/util/ArrayList;
+-
+-    invoke-direct {v2}, Ljava/util/ArrayList;-><init>()V
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v6
+-
+-    new-instance v7, Ljava/util/ArrayList;
+-
+-    invoke-direct {v7}, Ljava/util/ArrayList;-><init>()V
+-
+-    move v10, v5
+-
+-    :goto_1
+-    const/4 v12, 0x0
+-
+-    if-ge v10, v9, :cond_7
+-
+-    new-instance v13, Lrh/b;
+-
+-    invoke-direct {v13}, Lrh/b;-><init>()V
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getFloat()F
+-
+-    move-result v14
+-
+-    cmpl-float v12, v14, v12
+-
+-    if-eqz v12, :cond_6
+-
+-    iput v14, v13, Lrh/b;->a:F
+-
+-    invoke-static {v14}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+-
+-    move-result-object v12
+-
+-    invoke-virtual {v7, v12}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+-
+-    :cond_6
+-    invoke-virtual {v2, v13}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+-
+-    add-int/lit8 v10, v10, 0x1
+-
+-    goto :goto_1
+-
+-    :cond_7
+-    new-instance v10, Ljava/lang/StringBuilder;
+-
+-    const-string v13, "getBokehCapsInfo: zoomStart = "
+-
+-    invoke-direct {v10, v13}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-interface {v7}, Ljava/util/Collection;->stream()Ljava/util/stream/Stream;
+-
+-    move-result-object v7
+-
+-    invoke-interface {v7}, Ljava/util/stream/Stream;->toArray()[Ljava/lang/Object;
+-
+-    move-result-object v7
+-
+-    invoke-static {v7}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+-
+-    move-result-object v7
+-
+-    invoke-virtual {v10, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v7
+-
+-    new-array v10, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v7, v10}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    iput-object v2, v11, Lrh/a;->h:Ljava/util/ArrayList;
+-
+-    mul-int/lit8 v2, v8, 0x4
+-
+-    add-int/2addr v6, v2
+-
+-    invoke-virtual {v1, v6}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v6
+-
+-    new-instance v7, Ljava/util/ArrayList;
+-
+-    invoke-direct {v7}, Ljava/util/ArrayList;-><init>()V
+-
+-    move v10, v5
+-
+-    :goto_2
+-    const-string v13, "getBokehCapsInfo: i = "
+-
+-    if-ge v10, v9, :cond_9
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getFloat()F
+-
+-    move-result v14
+-
+-    new-instance v15, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v15, v13}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v15, v10}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    const-string v13, "  setZoomFocalEnd\u3000= "
+-
+-    invoke-virtual {v15, v13}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v15, v14}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v15}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v13
+-
+-    new-array v15, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v13, v15}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    cmpl-float v13, v14, v12
+-
+-    if-eqz v13, :cond_8
+-
+-    iget-object v13, v11, Lrh/a;->h:Ljava/util/ArrayList;
+-
+-    invoke-virtual {v13, v10}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+-
+-    move-result-object v13
+-
+-    check-cast v13, Lrh/b;
+-
+-    iput v14, v13, Lrh/b;->b:F
+-
+-    invoke-static {v14}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+-
+-    move-result-object v13
+-
+-    invoke-virtual {v7, v13}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+-
+-    :cond_8
+-    add-int/lit8 v10, v10, 0x1
+-
+-    goto :goto_2
+-
+-    :cond_9
+-    new-instance v10, Ljava/lang/StringBuilder;
+-
+-    const-string v14, "getBokehCapsInfo: zoomEnd = "
+-
+-    invoke-direct {v10, v14}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
++    new-instance v0, Lrh/a;
+ 
+-    invoke-interface {v7}, Ljava/util/Collection;->stream()Ljava/util/stream/Stream;
++    invoke-direct {v0}, Ljava/lang/Object;-><init>()V
+ 
+-    move-result-object v7
++    const/4 v1, 0x1
+ 
+-    invoke-interface {v7}, Ljava/util/stream/Stream;->toArray()[Ljava/lang/Object;
++    iput v1, v0, Lrh/a;->f:I
+ 
+-    move-result-object v7
++    const/high16 v1, 0x3f800000    # 1.0f
+ 
+-    invoke-static {v7}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
++    iput v1, v0, Lrh/a;->g:F
+ 
+-    move-result-object v7
++    new-instance v1, Ljava/util/ArrayList;
+ 
+-    invoke-virtual {v10, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
+ 
+-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++    iput-object v1, v0, Lrh/a;->h:Ljava/util/ArrayList;
+ 
+-    move-result-object v7
++    const/16 v3, 0x5c
+ 
+-    new-array v10, v5, [Ljava/lang/Object;
++    iput v3, v0, Lrh/a;->m:I
+ 
+-    invoke-static {v4, v7, v10}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
++    const/16 v3, 0x7e
+ 
+-    add-int/2addr v6, v2
++    iput v3, v0, Lrh/a;->n:I
+ 
+-    invoke-virtual {v1, v6}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
++    new-instance v2, Lrh/b;
+ 
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
++    invoke-direct {v2}, Lrh/b;-><init>()V
+ 
+-    move-result v6
++    const/high16 v3, 0x3f800000    # 1.0f
+ 
+-    new-instance v7, Ljava/util/ArrayList;
++    iput v3, v2, Lrh/b;->a:F
+ 
+-    invoke-direct {v7}, Ljava/util/ArrayList;-><init>()V
++    const/high16 v3, 0x41200000    # 10.0f
+ 
+-    move v10, v5
++    iput v3, v2, Lrh/b;->b:F
+ 
+-    :goto_3
+-    if-ge v10, v9, :cond_b
++    const/high16 v3, 0x3f800000    # 1.0f
+ 
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getFloat()F
++    iput v3, v2, Lrh/b;->c:F
+ 
+-    move-result v14
++    const/4 v3, 0x1
+ 
+-    new-instance v15, Ljava/lang/StringBuilder;
++    iput v3, v2, Lrh/b;->d:I
+ 
+-    invoke-direct {v15, v13}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
++    iput v3, v2, Lrh/b;->e:I
+ 
+-    invoke-virtual {v15, v10}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
++    new-instance v3, Ljava/util/ArrayList;
+ 
+-    move/from16 v16, v12
++    invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
+ 
+-    const-string v12, "  setEquivalentFocalLength135\u3000= "
++    const/4 v4, 0x0
+ 
+-    invoke-virtual {v15, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v15, v14}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v15}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v12
+-
+-    new-array v15, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v12, v15}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    cmpl-float v12, v14, v16
+-
+-    if-eqz v12, :cond_a
+-
+-    iget-object v12, v11, Lrh/a;->h:Ljava/util/ArrayList;
+-
+-    invoke-virtual {v12, v10}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+-
+-    move-result-object v12
+-
+-    check-cast v12, Lrh/b;
+-
+-    iput v14, v12, Lrh/b;->c:F
+-
+-    invoke-static {v14}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+-
+-    move-result-object v12
+-
+-    invoke-virtual {v7, v12}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+-
+-    :cond_a
+-    add-int/lit8 v10, v10, 0x1
+-
+-    move/from16 v12, v16
+-
+-    goto :goto_3
+-
+-    :cond_b
+-    move/from16 v16, v12
+-
+-    new-instance v10, Ljava/lang/StringBuilder;
+-
+-    const-string v12, "getBokehCapsInfo: equivalentFocalLengthList = "
+-
+-    invoke-direct {v10, v12}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-interface {v7}, Ljava/util/Collection;->stream()Ljava/util/stream/Stream;
+-
+-    move-result-object v7
+-
+-    invoke-interface {v7}, Ljava/util/stream/Stream;->toArray()[Ljava/lang/Object;
+-
+-    move-result-object v7
+-
+-    invoke-static {v7}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+-
+-    move-result-object v7
+-
+-    invoke-virtual {v10, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v7
+-
+-    new-array v10, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v7, v10}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    add-int/2addr v6, v2
+-
+-    invoke-virtual {v1, v6}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v6
+-
+-    move v7, v5
+-
+-    :goto_4
+-    if-ge v7, v9, :cond_d
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v10
+-
+-    const-string v12, "  zoomFocalGroup\u3000= "
+-
+-    invoke-static {v7, v10, v13, v12}, LF1/r0;->a(IILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v12
+-
+-    new-array v14, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v12, v14}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    if-eqz v10, :cond_c
+-
+-    iget-object v12, v11, Lrh/a;->h:Ljava/util/ArrayList;
+-
+-    invoke-virtual {v12, v7}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+-
+-    move-result-object v12
+-
+-    check-cast v12, Lrh/b;
+-
+-    iput v10, v12, Lrh/b;->d:I
+-
+-    :cond_c
+-    add-int/lit8 v7, v7, 0x1
+-
+-    goto :goto_4
+-
+-    :cond_d
+-    add-int/2addr v6, v2
+-
+-    invoke-virtual {v1, v6}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v6
+-
+-    move v7, v5
+-
+-    :goto_5
+-    if-ge v7, v9, :cond_f
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v10
+-
+-    const-string v12, "  isSupportZoom\u3000= "
+-
+-    invoke-static {v7, v10, v13, v12}, LF1/r0;->a(IILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v12
+-
+-    new-array v14, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v12, v14}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    if-eqz v10, :cond_e
+-
+-    iget-object v12, v11, Lrh/a;->h:Ljava/util/ArrayList;
+-
+-    invoke-virtual {v12, v7}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+-
+-    move-result-object v12
+-
+-    check-cast v12, Lrh/b;
+-
+-    iput v10, v12, Lrh/b;->e:I
+-
+-    :cond_e
+-    add-int/lit8 v7, v7, 0x1
+-
+-    goto :goto_5
+-
+-    :cond_f
+-    add-int/2addr v6, v2
+-
+-    invoke-virtual {v1, v6}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v6
+-
+-    const-string v7, "getBokehCapsInfo: madridModeListMax = "
+-
+-    invoke-static {v6, v7}, Lc/a;->b(ILjava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v7
+-
+-    new-array v10, v5, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v7, v10}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v7
+-
+-    move v10, v5
+-
+-    :goto_6
+-    if-ge v10, v9, :cond_12
+-
+-    new-instance v12, Ljava/util/ArrayList;
+-
+-    invoke-direct {v12}, Ljava/util/ArrayList;-><init>()V
+-
+-    move v14, v5
+-
+-    :goto_7
+-    if-ge v14, v6, :cond_11
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v15
+-
+-    const/4 v5, -0x1
+-
+-    if-eq v15, v5, :cond_10
+-
+-    invoke-static {v15}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+-
+-    move-result-object v5
+-
+-    invoke-virtual {v12, v5}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
+-
+-    move-result v5
+-
+-    if-nez v5, :cond_10
+-
+-    invoke-static {v15}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+ 
+     move-result-object v5
+ 
+-    invoke-virtual {v12, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
++    invoke-virtual {v3, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    :cond_10
+-    add-int/lit8 v14, v14, 0x1
++    iput-object v3, v2, Lrh/b;->f:Ljava/util/ArrayList;
+ 
+-    const/4 v5, 0x0
++    new-instance v3, Ljava/util/ArrayList;
+ 
+-    goto :goto_7
++    invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
+ 
+-    :cond_11
+-    iget-object v5, v11, Lrh/a;->h:Ljava/util/ArrayList;
++    const v4, 0x3fb33333    # 1.4f
+ 
+-    invoke-virtual {v5, v10}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
++    invoke-static {v4}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+     move-result-object v5
+ 
+-    check-cast v5, Lrh/b;
++    invoke-virtual {v3, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    iput-object v12, v5, Lrh/b;->f:Ljava/util/ArrayList;
++    const/high16 v4, 0x40000000    # 2.0f
+ 
+-    const-string v5, "  setMadridModeList\u3000temp = "
+-
+-    invoke-static {v10, v13, v5}, LEm/c;->e(ILjava/lang/String;Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-static {v4}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+     move-result-object v5
+ 
+-    invoke-virtual {v12}, Ljava/util/ArrayList;->toArray()[Ljava/lang/Object;
+-
+-    move-result-object v12
+-
+-    invoke-static {v12}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
++    invoke-virtual {v3, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    move-result-object v12
++    const v4, 0x40333333    # 2.8f
+ 
+-    invoke-virtual {v5, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++    invoke-static {v4}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+     move-result-object v5
+ 
+-    const/4 v12, 0x0
+-
+-    new-array v14, v12, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v5, v14}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    add-int/lit8 v10, v10, 0x1
+-
+-    const/4 v5, 0x0
+-
+-    goto :goto_6
+-
+-    :cond_12
+-    mul-int v5, v8, v6
+-
+-    const/4 v10, 0x4
+-
+-    mul-int/2addr v5, v10
+-
+-    add-int/2addr v7, v5
+-
+-    invoke-virtual {v1, v7}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v7
+-
+-    const/4 v12, 0x0
+-
+-    :goto_8
+-    if-ge v12, v9, :cond_14
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v14
+-
+-    const-string v15, "  setDefaultMadridMode\u3000= "
+-
+-    invoke-static {v12, v14, v13, v15}, LF1/r0;->a(IILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v15
+-
+-    move/from16 v18, v2
+-
+-    move/from16 v17, v10
+-
+-    const/4 v10, 0x0
+-
+-    new-array v2, v10, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v15, v2}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    if-eqz v14, :cond_13
+-
+-    iget-object v2, v11, Lrh/a;->h:Ljava/util/ArrayList;
+-
+-    invoke-virtual {v2, v12}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+-
+-    move-result-object v2
+-
+-    check-cast v2, Lrh/b;
+-
+-    iput v14, v2, Lrh/b;->g:I
+-
+-    :cond_13
+-    add-int/lit8 v12, v12, 0x1
+-
+-    move/from16 v10, v17
+-
+-    move/from16 v2, v18
+-
+-    goto :goto_8
+-
+-    :cond_14
+-    move/from16 v18, v2
+-
+-    move/from16 v17, v10
+-
+-    add-int v7, v7, v18
+-
+-    invoke-virtual {v1, v7}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v2
+-
+-    const-string v7, "getBokehCapsInfo: apertureListMax = "
+-
+-    invoke-static {v2, v7}, Lc/a;->b(ILjava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v7
+-
+-    const/4 v10, 0x0
+-
+-    new-array v12, v10, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v7, v12}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v7
+-
+-    const/4 v10, 0x0
+-
+-    :goto_9
+-    if-ge v10, v9, :cond_18
+-
+-    new-instance v14, Ljava/util/ArrayList;
+-
+-    invoke-direct {v14}, Ljava/util/ArrayList;-><init>()V
+-
+-    const/4 v15, 0x0
+-
+-    :goto_a
+-    if-ge v15, v2, :cond_17
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getFloat()F
+-
+-    move-result v18
+-
+-    const/high16 v19, 0x447a0000    # 1000.0f
+-
+-    cmpl-float v19, v18, v19
+-
+-    if-nez v19, :cond_15
+-
+-    iget-object v12, v11, Lrh/a;->h:Ljava/util/ArrayList;
+-
+-    invoke-virtual {v12, v10}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+-
+-    move-result-object v12
+-
+-    check-cast v12, Lrh/b;
+-
+-    move/from16 v20, v2
+-
+-    const/4 v2, 0x1
+-
+-    iput-boolean v2, v12, Lrh/b;->k:Z
+-
+-    goto :goto_b
+-
+-    :cond_15
+-    move/from16 v20, v2
+-
+-    cmpl-float v2, v18, v16
+-
+-    if-eqz v2, :cond_16
+-
+-    invoke-static/range {v18 .. v18}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+-
+-    move-result-object v2
+-
+-    invoke-virtual {v14, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+-
+-    :cond_16
+-    :goto_b
+-    add-int/lit8 v15, v15, 0x1
+-
+-    move/from16 v2, v20
+-
+-    goto :goto_a
+-
+-    :cond_17
+-    move/from16 v20, v2
+-
+-    const-string v2, "  setApertures\u3000= "
+-
+-    invoke-static {v10, v13, v2}, LEm/c;->e(ILjava/lang/String;Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    move-result-object v2
++    invoke-virtual {v3, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    invoke-virtual {v14}, Ljava/util/ArrayList;->toArray()[Ljava/lang/Object;
++    const/high16 v4, 0x40800000    # 4.0f
+ 
+-    move-result-object v12
+-
+-    invoke-static {v12}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+-
+-    move-result-object v12
+-
+-    invoke-virtual {v2, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v2
+-
+-    const/4 v12, 0x0
+-
+-    new-array v15, v12, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v2, v15}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    iget-object v2, v11, Lrh/a;->h:Ljava/util/ArrayList;
+-
+-    invoke-virtual {v2, v10}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+-
+-    move-result-object v2
+-
+-    check-cast v2, Lrh/b;
+-
+-    iput-object v14, v2, Lrh/b;->h:Ljava/util/ArrayList;
+-
+-    add-int/lit8 v10, v10, 0x1
+-
+-    move/from16 v2, v20
+-
+-    goto :goto_9
+-
+-    :cond_18
+-    move/from16 v20, v2
+-
+-    mul-int v2, v8, v20
+-
+-    mul-int/lit8 v2, v2, 0x4
+-
+-    add-int/2addr v2, v7
+-
+-    invoke-virtual {v1, v2}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v2
+-
+-    const/4 v7, 0x0
+-
+-    :goto_c
+-    const-string v10, " \uff1b"
+-
+-    if-ge v7, v9, :cond_1b
+-
+-    iget-object v12, v11, Lrh/a;->h:Ljava/util/ArrayList;
+-
+-    invoke-virtual {v12, v7}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+-
+-    move-result-object v12
+-
+-    check-cast v12, Lrh/b;
+-
+-    iget-object v12, v12, Lrh/b;->f:Ljava/util/ArrayList;
+-
+-    const-string v14, "  apertureDefault\u3000madridModeList = "
+-
+-    invoke-static {v7, v13, v14}, LEm/c;->e(ILjava/lang/String;Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    move-result-object v14
+-
+-    invoke-virtual {v12}, Ljava/util/ArrayList;->toArray()[Ljava/lang/Object;
+-
+-    move-result-object v15
+-
+-    invoke-static {v15}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+-
+-    move-result-object v15
+-
+-    invoke-virtual {v14, v15}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v14}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v14
+-
+-    move/from16 v18, v2
+-
+-    const/4 v15, 0x0
+-
+-    new-array v2, v15, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v14, v2}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    invoke-virtual {v12}, Ljava/util/ArrayList;->size()I
+-
+-    move-result v2
+-
+-    new-instance v14, Ljava/util/HashMap;
+-
+-    invoke-direct {v14}, Ljava/util/HashMap;-><init>()V
+-
+-    const/4 v15, 0x0
+-
+-    :goto_d
+-    if-ge v15, v6, :cond_1a
+-
+-    move/from16 v20, v5
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getFloat()F
+-
+-    move-result v5
+-
+-    move/from16 v21, v6
+-
+-    new-instance v6, Ljava/lang/StringBuilder;
+-
+-    move/from16 v22, v8
+-
+-    const-string v8, "j = "
+-
+-    invoke-direct {v6, v8}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v6, v15}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    const-string v8, " ; "
+-
+-    invoke-virtual {v6, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v6, v5}, Ljava/lang/StringBuilder;->append(F)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v6
+-
+-    move/from16 v23, v5
+-
+-    const/4 v8, 0x0
+-
+-    new-array v5, v8, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v6, v5}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    cmpl-float v5, v23, v16
+-
+-    if-lez v5, :cond_19
+-
+-    if-ge v15, v2, :cond_19
+-
+-    invoke-virtual {v12, v15}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
++    invoke-static {v4}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+     move-result-object v5
+ 
+-    check-cast v5, Ljava/lang/Integer;
+-
+-    invoke-static/range {v23 .. v23}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+-
+-    move-result-object v6
+-
+-    invoke-virtual {v14, v5, v6}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+-
+-    :cond_19
+-    add-int/lit8 v15, v15, 0x1
+-
+-    move/from16 v5, v20
+-
+-    move/from16 v6, v21
+-
+-    move/from16 v8, v22
+-
+-    goto :goto_d
+-
+-    :cond_1a
+-    move/from16 v20, v5
+-
+-    move/from16 v21, v6
+-
+-    move/from16 v22, v8
+-
+-    invoke-static {v7, v13, v10}, LEm/c;->e(ILjava/lang/String;Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    move-result-object v2
+-
+-    invoke-virtual {v14}, Ljava/util/HashMap;->keySet()Ljava/util/Set;
+-
+-    move-result-object v5
+-
+-    const/4 v12, 0x0
+-
+-    new-array v6, v12, [Ljava/lang/Integer;
+-
+-    invoke-interface {v5, v6}, Ljava/util/Set;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+-
+-    move-result-object v5
+-
+-    invoke-static {v5}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+-
+-    move-result-object v5
+-
+-    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v2
+-
+-    new-array v5, v12, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v2, v5}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    new-instance v2, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v2, v13}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v2, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v2, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v14}, Ljava/util/HashMap;->values()Ljava/util/Collection;
+-
+-    move-result-object v5
+-
+-    new-array v6, v12, [Ljava/lang/Float;
+-
+-    invoke-interface {v5, v6}, Ljava/util/Collection;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+-
+-    move-result-object v5
+-
+-    invoke-static {v5}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+-
+-    move-result-object v5
+-
+-    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v2
+-
+-    new-array v5, v12, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v2, v5}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    iget-object v2, v11, Lrh/a;->h:Ljava/util/ArrayList;
+-
+-    invoke-virtual {v2, v7}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+-
+-    move-result-object v2
+-
+-    check-cast v2, Lrh/b;
+-
+-    iput-object v14, v2, Lrh/b;->i:Ljava/util/HashMap;
+-
+-    add-int/lit8 v7, v7, 0x1
+-
+-    move/from16 v2, v18
+-
+-    move/from16 v5, v20
+-
+-    move/from16 v6, v21
+-
+-    move/from16 v8, v22
+-
+-    goto/16 :goto_c
+-
+-    :cond_1b
+-    move/from16 v18, v2
+-
+-    move/from16 v20, v5
+-
+-    move/from16 v22, v8
+-
+-    add-int v2, v18, v20
+-
+-    invoke-virtual {v1, v2}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v2
+-
+-    const/4 v5, 0x2
+-
+-    if-lt v3, v5, :cond_1c
+-
+-    const/4 v3, 0x7
+-
+-    goto :goto_e
+-
+-    :cond_1c
+-    move/from16 v3, v17
+-
+-    :goto_e
+-    const/4 v5, 0x0
+-
+-    :goto_f
+-    if-ge v5, v9, :cond_1f
+-
+-    new-instance v6, Ljava/util/HashMap;
+-
+-    invoke-direct {v6}, Ljava/util/HashMap;-><init>()V
+-
+-    const/4 v7, 0x0
+-
+-    :goto_10
+-    if-ge v7, v3, :cond_1e
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v8
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v12
+-
+-    if-eqz v8, :cond_1d
+-
+-    if-eqz v12, :cond_1d
+-
+-    invoke-static {v7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+-
+-    move-result-object v13
+-
+-    new-instance v14, Landroid/util/Size;
+-
+-    invoke-direct {v14, v8, v12}, Landroid/util/Size;-><init>(II)V
+-
+-    invoke-virtual {v6, v13, v14}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+-
+-    :cond_1d
+-    add-int/lit8 v7, v7, 0x1
+-
+-    goto :goto_10
+-
+-    :cond_1e
+-    const-string v7, "getBokehCapsInfo: previewSize = "
+-
+-    invoke-static {v5, v7, v10}, LEm/c;->e(ILjava/lang/String;Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    move-result-object v7
+-
+-    invoke-virtual {v6}, Ljava/util/HashMap;->values()Ljava/util/Collection;
+-
+-    move-result-object v8
+-
+-    const/4 v12, 0x0
+-
+-    new-array v13, v12, [Landroid/util/Size;
+-
+-    invoke-interface {v8, v13}, Ljava/util/Collection;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+-
+-    move-result-object v8
+-
+-    invoke-static {v8}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+-
+-    move-result-object v8
+-
+-    invoke-virtual {v7, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v7
+-
+-    new-array v8, v12, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v7, v8}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    iget-object v7, v11, Lrh/a;->h:Ljava/util/ArrayList;
+-
+-    invoke-virtual {v7, v5}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+-
+-    move-result-object v7
+-
+-    check-cast v7, Lrh/b;
+-
+-    iput-object v6, v7, Lrh/b;->j:Ljava/util/HashMap;
+-
+-    add-int/lit8 v5, v5, 0x1
+-
+-    goto :goto_f
+-
+-    :cond_1f
+-    mul-int v8, v22, v3
++    invoke-virtual {v3, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    mul-int/lit8 v8, v8, 0x8
+-
+-    add-int/2addr v8, v2
+-
+-    invoke-virtual {v1, v8}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v2
++    iput-object v3, v2, Lrh/b;->h:Ljava/util/ArrayList;
+ 
+     new-instance v3, Ljava/util/HashMap;
+ 
+     invoke-direct {v3}, Ljava/util/HashMap;-><init>()V
+ 
+-    const/4 v5, 0x0
+-
+-    :goto_11
+-    const-string v6, "getBokehCapsInfo: depthOutSize = "
+-
+-    if-ge v5, v9, :cond_21
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v7
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v8
+-
+-    const-string v12, "*"
+-
+-    if-eqz v7, :cond_20
+-
+-    if-eqz v8, :cond_20
+-
+-    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+-
+-    move-result-object v13
+-
+-    new-instance v14, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v14}, Ljava/lang/StringBuilder;-><init>()V
+-
+-    invoke-virtual {v14, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v14, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v14, v8}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v14}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v14
+-
+-    invoke-virtual {v3, v13, v14}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+-
+-    :cond_20
+-    iget-object v13, v11, Lrh/a;->h:Ljava/util/ArrayList;
++    const/4 v4, 0x0
+ 
+-    invoke-virtual {v13, v5}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
++    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+ 
+-    move-result-object v13
+-
+-    check-cast v13, Lrh/b;
+-
+-    invoke-virtual {v13}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+-
+-    new-instance v13, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v13, v6}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v13, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v13, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    move-result-object v5
+ 
+-    invoke-virtual {v13, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
++    const v4, 0x3fb33333    # 1.4f
+ 
+-    invoke-static {v13, v12, v8}, LF1/T2;->d(Ljava/lang/StringBuilder;Ljava/lang/String;I)Ljava/lang/String;
++    invoke-static {v4}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+     move-result-object v6
+ 
+-    const/4 v12, 0x0
+-
+-    new-array v7, v12, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v6, v7}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    add-int/lit8 v5, v5, 0x1
+-
+-    goto :goto_11
+-
+-    :cond_21
+-    const/4 v12, 0x0
+-
+-    new-instance v5, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v5, v6}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v3}, Ljava/util/HashMap;->values()Ljava/util/Collection;
+-
+-    move-result-object v3
+-
+-    new-array v6, v12, [Ljava/lang/String;
+-
+-    invoke-interface {v3, v6}, Ljava/util/Collection;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+-
+-    move-result-object v3
+-
+-    invoke-static {v3}, Ljava/util/Arrays;->toString([Ljava/lang/Object;)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v5, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v3
++    invoke-virtual {v3, v5, v6}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+ 
+-    new-array v5, v12, [Ljava/lang/Object;
++    const/4 v4, 0x1
+ 
+-    invoke-static {v4, v3, v5}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
++    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+ 
+-    mul-int/lit8 v8, v22, 0x8
+-
+-    add-int/2addr v8, v2
+-
+-    invoke-virtual {v1, v8}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v2
+-
+-    const/4 v3, 0x0
+-
+-    const/4 v5, 0x0
+-
+-    :goto_12
+-    const/4 v6, 0x3
+-
+-    if-ge v3, v6, :cond_23
+-
+-    if-nez v3, :cond_22
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v5
++    move-result-object v5
+ 
+-    const-string v6, "getBokehCapsInfo: algoVendorID = "
++    const/high16 v4, 0x40000000    # 2.0f
+ 
+-    invoke-static {v5, v6}, Lc/a;->b(ILjava/lang/String;)Ljava/lang/String;
++    invoke-static {v4}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+     move-result-object v6
+ 
+-    const/4 v12, 0x0
++    invoke-virtual {v3, v5, v6}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+ 
+-    new-array v7, v12, [Ljava/lang/Object;
++    const/4 v4, 0x2
+ 
+-    invoke-static {v4, v6, v7}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
++    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+ 
+-    :cond_22
+-    add-int/lit8 v3, v3, 0x1
+-
+-    goto :goto_12
+-
+-    :cond_23
+-    iput v5, v11, Lrh/a;->i:I
+-
+-    add-int/lit8 v2, v2, 0xc
+-
+-    invoke-virtual {v1, v2}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v2
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v3
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v5
+-
+-    const-string v6, "getBokehCapsInfo: lowFps = "
++    move-result-object v5
+ 
+-    const-string v7, " upFps = "
++    const v4, 0x40333333    # 2.8f
+ 
+-    invoke-static {v3, v5, v6, v7}, LF1/r0;->a(IILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;
++    invoke-static {v4}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+     move-result-object v6
+ 
+-    const/4 v12, 0x0
++    invoke-virtual {v3, v5, v6}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+ 
+-    new-array v7, v12, [Ljava/lang/Object;
++    const/4 v4, 0x3
+ 
+-    invoke-static {v4, v6, v7}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    new-instance v6, Landroid/util/Range;
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+-
+-    move-result-object v3
+-
+-    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+ 
+     move-result-object v5
+ 
+-    invoke-direct {v6, v3, v5}, Landroid/util/Range;-><init>(Ljava/lang/Comparable;Ljava/lang/Comparable;)V
+-
+-    iput-object v6, v11, Lrh/a;->j:Landroid/util/Range;
+-
+-    add-int/lit8 v2, v2, 0x8
+-
+-    invoke-virtual {v1, v2}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v2
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v3
+-
+-    iput v3, v11, Lrh/a;->k:I
+-
+-    const-string v5, "getBokehCapsInfo: hdrSupportMask = "
+-
+-    invoke-static {v3, v5}, Lc/a;->b(ILjava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    const/4 v12, 0x0
+-
+-    new-array v5, v12, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v3, v5}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v3
+-
+-    iput v3, v11, Lrh/a;->l:I
+-
+-    const-string v5, "getBokehCapsInfo: beautySupportMask = "
+-
+-    invoke-static {v3, v5}, Lc/a;->b(ILjava/lang/String;)Ljava/lang/String;
++    const/high16 v4, 0x40800000    # 4.0f
+ 
+-    move-result-object v3
++    invoke-static {v4}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+-    new-array v5, v12, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v3, v5}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v3
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v5
+-
+-    const-string v6, "getBokehCapsInfo: reserve1SupportMask = "
+-
+-    const-string v7, ";"
+-
+-    invoke-static {v3, v5, v6, v7}, LF1/r0;->a(IILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    new-array v5, v12, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v3, v5}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    add-int/lit8 v2, v2, 0x10
+-
+-    invoke-virtual {v1, v2}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v2
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v3
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->position()I
+-
+-    move-result v5
+-
+-    iput v2, v11, Lrh/a;->m:I
+-
+-    iput v3, v11, Lrh/a;->n:I
+-
+-    const-string v6, "getBokehCapsInfo: sizeofBokehConfigStreamInfoList = "
+-
+-    const-string v7, ", sizeofBokehConfigRequestInfoList = "
+-
+-    invoke-static {v2, v3, v6, v7}, LF1/r0;->a(IILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v2
+-
+-    const/4 v12, 0x0
+-
+-    new-array v3, v12, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v2, v3}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    mul-int/lit8 v8, v22, 0xc
+-
+-    add-int/lit8 v8, v8, 0x8
+-
+-    add-int/2addr v8, v5
+-
+-    invoke-virtual {v1, v8}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v2
+-
+-    iput v2, v11, Lrh/a;->o:I
+-
+-    const-string v3, "getBokehCapsInfo: halCompressBufferSupported = "
+-
+-    invoke-static {v2, v3}, Lc/a;->b(ILjava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v2
+-
+-    const/4 v12, 0x0
+-
+-    new-array v3, v12, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v2, v3}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v2
+-
+-    iput v2, v11, Lrh/a;->p:I
+-
+-    const-string v3, "getBokehCapsInfo: setAIApertureSupported = "
+-
+-    invoke-static {v2, v3}, Lc/a;->b(ILjava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v2
+-
+-    new-array v3, v12, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v2, v3}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->remaining()I
+-
+-    move-result v2
+-
+-    move/from16 v3, v17
+-
+-    if-lt v2, v3, :cond_25
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v2
+-
+-    const/4 v5, 0x1
+-
+-    if-ne v2, v5, :cond_24
+-
+-    move v12, v5
+-
+-    goto :goto_13
+-
+-    :cond_24
+-    const/4 v12, 0x0
+-
+-    :goto_13
+-    iput-boolean v12, v11, Lrh/a;->q:Z
+-
+-    goto :goto_14
+-
+-    :cond_25
+-    const/4 v5, 0x1
+-
+-    :goto_14
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->remaining()I
+-
+-    move-result v2
+-
+-    if-lt v2, v3, :cond_27
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v2
+-
+-    if-ne v2, v5, :cond_26
+-
+-    move v12, v5
+-
+-    goto :goto_15
+-
+-    :cond_26
+-    const/4 v12, 0x0
+-
+-    :goto_15
+-    iput-boolean v12, v11, Lrh/a;->r:Z
+-
+-    :cond_27
+-    invoke-virtual {v1}, Ljava/nio/Buffer;->remaining()I
+-
+-    move-result v2
+-
+-    if-lt v2, v3, :cond_29
+-
+-    invoke-virtual {v1}, Ljava/nio/ByteBuffer;->getInt()I
+-
+-    move-result v1
+-
+-    if-ne v1, v5, :cond_28
+-
+-    move v12, v5
+-
+-    goto :goto_16
+-
+-    :cond_28
+-    const/4 v12, 0x0
+-
+-    :goto_16
+-    iput-boolean v12, v11, Lrh/a;->s:Z
+-
+-    :cond_29
+-    new-instance v1, Ljava/lang/StringBuilder;
+-
+-    const-string v2, "getBokehCapsInfo: info = "
+-
+-    invoke-direct {v1, v2}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v1, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v1
+-
+-    const/4 v12, 0x0
+-
+-    new-array v2, v12, [Ljava/lang/Object;
+-
+-    invoke-static {v4, v1, v2}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    iput-object v11, v0, Lj9/e;->U5:Lrh/a;
++    move-result-object v6
+ 
+-    return-object v11
++    invoke-virtual {v3, v5, v6}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+ 
+-    :goto_17
+-    const-string v0, "getBokehCapsInfo: portraitBokehCapsInfo is null"
++    iput-object v3, v2, Lrh/b;->i:Ljava/util/HashMap;
+ 
+-    new-array v1, v12, [Ljava/lang/Object;
++    invoke-virtual {v1, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    invoke-static {v4, v0, v1}, Lcom/android/camera/log/LogC;->v(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
++    iput-object v0, p0, Lj9/e;->U5:Lrh/a;
+ 
+-    return-object v3
++    return-object v0
+ .end method
+ 
+ .method public final o0()I
+--- a/smali/j9/f.smali
++++ b/smali/j9/f.smali
+@@ -15699,22 +15699,9 @@
+ .method public static i2(Lj9/e;)Z
+     .locals 0
+ 
+-    if-eqz p0, :cond_0
+-
+-    invoke-virtual {p0}, Lj9/e;->y0()Z
+-
+-    move-result p0
+-
+-    if-eqz p0, :cond_0
+-
+     const/4 p0, 0x1
+ 
+     return p0
+-
+-    :cond_0
+-    const/4 p0, 0x0
+-
+-    return p0
+ .end method
+ 
+ .method public static i3(Lj9/e;)Z
+@@ -17698,11 +17685,9 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_0
+-
+-    goto :goto_1
++    goto :goto_0
+ 
+-    :cond_0
++    :goto_0
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+     move-result-object v0
+@@ -17715,7 +17700,7 @@
+ 
+     iget-object v1, v0, Lj9/e;->z3:Ljava/lang/Boolean;
+ 
+-    if-eqz v1, :cond_1
++    if-eqz v1, :cond_0
+ 
+     invoke-virtual {v1}, Ljava/lang/Boolean;->booleanValue()Z
+ 
+@@ -17723,7 +17708,7 @@
+ 
+     return v0
+ 
+-    :cond_1
++    :cond_0
+     sget-object v1, Lga/w0;->a2:Lga/D0;
+ 
+     invoke-virtual {v1}, Lga/D0;->b()Ljava/lang/String;
+@@ -17734,7 +17719,7 @@
+ 
+     move-result v3
+ 
+-    if-eqz v3, :cond_3
++    if-eqz v3, :cond_2
+ 
+     const v3, 0xbabe
+ 
+@@ -17764,42 +17749,50 @@
+ 
+     invoke-static {v5, v3, v4}, Lcom/android/camera/log/Log;->d(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    if-eqz v1, :cond_2
++    if-eqz v1, :cond_1
+ 
+     invoke-virtual {v1}, Ljava/lang/Boolean;->booleanValue()Z
+ 
+     move-result v1
+ 
+-    if-eqz v1, :cond_2
++    if-eqz v1, :cond_1
+ 
+     const/4 v2, 0x1
+ 
+-    :cond_2
++    :cond_1
+     invoke-static {v2}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+ 
+     move-result-object v1
+ 
+     iput-object v1, v0, Lj9/e;->z3:Ljava/lang/Boolean;
+ 
+-    goto :goto_0
++    goto :goto_1
+ 
+-    :cond_3
+-    sget-object v1, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;
++    :cond_2
++    invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+-    iput-object v1, v0, Lj9/e;->z3:Ljava/lang/Boolean;
++    move-result-object v1
+ 
+-    :goto_0
+-    iget-object v0, v0, Lj9/e;->z3:Ljava/lang/Boolean;
++    invoke-virtual {v1}, Lu6/f;->k()I
++
++    move-result v1
+ 
+-    invoke-virtual {v0}, Ljava/lang/Boolean;->booleanValue()Z
++    const/4 v2, -0x1
+ 
+-    move-result v0
++    if-ne v1, v2, :cond_3
+ 
+-    return v0
++    const/4 v2, 0x1
++
++    goto :goto_1
++
++    :cond_3
++    const/4 v2, 0x0
+ 
+-    :cond_4
+     :goto_1
+     return v2
++
++    :cond_4
++    return v2
+ .end method
+ 
+ .method public static l4(Lj9/e;)Z
+--- a/smali/r2/f0.smali
++++ b/smali/r2/f0.smali
+@@ -295,7 +295,7 @@
+ 
+     :cond_2
+     :goto_0
+-    const/4 p0, 0x0
++    const/4 p0, 0x1
+ 
+     return p0
+ .end method
+--- a/smali/v2/J.smali
++++ b/smali/v2/J.smali
+@@ -151,11 +151,7 @@
+ 
+     if-ne v0, v2, :cond_1
+ 
+-    invoke-static {}, Lcom/android/camera/data/data/E;->h0()Z
+-
+-    move-result v0
+-
+-    if-eqz v0, :cond_1
++    const/4 v0, 0x1
+ 
+     const/16 v0, 0x40
+ 
+--- a/smali/v2/b0.smali
++++ b/smali/v2/b0.smali
+@@ -7,7 +7,7 @@
+ .method public getDefaultValue(I)Ljava/lang/String;
+     .locals 0
+ 
+-    const-string p0, "OFF"
++    const-string p0, "ON"
+ 
+     return-object p0
+ .end method
+--- a/smali/v2/v0.smali
++++ b/smali/v2/v0.smali
+@@ -3401,9 +3401,10 @@
+ 
+     if-eqz v3, :cond_3
+ 
+-    goto/16 :goto_5
++    goto :goto_2
+ 
+     :cond_3
++    :goto_2
+     array-length v3, v0
+ 
+     new-array v3, v3, [I
+@@ -3412,7 +3413,7 @@
+ 
+     move v3, v2
+ 
+-    :goto_2
++    :goto_3
+     array-length v4, v0
+ 
+     if-ge v3, v4, :cond_5
+@@ -3429,7 +3430,7 @@
+ 
+     aput v5, v4, v3
+ 
+-    goto :goto_3
++    goto :goto_4
+ 
+     :cond_4
+     iget-object v4, p0, Lv2/v0;->l:[I
+@@ -3442,10 +3443,10 @@
+ 
+     aput v5, v4, v3
+ 
+-    :goto_3
++    :goto_4
+     add-int/lit8 v3, v3, 0x1
+ 
+-    goto :goto_2
++    goto :goto_3
+ 
+     :cond_5
+     iget-object p1, p0, Lcom/android/camera/data/data/c;->TAG:Ljava/lang/String;
+@@ -3498,7 +3499,7 @@
+     move-result-object p2
+ 
+     :cond_7
+-    :goto_4
++    :goto_5
+     invoke-interface {p2}, Ljava/util/Iterator;->hasNext()Z
+ 
+     move-result v3
+@@ -3535,7 +3536,7 @@
+ 
+     invoke-virtual {p1, v3}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    goto :goto_4
++    goto :goto_5
+ 
+     :cond_8
+     aget v4, v0, v1
+@@ -3566,7 +3567,6 @@
+     return-void
+ 
+     :cond_a
+-    :goto_5
+     iput-boolean v2, p0, Lv2/v0;->k:Z
+ 
+     return-void
+--- a/smali/y3/a.smali
++++ b/smali/y3/a.smali
+@@ -48,7 +48,7 @@
+     goto :goto_0
+ 
+     :cond_1
+-    const p0, 0x8001
++    const p0, 0x9005
+ 
+     return p0
+ 
+--- a/smali_classes3/Ne/a.smali
++++ b/smali_classes3/Ne/a.smali
+@@ -7,7 +7,23 @@
+ .method public final A3()Z
+     .locals 0
+ 
+-    const/4 p0, 0x0
++    const/4 p0, 0x1
++
++    return p0
++.end method
++
++.method public final T5()Z
++    .locals 0
++
++    const/4 p0, 0x1
++
++    return p0
++.end method
++
++.method public final W7()Z
++    .locals 0
++
++    const/4 p0, 0x1
+ 
+     return p0
+ .end method
+@@ -68,3 +84,162 @@
+ 
+     return-object p0
+ .end method
++
++.method public final v1()Landroid/util/SparseArray;
++    .locals 8
++    .annotation system Ldalvik/annotation/Signature;
++        value = {
++            "()",
++            "Landroid/util/SparseArray<",
++            "[",
++            "Ljava/lang/Float;",
++            ">;"
++        }
++    .end annotation
++
++    new-instance p0, Landroid/util/SparseArray;
++
++    const/4 v0, 0x2
++
++    invoke-direct {p0, v0}, Landroid/util/SparseArray;-><init>(I)V
++
++    const/4 v0, 0x5
++
++    new-array v1, v0, [Ljava/lang/Float;
++
++    const v2, 0x3f19999a    # 0.6f
++
++    invoke-static {v2}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
++
++    move-result-object v3
++
++    const/4 v4, 0x0
++
++    aput-object v3, v1, v4
++
++    const/high16 v3, 0x3f800000    # 1.0f
++
++    invoke-static {v3}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
++
++    move-result-object v3
++
++    const/4 v4, 0x1
++
++    aput-object v3, v1, v4
++
++    const/high16 v3, 0x40000000    # 2.0f
++
++    invoke-static {v3}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
++
++    move-result-object v3
++
++    const/4 v4, 0x2
++
++    aput-object v3, v1, v4
++
++    const/high16 v3, 0x40a00000    # 5.0f
++
++    invoke-static {v3}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
++
++    move-result-object v3
++
++    const/4 v4, 0x3
++
++    aput-object v3, v1, v4
++
++    const/high16 v3, 0x41200000    # 10.0f
++
++    invoke-static {v3}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
++
++    move-result-object v3
++
++    const/4 v4, 0x4
++
++    aput-object v3, v1, v4
++
++    const/16 v3, 0xa3
++
++    invoke-virtual {p0, v3, v1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
++
++    new-array v1, v0, [Ljava/lang/Float;
++
++    const v2, 0x3f19999a    # 0.6f
++
++    invoke-static {v2}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
++
++    move-result-object v3
++
++    const/4 v4, 0x0
++
++    aput-object v3, v1, v4
++
++    const/high16 v3, 0x3f800000    # 1.0f
++
++    invoke-static {v3}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
++
++    move-result-object v3
++
++    const/4 v4, 0x1
++
++    aput-object v3, v1, v4
++
++    const/high16 v3, 0x40000000    # 2.0f
++
++    invoke-static {v3}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
++
++    move-result-object v3
++
++    const/4 v4, 0x2
++
++    aput-object v3, v1, v4
++
++    const/high16 v3, 0x40a00000    # 5.0f
++
++    invoke-static {v3}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
++
++    move-result-object v3
++
++    const/4 v4, 0x3
++
++    aput-object v3, v1, v4
++
++    const/high16 v3, 0x41200000    # 10.0f
++
++    invoke-static {v3}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
++
++    move-result-object v3
++
++    const/4 v4, 0x4
++
++    aput-object v3, v1, v4
++
++    const/16 v3, 0xab
++
++    invoke-virtual {p0, v3, v1}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
++
++    return-object p0
++.end method
++
++.method public final v4()Z
++    .locals 0
++
++    const/4 p0, 0x1
++
++    return p0
++.end method
++
++.method public final z1()I
++    .locals 0
++
++    const/4 p0, 0x3
++
++    return p0
++.end method
++
++.method public final z5()Z
++    .locals 0
++
++    const/4 p0, 0x1
++
++    return p0
++.end method
+--- a/smali_classes9/wp/g.smali
++++ b/smali_classes9/wp/g.smali
+@@ -93,13 +93,13 @@
+ 
+     iget-object v0, p0, Lwp/g;->a:Lwp/g$b;
+ 
+-    if-nez v0, :cond_1
++    if-nez v0, :cond_0
+ 
+     invoke-static {}, LJe/c;->d0()Z
+ 
+     move-result v0
+ 
+-    if-nez v0, :cond_1
++    if-nez v0, :cond_0
+ 
+     const/4 v0, 0x0
+ 
+@@ -119,7 +119,7 @@
+ 
+     move-result v1
+ 
+-    if-nez v1, :cond_0
++    goto :goto_0
+ 
+     const-string v1, "This device does not support Algo up, do nothing."
+ 
+@@ -127,17 +127,17 @@
+ 
+     invoke-static {v2, v1, v0}, Lcom/android/camera/log/Log;->d(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    goto :goto_0
++    goto :goto_1
+ 
+-    :cond_0
++    :goto_0
+     new-instance v0, Lwp/g$b;
+ 
+     invoke-direct {v0, p0}, Lwp/g$b;-><init>(Lwp/g;)V
+ 
+     iput-object v0, p0, Lwp/g;->a:Lwp/g$b;
+ 
+-    :cond_1
+-    :goto_0
++    :cond_0
++    :goto_1
+     iget-object p0, p0, Lwp/g;->a:Lwp/g$b;
+ 
+     return-object p0
+--- a/smali_classes10/ur/i.smali
++++ b/smali_classes10/ur/i.smali
+@@ -33,6 +33,8 @@
+ 
+     move-result v0
+ 
++    const v0, 0x3f19999a    # 0.6f
++
+     sput v0, Lur/i;->a:F
+ 
+     sget-object v0, LJe/c$b;->a:LJe/c;

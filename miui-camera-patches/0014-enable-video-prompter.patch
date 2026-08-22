@@ -1,0 +1,26 @@
+--- a/smali_classes3/䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻.smali
++++ b/smali_classes3/䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻.smali
+@@ -569,7 +569,7 @@
+ .method public F5()Z
+     .locals 0
+ 
+-    instance-of p0, p0, L쵡쵭쵯촬쵯쵫촬쵦쵧쵴쵫쵡쵧촬쵄쵷쵺쵫;
++    const/4 p0, 0x1
+ 
+     return p0
+ .end method
+--- a/smali/v2/z0.smali
++++ b/smali/v2/z0.smali
+@@ -108,11 +108,7 @@
+ .method public final getDefaultValue(I)Ljava/lang/String;
+     .locals 0
+ 
+-    const/4 p0, 0x0
+-
+-    invoke-static {p0}, Ljava/lang/Boolean;->toString(Z)Ljava/lang/String;
+-
+-    move-result-object p0
++    const-string p0, "ON"
+ 
+     return-object p0
+ .end method

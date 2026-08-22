@@ -1,0 +1,44 @@
+From pearl-miui-camera-6.6-compat
+Subject: [PATCH] Restore beauty fallback for unknown types
+
+The 6.6 beauty fragment throws when the HAL exposes a beauty type that
+is not represented by a dedicated fragment on this device. Keep the
+generic beauty item so the menu can be initialized without crashing.
+
+---
+ smali/com/android/camera/fragment/L.smali | 18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
+
+diff --git a/smali/com/android/camera/fragment/L.smali b/smali/com/android/camera/fragment/L.smali
+index 6.6-original..6.6-compat 100644
+--- a/smali/com/android/camera/fragment/L.smali
++++ b/smali/com/android/camera/fragment/L.smali
+@@ -1030,23 +1030,7 @@
+     goto/16 :goto_5
+ 
+     :cond_12
+-    iget-object v0, v0, Lcom/xiaomi/camera/base/ui/fragments/d;->TAG:Ljava/lang/String;
+-
+-    const-string/jumbo v1, "unknown beauty type = "
+-
+-    invoke-virtual {v1, v14}, Ljava/lang/String;->concat(Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v1
+-
+-    new-array v2, v9, [Ljava/lang/Object;
+-
+-    invoke-static {v0, v1, v2}, Lcom/android/camera/log/Log;->e(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    new-instance v0, Ljava/lang/RuntimeException;
+-
+-    const-string/jumbo v1, "unknown beauty type"
+-
+-    invoke-direct {v0, v1}, Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V
+-
+-    throw v0
++    invoke-virtual {v12, v2}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
++
++    goto/16 :goto_5
+ 
+     :pswitch_0
+     new-instance v2, Lcom/android/camera/fragment/beauty/c;

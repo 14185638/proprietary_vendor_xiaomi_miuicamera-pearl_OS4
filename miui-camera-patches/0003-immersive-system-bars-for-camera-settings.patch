@@ -1,0 +1,115 @@
+From pearl-miui-camera-6.6-compat
+Subject: [PATCH] Make camera settings immersive on LineageOS
+
+Clear the MIUI window insets and system-bar backgrounds used by the 6.6
+settings activity. Preserve readable status-bar icons according to the
+current camera theme.
+
+---
+ smali/com/android/camera/fragment/settings/a.smali | 88 +++++++++++++++++++++-
+ 1 file changed, 80 insertions(+), 4 deletions(-)
+
+diff --git a/smali/com/android/camera/fragment/settings/a.smali b/smali/com/android/camera/fragment/settings/a.smali
+index pearl..compat 100644
+--- a/smali/com/android/camera/fragment/settings/a.smali
++++ b/smali/com/android/camera/fragment/settings/a.smali
+@@ -144,7 +144,7 @@
+ .end method
+ 
+ .method public onCreate(Landroid/os/Bundle;)V
+-    .locals 2
++    .locals 3
+ 
+     invoke-virtual {p0}, Lcom/android/camera/fragment/settings/a;->registerProtocol()V
+ 
+@@ -188,11 +188,87 @@
+ 
+     invoke-virtual {p0}, Landroid/app/Activity;->getWindow()Landroid/view/Window;
+ 
+-    move-result-object p0
++    move-result-object v1
+ 
+-    const/4 p1, 0x0
++    const/high16 v2, 0x8000000
+ 
+-    invoke-virtual {p0, p1}, Landroid/view/Window;->setNavigationBarColor(I)V
++    invoke-virtual {v1, v2}, Landroid/view/Window;->clearFlags(I)V
++
++    const/4 v2, 0x0
++
++    invoke-virtual {v1, v2}, Landroid/view/Window;->setNavigationBarColor(I)V
++
++    invoke-virtual {v1, v2}, Landroid/view/Window;->setNavigationBarContrastEnforced(Z)V
++
++    const/high16 v2, 0x4000000
++
++    invoke-virtual {v1, v2}, Landroid/view/Window;->clearFlags(I)V
++
++    const/4 v2, 0x0
++
++    invoke-virtual {v1, v2}, Landroid/view/Window;->setStatusBarColor(I)V
++
++    invoke-virtual {v1, v2}, Landroid/view/Window;->setStatusBarContrastEnforced(Z)V
++
++    invoke-virtual {v1, v2}, Landroid/view/Window;->setDecorFitsSystemWindows(Z)V
++
++    invoke-virtual {v1}, Landroid/view/Window;->getAttributes()Landroid/view/WindowManager$LayoutParams;
++
++    move-result-object v1
++
++    invoke-virtual {v1, v2}, Landroid/view/WindowManager$LayoutParams;->setFitInsetsTypes(I)V
++
++    invoke-virtual {v1, v2}, Landroid/view/WindowManager$LayoutParams;->setFitInsetsSides(I)V
++
++    invoke-virtual {p0}, Landroid/app/Activity;->getWindow()Landroid/view/Window;
++
++    move-result-object v1
++
++    invoke-virtual {v1}, Landroid/view/Window;->getDecorView()Landroid/view/View;
++
++    move-result-object v1
++
++    invoke-virtual {v1}, Landroid/view/View;->getSystemUiVisibility()I
++
++    move-result v2
++
++    invoke-virtual {p0}, Landroid/app/Activity;->getResources()Landroid/content/res/Resources;
++
++    move-result-object v0
++
++    invoke-virtual {v0}, Landroid/content/res/Resources;->getConfiguration()Landroid/content/res/Configuration;
++
++    move-result-object v0
++
++    iget v0, v0, Landroid/content/res/Configuration;->uiMode:I
++
++    and-int/lit8 v0, v0, 0x30
++
++    const/16 v1, 0x20
++
++    if-eq v0, v1, :camera_settings_dark_mode
++
++    const/16 v0, 0x2000
++
++    or-int/2addr v0, v2
++
++    goto :camera_settings_system_ui_done
++
++    :camera_settings_dark_mode
++    const/16 v0, -0x2001
++
++    and-int/2addr v0, v2
++
++    :camera_settings_system_ui_done
++    invoke-virtual {p0}, Landroid/app/Activity;->getWindow()Landroid/view/Window;
++
++    move-result-object v1
++
++    invoke-virtual {v1}, Landroid/view/Window;->getDecorView()Landroid/view/View;
++
++    move-result-object v1
++
++    invoke-virtual {v1, v0}, Landroid/view/View;->setSystemUiVisibility(I)V
+ 
+     return-void
+ .end method

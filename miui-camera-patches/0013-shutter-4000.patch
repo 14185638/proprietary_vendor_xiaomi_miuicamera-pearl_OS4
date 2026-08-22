@@ -1,0 +1,20 @@
+--- a/smali/r2/C0.smali
++++ b/smali/r2/C0.smali
+@@ -2811,8 +2811,6 @@
+ 
+     move-result v1
+ 
+-    if-eqz v1, :cond_1
+-
+     goto/16 :goto_0
+ 
+     :cond_1
+@@ -6651,6 +6649,8 @@
+ 
+     move-result-wide v8
+ 
++    const-wide v6, 0x3d090
++
+     move v0, v2
+ 
+     :goto_1
