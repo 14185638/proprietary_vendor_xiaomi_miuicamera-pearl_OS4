@@ -87,6 +87,7 @@ function blob_fixup() {
             patch -d "${apk_dir}" -p1 < "${MY_DIR}/miui-camera-patches/0016-Portrait-thumbnail-loading-animation.patch"
             patch -d "${apk_dir}" -p1 < "${MY_DIR}/miui-camera-patches/0017-Portrait-thumbnail-loading-finish.patch"
             patch -d "${apk_dir}" -p1 < "${MY_DIR}/miui-camera-patches/0018-Fix-wechat-intent-capture-verifyerror.patch"
+            patch -d "${apk_dir}" -p1 < "${MY_DIR}/miui-camera-patches/0019-Fix-obfu-res-missing-drawable-crash.patch"
             java -jar "${apktool}" b "${apk_dir}" -o "${2}"
 
             # The 6.6 resource table maps the icon to obfuscated WebP paths.
