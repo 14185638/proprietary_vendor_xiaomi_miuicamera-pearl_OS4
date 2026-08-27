@@ -1,0 +1,1977 @@
+From pearl-miui-camera-6.6-compat
+Subject: [PATCH] Hide zoom toggle on front camera in normal photo mode
+
+Stock behavior hides the zoom ratio buttons when using the front camera
+in normal photo mode. Force the zoom toggle container hidden for front
+camera photo mode, and restore it for rear camera photo mode.
+
+---
+ smali/H4/f0.smali | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
+
+diff --git a/smali/H4/f0.smali b/smali/H4/f0.smali
+index ce4a906..c6a0a7d 100644
+--- a/smali/H4/f0.smali
++++ b/smali/H4/f0.smali
+@@ -1911,6 +1911,22 @@
+     goto/16 :goto_a
+ 
+     :cond_0
++    iget v1, p0, Lcom/android/camera/fragment/h;->mCurrentMode:I
++
++    const/16 v2, 0xa3
++
++    if-ne v1, v2, :cond_2
++
++    invoke-static {}, Lg2/a;->g()Lu2/V;
++
++    move-result-object v1
++
++    invoke-virtual {v1}, Lu2/V;->M()Z
++
++    move-result v1
++
++    if-nez v1, :cond_2
++
+     iget-object v1, p0, LH4/f0;->p:Landroid/widget/FrameLayout;
+ 
+     if-nez v1, :cond_1
+@@ -1928,6 +1944,34 @@
+     iput-object v1, p0, LH4/f0;->p:Landroid/widget/FrameLayout;
+ 
+     :cond_1
++    iget-object v1, p0, LH4/f0;->p:Landroid/widget/FrameLayout;
++
++    if-eqz v1, :cond_2
++
++    const/16 v2, 0x8
++
++    invoke-virtual {v1, v2}, Landroid/view/View;->setVisibility(I)V
++
++    return-void
++
++    :cond_2
++    iget-object v1, p0, LH4/f0;->p:Landroid/widget/FrameLayout;
++
++    if-nez v1, :cond_3
++
++    iget-object v1, p0, LH4/f0;->b:Landroid/view/View;
++
++    const v2, 0x7f0b0cf6
++
++    invoke-virtual {v1, v2}, Landroid/view/View;->findViewById(I)Landroid/view/View;
++
++    move-result-object v1
++
++    check-cast v1, Landroid/widget/FrameLayout;
++
++    iput-object v1, p0, LH4/f0;->p:Landroid/widget/FrameLayout;
++
++    :cond_3
+     iget-object v1, p0, Lcom/xiaomi/camera/base/ui/fragments/d;->TAG:Ljava/lang/String;
+ 
+     const/4 v2, 0x0
+@@ -1942,13 +1986,13 @@
+ 
+     const/4 v3, 0x2
+ 
+-    if-ne v1, v3, :cond_2
++    if-ne v1, v3, :cond_4
+ 
+     move v1, v0
+ 
+     goto :goto_0
+ 
+-    :cond_2
++    :cond_4
+     move v1, v2
+ 
+     :goto_0
+@@ -1964,11 +2008,11 @@
+ 
+     iget v4, p0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+-    if-eq v4, v3, :cond_3
++    if-eq v4, v3, :cond_5
+ 
+     iput v3, p0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+-    :cond_3
++    :cond_5
+     invoke-virtual {p0}, LH4/f0;->yr()V
+ 
+     iget v3, p0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+@@ -1977,7 +2021,7 @@
+ 
+     move-result v3
+ 
+-    if-nez v3, :cond_4
++    if-nez v3, :cond_6
+ 
+     sget-object v3, LJe/c$b;->a:LJe/c;
+ 
+@@ -1985,7 +2029,7 @@
+ 
+     goto/16 :goto_9
+ 
+-    :cond_4
++    :cond_6
+     new-instance v3, Ljava/util/ArrayList;
+ 
+     invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
+@@ -1998,18 +2042,18 @@
+ 
+     const/16 v7, 0xb4
+ 
+-    if-eq v4, v5, :cond_17
++    if-eq v4, v5, :cond_19
+ 
+-    if-eq v4, v7, :cond_17
++    if-eq v4, v7, :cond_19
+ 
+-    if-ne v4, v6, :cond_5
++    if-ne v4, v6, :cond_7
+ 
+     goto/16 :goto_1
+ 
+-    :cond_5
++    :cond_7
+     const/16 v5, 0xbc
+ 
+-    if-ne v4, v5, :cond_9
++    if-ne v4, v5, :cond_b
+ 
+     sget-boolean v4, LJe/c;->k:Z
+ 
+@@ -2021,24 +2065,24 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_8
++    if-eqz v5, :cond_a
+ 
+     iget v5, p0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+-    if-eq v5, v7, :cond_6
++    if-eq v5, v7, :cond_8
+ 
+-    if-ne v5, v6, :cond_7
++    if-ne v5, v6, :cond_9
+ 
+-    :cond_6
++    :cond_8
+     iget-object v4, v4, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+ 
+     invoke-virtual {v4}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->I5()Z
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_1d
++    if-eqz v4, :cond_1f
+ 
+-    :cond_7
++    :cond_9
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+     move-result-object v4
+@@ -2055,7 +2099,7 @@
+ 
+     goto/16 :goto_2
+ 
+-    :cond_8
++    :cond_a
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+     move-result-object v4
+@@ -2064,7 +2108,7 @@
+ 
+     move-result v4
+ 
+-    if-ltz v4, :cond_1d
++    if-ltz v4, :cond_1f
+ 
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+@@ -2082,12 +2126,12 @@
+ 
+     goto/16 :goto_2
+ 
+-    :cond_9
++    :cond_b
+     invoke-static {v4}, Lcom/android/camera/module/a0;->l(I)Z
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_a
++    if-eqz v4, :cond_c
+ 
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+@@ -2105,12 +2149,12 @@
+ 
+     goto/16 :goto_2
+ 
+-    :cond_a
++    :cond_c
+     iget v4, p0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+     const/16 v5, 0xad
+ 
+-    if-ne v4, v5, :cond_c
++    if-ne v4, v5, :cond_e
+ 
+     sget-boolean v4, LJe/c;->k:Z
+ 
+@@ -2122,7 +2166,7 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_b
++    if-eqz v5, :cond_d
+ 
+     iget-object v4, v4, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+ 
+@@ -2130,7 +2174,7 @@
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_b
++    if-eqz v4, :cond_d
+ 
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+@@ -2146,7 +2190,7 @@
+ 
+     invoke-virtual {v3, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    :cond_b
++    :cond_d
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+     move-result-object v4
+@@ -2163,14 +2207,14 @@
+ 
+     goto/16 :goto_2
+ 
+-    :cond_c
++    :cond_e
+     const/16 v5, 0xac
+ 
+-    if-ne v4, v5, :cond_f
++    if-ne v4, v5, :cond_11
+ 
+     iget-boolean v4, p0, LH4/f0;->q:Z
+ 
+-    if-eqz v4, :cond_e
++    if-eqz v4, :cond_10
+ 
+     invoke-virtual {p0}, Lcom/android/camera/fragment/h;->getBaseModule()Ljava/util/Optional;
+ 
+@@ -2188,7 +2232,7 @@
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_d
++    if-eqz v4, :cond_f
+ 
+     invoke-virtual {p0}, Lcom/android/camera/fragment/h;->getBaseModule()Ljava/util/Optional;
+ 
+@@ -2208,7 +2252,7 @@
+ 
+     move-result v5
+ 
+-    :cond_d
++    :cond_f
+     invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+ 
+     move-result-object v4
+@@ -2217,7 +2261,7 @@
+ 
+     goto/16 :goto_2
+ 
+-    :cond_e
++    :cond_10
+     sget-boolean v4, LJe/c;->k:Z
+ 
+     sget-object v4, LJe/c$b;->a:LJe/c;
+@@ -2242,10 +2286,10 @@
+ 
+     goto/16 :goto_2
+ 
+-    :cond_f
++    :cond_11
+     iget-boolean v4, p0, LH4/f0;->q:Z
+ 
+-    if-eqz v4, :cond_11
++    if-eqz v4, :cond_13
+ 
+     invoke-virtual {p0}, Lcom/android/camera/fragment/h;->getBaseModule()Ljava/util/Optional;
+ 
+@@ -2263,7 +2307,7 @@
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_10
++    if-eqz v4, :cond_12
+ 
+     invoke-virtual {p0}, Lcom/android/camera/fragment/h;->getBaseModule()Ljava/util/Optional;
+ 
+@@ -2283,7 +2327,7 @@
+ 
+     move-result v5
+ 
+-    :cond_10
++    :cond_12
+     invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+ 
+     move-result-object v4
+@@ -2292,7 +2336,7 @@
+ 
+     goto/16 :goto_2
+ 
+-    :cond_11
++    :cond_13
+     invoke-static {}, Lg2/a;->g()Lu2/V;
+ 
+     move-result-object v4
+@@ -2301,7 +2345,7 @@
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_16
++    if-eqz v4, :cond_18
+ 
+     sget-boolean v4, LJe/c;->k:Z
+ 
+@@ -2313,7 +2357,7 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_12
++    if-eqz v5, :cond_14
+ 
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+@@ -2329,7 +2373,7 @@
+ 
+     invoke-virtual {v3, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    :cond_12
++    :cond_14
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+     move-result-object v5
+@@ -2348,7 +2392,7 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_13
++    if-eqz v5, :cond_15
+ 
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+@@ -2358,7 +2402,7 @@
+ 
+     move-result v5
+ 
+-    if-ltz v5, :cond_13
++    if-ltz v5, :cond_15
+ 
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+@@ -2374,31 +2418,31 @@
+ 
+     invoke-virtual {v3, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    :cond_13
++    :cond_15
+     iget-object v5, v4, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+ 
+     invoke-virtual {v5}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->y5()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_1d
++    if-eqz v5, :cond_1f
+ 
+     iget v5, p0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+-    if-eq v5, v7, :cond_14
++    if-eq v5, v7, :cond_16
+ 
+-    if-ne v5, v6, :cond_15
++    if-ne v5, v6, :cond_17
+ 
+-    :cond_14
++    :cond_16
+     iget-object v4, v4, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+ 
+     invoke-virtual {v4}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->I5()Z
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_1d
++    if-eqz v4, :cond_1f
+ 
+-    :cond_15
++    :cond_17
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+     move-result-object v4
+@@ -2415,7 +2459,7 @@
+ 
+     goto/16 :goto_2
+ 
+-    :cond_16
++    :cond_18
+     sget-boolean v4, LJe/c;->k:Z
+ 
+     sget-object v4, LJe/c$b;->a:LJe/c;
+@@ -2426,7 +2470,7 @@
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_1d
++    if-eqz v4, :cond_1f
+ 
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+@@ -2458,7 +2502,7 @@
+ 
+     goto/16 :goto_2
+ 
+-    :cond_17
++    :cond_19
+     :goto_1
+     invoke-static {v4}, Lcom/android/camera/data/data/m;->h(I)Ljava/lang/String;
+ 
+@@ -2470,7 +2514,7 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_18
++    if-eqz v5, :cond_1a
+ 
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+@@ -2502,14 +2546,14 @@
+ 
+     goto :goto_2
+ 
+-    :cond_18
++    :cond_1a
+     const-string/jumbo v5, "wide"
+ 
+     invoke-virtual {v5, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_19
++    if-eqz v5, :cond_1b
+ 
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+@@ -2527,14 +2571,14 @@
+ 
+     goto :goto_2
+ 
+-    :cond_19
++    :cond_1b
+     const-string/jumbo v5, "tele"
+ 
+     invoke-virtual {v5, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_1a
++    if-eqz v5, :cond_1c
+ 
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+@@ -2544,7 +2588,7 @@
+ 
+     move-result v4
+ 
+-    if-ltz v4, :cond_1d
++    if-ltz v4, :cond_1f
+ 
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+@@ -2562,22 +2606,22 @@
+ 
+     goto :goto_2
+ 
+-    :cond_1a
++    :cond_1c
+     const-string v5, "Standalone"
+ 
+     invoke-virtual {v5, v4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_1d
++    if-eqz v4, :cond_1f
+ 
+     iget v4, p0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+-    if-eq v4, v7, :cond_1b
++    if-eq v4, v7, :cond_1d
+ 
+-    if-ne v4, v6, :cond_1c
++    if-ne v4, v6, :cond_1e
+ 
+-    :cond_1b
++    :cond_1d
+     sget-boolean v4, LJe/c;->k:Z
+ 
+     sget-object v4, LJe/c$b;->a:LJe/c;
+@@ -2588,9 +2632,9 @@
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_1d
++    if-eqz v4, :cond_1f
+ 
+-    :cond_1c
++    :cond_1e
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+     move-result-object v4
+@@ -2605,7 +2649,7 @@
+ 
+     invoke-virtual {v3, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    :cond_1d
++    :cond_1f
+     :goto_2
+     invoke-static {}, Lg2/a;->j()Lv2/C0;
+ 
+@@ -2625,7 +2669,7 @@
+ 
+     invoke-direct {v5}, Ljava/util/ArrayList;-><init>()V
+ 
+-    if-eqz v4, :cond_24
++    if-eqz v4, :cond_26
+ 
+     invoke-virtual {v4}, Landroid/util/SparseArray;->size()I
+ 
+@@ -2635,7 +2679,7 @@
+ 
+     move-result v7
+ 
+-    if-lt v6, v7, :cond_24
++    if-lt v6, v7, :cond_26
+ 
+     move v6, v2
+ 
+@@ -2646,7 +2690,7 @@
+ 
+     const-string v8, ""
+ 
+-    if-ge v6, v7, :cond_23
++    if-ge v6, v7, :cond_25
+ 
+     invoke-virtual {v3, v6}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+ 
+@@ -2674,15 +2718,15 @@
+ 
+     move-result v10
+ 
+-    if-eqz v10, :cond_20
++    if-eqz v10, :cond_22
+ 
+-    if-nez v7, :cond_1e
++    if-nez v7, :cond_20
+ 
+     const/4 v7, 0x0
+ 
+     goto :goto_4
+ 
+-    :cond_1e
++    :cond_20
+     invoke-virtual {v7}, Ljava/lang/Float;->floatValue()F
+ 
+     move-result v7
+@@ -2700,11 +2744,11 @@
+     move-result-object v7
+ 
+     :goto_4
+-    if-eqz v7, :cond_1f
++    if-eqz v7, :cond_21
+ 
+     goto :goto_5
+ 
+-    :cond_1f
++    :cond_21
+     move-object v7, v8
+ 
+     :goto_5
+@@ -2712,12 +2756,12 @@
+ 
+     goto :goto_7
+ 
+-    :cond_20
+-    if-eqz v7, :cond_21
++    :cond_22
++    if-eqz v7, :cond_23
+ 
+     goto :goto_6
+ 
+-    :cond_21
++    :cond_23
+     move-object v7, v8
+ 
+     :goto_6
+@@ -2728,7 +2772,7 @@
+ 
+     move-result v7
+ 
+-    if-eqz v7, :cond_22
++    if-eqz v7, :cond_24
+ 
+     iget-object v4, p0, Lcom/xiaomi/camera/base/ui/fragments/d;->TAG:Ljava/lang/String;
+ 
+@@ -2742,7 +2786,7 @@
+ 
+     goto :goto_8
+ 
+-    :cond_22
++    :cond_24
+     invoke-virtual {v9}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+ 
+     move-result-object v7
+@@ -2753,7 +2797,7 @@
+ 
+     goto :goto_3
+ 
+-    :cond_23
++    :cond_25
+     :goto_8
+     iget v4, p0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+@@ -2761,13 +2805,13 @@
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_24
++    if-eqz v4, :cond_26
+ 
+     invoke-virtual {v5}, Ljava/util/ArrayList;->size()I
+ 
+     move-result v4
+ 
+-    if-lez v4, :cond_24
++    if-lez v4, :cond_26
+ 
+     const-string v4, "35mm"
+ 
+@@ -2775,7 +2819,7 @@
+ 
+     invoke-virtual {v5, v8}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    :cond_24
++    :cond_26
+     new-instance v4, Landroid/util/Pair;
+ 
+     invoke-direct {v4, v5, v3}, Landroid/util/Pair;-><init>(Ljava/lang/Object;Ljava/lang/Object;)V
+@@ -2784,13 +2828,13 @@
+ 
+     check-cast v3, Ljava/util/List;
+ 
+-    if-eqz v3, :cond_25
++    if-eqz v3, :cond_27
+ 
+     invoke-interface {v3}, Ljava/util/List;->size()I
+ 
+     move-result v4
+ 
+-    if-lez v4, :cond_25
++    if-lez v4, :cond_27
+ 
+     iget-object v4, p0, LH4/f0;->j:Lcom/android/camera/ui/zoom/ZoomRatioToggleView;
+ 
+@@ -2802,7 +2846,7 @@
+ 
+     invoke-virtual {v4, v3}, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->setBaseFocalLens(Ljava/lang/String;)V
+ 
+-    :cond_25
++    :cond_27
+     :goto_9
+     sget-object v3, LN6/h$a;->a:LN6/h;
+ 
+@@ -2828,28 +2872,28 @@
+ 
+     iget v4, p0, LH4/f0;->k:I
+ 
+-    if-eq v4, v0, :cond_28
++    if-eq v4, v0, :cond_2a
+ 
+     iget-boolean v4, p0, LH4/f0;->o:Z
+ 
+-    if-nez v4, :cond_28
++    if-nez v4, :cond_2a
+ 
+     invoke-static {}, Lcom/android/camera/data/data/E;->N()Z
+ 
+     move-result v4
+ 
+-    if-nez v4, :cond_28
++    if-nez v4, :cond_2a
+ 
+     iget v4, v3, Lcom/android/camera/ui/zoom/ZoomRatioToggleView$f;->a:I
+ 
+     const/4 v5, -0x1
+ 
+-    if-ne v4, v5, :cond_26
++    if-ne v4, v5, :cond_28
+ 
+     goto :goto_a
+ 
+-    :cond_26
+-    if-ne v4, v0, :cond_27
++    :cond_28
++    if-ne v4, v0, :cond_29
+ 
+     invoke-virtual {p0, v2, v2}, LH4/f0;->dg(ZZ)V
+ 
+@@ -2861,7 +2905,7 @@
+ 
+     invoke-virtual {p0, v3, v2, v4}, LH4/f0;->qr(Lcom/android/camera/ui/zoom/ZoomRatioToggleView$f;ZI)V
+ 
+-    :cond_27
++    :cond_29
+     iput v0, p0, LH4/f0;->k:I
+ 
+     invoke-virtual {p0, v5, v2}, LH4/f0;->zr(IZ)V
+@@ -2878,7 +2922,7 @@
+ 
+     invoke-virtual {v0, v2}, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->setRotation(F)V
+ 
+-    if-nez v1, :cond_28
++    if-nez v1, :cond_2a
+ 
+     new-instance v0, LU1/b;
+ 
+@@ -2888,7 +2932,7 @@
+ 
+     invoke-static {v0}, LS1/h;->e(LU1/b;)V
+ 
+-    :cond_28
++    :cond_2a
+     :goto_a
+     return-void
+ .end method
+@@ -7016,7 +7060,7 @@
+     :goto_2
+     const/4 v1, 0x4
+ 
+-    if-eq p1, v1, :cond_f
++    if-eq p1, v1, :cond_10
+ 
+     const/16 v1, 0x8
+ 
+@@ -7130,7 +7174,7 @@
+ 
+     if-eq p1, v4, :cond_b
+ 
+-    if-ne p1, v2, :cond_e
++    if-ne p1, v2, :cond_f
+ 
+     :cond_b
+     invoke-static {}, LQ6/y0;->a()Ljava/util/Optional;
+@@ -7170,22 +7214,43 @@
+ 
+     iget p1, p1, Lcom/android/camera/ui/zoom/ZoomRatioToggleView$f;->a:I
+ 
+-    if-ne p1, v0, :cond_d
++    if-ne p1, v0, :cond_e
+ 
+-    invoke-virtual {p0}, LH4/f0;->O0()V
++    iget v1, p0, Lcom/android/camera/fragment/h;->mCurrentMode:I
++
++    const/16 v2, 0xa3
++
++    if-ne v1, v2, :cond_d
++
++    invoke-static {}, Lg2/a;->g()Lu2/V;
++
++    move-result-object v1
++
++    invoke-virtual {v1}, Lu2/V;->M()Z
++
++    move-result v1
++
++    if-nez v1, :cond_d
++
++    invoke-virtual {p0}, LH4/f0;->Sb()V
+ 
+     return-void
+ 
+     :cond_d
+-    if-ne p1, v5, :cond_e
++    invoke-virtual {p0}, LH4/f0;->O0()V
+ 
+-    invoke-virtual {p0}, LH4/f0;->Sb()V
++    return-void
+ 
+     :cond_e
++    if-ne p1, v5, :cond_f
++
++    invoke-virtual {p0}, LH4/f0;->Sb()V
++
++    :cond_f
+     :goto_3
+     return-void
+ 
+-    :cond_f
++    :cond_10
+     :goto_4
+     iget-object p0, p0, Lcom/xiaomi/camera/base/ui/fragments/d;->TAG:Ljava/lang/String;
+ 
+@@ -8192,6 +8257,60 @@
+ 
+     move-object/from16 v0, p0
+ 
++    iget v1, v0, Lcom/android/camera/fragment/h;->mCurrentMode:I
++
++    const/16 v2, 0xa3
++
++    if-ne v1, v2, :cond_2
++
++    invoke-static {}, Lg2/a;->g()Lu2/V;
++
++    move-result-object v1
++
++    invoke-virtual {v1}, Lu2/V;->M()Z
++
++    move-result v1
++
++    if-nez v1, :cond_1
++
++    iget-object v1, v0, LH4/f0;->p:Landroid/widget/FrameLayout;
++
++    if-eqz v1, :cond_0
++
++    iget-object v1, v0, LH4/f0;->b:Landroid/view/View;
++
++    const v2, 0x7f0b0cf6
++
++    invoke-virtual {v1, v2}, Landroid/view/View;->findViewById(I)Landroid/view/View;
++
++    move-result-object v1
++
++    check-cast v1, Landroid/widget/FrameLayout;
++
++    iput-object v1, v0, LH4/f0;->p:Landroid/widget/FrameLayout;
++
++    :cond_0
++    iget-object v1, v0, LH4/f0;->p:Landroid/widget/FrameLayout;
++
++    if-eqz v1, :cond_2
++
++    const/16 v2, 0x8
++
++    invoke-virtual {v1, v2}, Landroid/view/View;->setVisibility(I)V
++
++    goto :goto_0
++
++    :cond_1
++    iget-object v1, v0, LH4/f0;->p:Landroid/widget/FrameLayout;
++
++    if-eqz v1, :cond_2
++
++    const/4 v2, 0x0
++
++    invoke-virtual {v1, v2}, Landroid/view/View;->setVisibility(I)V
++
++    :cond_2
++    :goto_0
+     move-object/from16 v1, p2
+ 
+     move/from16 v2, p3
+@@ -8230,38 +8349,38 @@
+ 
+     const/16 v5, 0x200
+ 
+-    if-eq v2, v5, :cond_3b
++    if-eq v2, v5, :cond_3e
+ 
+     and-int/lit16 v5, v2, 0x100
+ 
+-    if-ne v5, v4, :cond_0
++    if-ne v5, v4, :cond_3
+ 
+-    goto/16 :goto_12
++    goto/16 :goto_13
+ 
+-    :cond_0
++    :cond_3
+     invoke-virtual {v0}, Landroidx/fragment/app/Fragment;->getActivity()Landroidx/fragment/app/l;
+ 
+     move-result-object v5
+ 
+     check-cast v5, Lcom/android/camera/a;
+ 
+-    if-nez v5, :cond_1
++    if-nez v5, :cond_4
+ 
+-    goto :goto_0
++    goto :goto_1
+ 
+-    :cond_1
++    :cond_4
+     invoke-virtual {v5}, Lcom/android/camera/a;->Kq()Loh/b;
+ 
+     move-result-object v5
+ 
+     iget-object v5, v5, Loh/b;->o:Lcom/android/camera/module/Y;
+ 
+-    if-nez v5, :cond_2
++    if-nez v5, :cond_5
+ 
+-    :goto_0
++    :goto_1
+     return-void
+ 
+-    :cond_2
++    :cond_5
+     invoke-interface {v5}, Lcom/android/camera/module/Y;->getModuleIndex()I
+ 
+     move-result v5
+@@ -8278,7 +8397,7 @@
+ 
+     const/16 v12, 0xa7
+ 
+-    if-ne v8, v3, :cond_f
++    if-ne v8, v3, :cond_12
+ 
+     iget-object v8, v0, LH4/f0;->j:Lcom/android/camera/ui/zoom/ZoomRatioToggleView;
+ 
+@@ -8296,13 +8415,13 @@
+ 
+     move-result v13
+ 
+-    if-eqz v13, :cond_3
++    if-eqz v13, :cond_6
+ 
+     iget-object v13, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->n0:Landroid/animation/ValueAnimator;
+ 
+     invoke-virtual {v13}, Landroid/animation/ValueAnimator;->cancel()V
+ 
+-    :cond_3
++    :cond_6
+     invoke-virtual {v8, v5}, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->setCurrentMode(I)V
+ 
+     iget v13, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->q:I
+@@ -8313,38 +8432,38 @@
+ 
+     iget v14, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->q:I
+ 
+-    if-eq v14, v11, :cond_5
++    if-eq v14, v11, :cond_8
+ 
+-    if-ne v14, v12, :cond_4
++    if-ne v14, v12, :cond_7
+ 
+     invoke-static {}, Lcom/android/camera/data/data/m;->l0()Z
+ 
+     move-result v14
+ 
+-    if-eqz v14, :cond_5
++    if-eqz v14, :cond_8
+ 
+-    :cond_4
++    :cond_7
+     iget v14, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->q:I
+ 
+-    if-ne v14, v10, :cond_6
++    if-ne v14, v10, :cond_9
+ 
+-    :cond_5
++    :cond_8
+     iget v14, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->q:I
+ 
+     invoke-static {v14, v7}, Lcom/android/camera/data/data/j;->j1(IZ)Z
+ 
+     move-result v14
+ 
+-    if-nez v14, :cond_6
++    if-nez v14, :cond_9
+ 
+     move v14, v3
+ 
+-    goto :goto_1
++    goto :goto_2
+ 
+-    :cond_6
++    :cond_9
+     move v14, v7
+ 
+-    :goto_1
++    :goto_2
+     iput-boolean v14, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->g0:Z
+ 
+     invoke-static {}, Lg2/a;->g()Lu2/V;
+@@ -8355,27 +8474,27 @@
+ 
+     move-result v14
+ 
+-    if-eqz v14, :cond_7
++    if-eqz v14, :cond_a
+ 
+     invoke-static {}, Lcom/android/camera/data/data/E;->Z()Z
+ 
+     move-result v15
+ 
+-    if-nez v15, :cond_7
++    if-nez v15, :cond_a
+ 
+     move v15, v3
+ 
+-    goto :goto_2
++    goto :goto_3
+ 
+-    :cond_7
++    :cond_a
+     move v15, v7
+ 
+-    :goto_2
++    :goto_3
+     iget v4, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->q:I
+ 
+     const/16 v10, 0xab
+ 
+-    if-ne v4, v10, :cond_8
++    if-ne v4, v10, :cond_b
+ 
+     invoke-static {}, Lcom/android/camera/data/data/j;->v0()Z
+ 
+@@ -8385,7 +8504,7 @@
+ 
+     move-result v4
+ 
+-    if-nez v4, :cond_9
++    if-nez v4, :cond_c
+ 
+     iget v4, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->q:I
+ 
+@@ -8393,30 +8512,30 @@
+ 
+     move-result v4
+ 
+-    if-nez v4, :cond_9
++    if-nez v4, :cond_c
+ 
+     invoke-static {}, Lj9/f;->n2()Z
+ 
+     move-result v4
+ 
+-    if-nez v4, :cond_9
++    if-nez v4, :cond_c
+ 
+-    :cond_8
++    :cond_b
+     iget v4, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->q:I
+ 
+     const/16 v10, 0xbc
+ 
+-    if-ne v4, v10, :cond_a
++    if-ne v4, v10, :cond_d
+ 
+-    :cond_9
++    :cond_c
+     move v4, v3
+ 
+-    goto :goto_3
++    goto :goto_4
+ 
+-    :cond_a
++    :cond_d
+     move v4, v7
+ 
+-    :goto_3
++    :goto_4
+     invoke-virtual {v8, v13, v4, v6, v15}, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->t([FZZZ)[F
+ 
+     move-result-object v4
+@@ -8455,18 +8574,18 @@
+ 
+     invoke-static {v13, v5, v6}, Lcom/android/camera/log/Log;->d(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    if-gtz v10, :cond_b
++    if-gtz v10, :cond_e
+ 
+-    goto :goto_5
++    goto :goto_6
+ 
+-    :cond_b
++    :cond_e
+     iget-boolean v5, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->a:Z
+ 
+-    if-eqz v5, :cond_c
++    if-eqz v5, :cond_f
+ 
+     invoke-static {v4}, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->g([F)V
+ 
+-    :cond_c
++    :cond_f
+     iget-object v5, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->R:[F
+ 
+     invoke-static {v5, v4}, Ljava/util/Arrays;->equals([F[F)Z
+@@ -8477,13 +8596,13 @@
+ 
+     iput-boolean v6, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->k0:Z
+ 
+-    if-eqz v5, :cond_e
++    if-eqz v5, :cond_11
+ 
+     invoke-virtual {v8}, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->C()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_e
++    if-eqz v5, :cond_11
+ 
+     iget-object v5, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->e0:LH8/h;
+ 
+@@ -8495,19 +8614,19 @@
+ 
+     move-result v5
+ 
+-    if-eq v10, v5, :cond_d
++    if-eq v10, v5, :cond_10
+ 
+     move v5, v3
+ 
+-    goto :goto_4
++    goto :goto_5
+ 
+-    :cond_d
++    :cond_10
+     move v5, v7
+ 
+-    :goto_4
++    :goto_5
+     iput-boolean v5, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->k0:Z
+ 
+-    :cond_e
++    :cond_11
+     invoke-virtual {v8, v2, v4}, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->F(I[F)Z
+ 
+     move-result v5
+@@ -8518,11 +8637,11 @@
+ 
+     iput-boolean v3, v8, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->j:Z
+ 
+-    :cond_f
+-    :goto_5
++    :cond_12
++    :goto_6
+     const/16 v4, 0x10
+ 
+-    if-ne v2, v4, :cond_10
++    if-ne v2, v4, :cond_13
+ 
+     invoke-static {}, Lg2/a;->g()Lu2/V;
+ 
+@@ -8532,7 +8651,7 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_10
++    if-eqz v5, :cond_13
+ 
+     iget-object v5, v0, Lcom/xiaomi/camera/base/ui/fragments/d;->TAG:Ljava/lang/String;
+ 
+@@ -8544,7 +8663,7 @@
+ 
+     iput v7, v0, LH4/f0;->P:I
+ 
+-    :cond_10
++    :cond_13
+     sget-boolean v5, LJe/c;->k:Z
+ 
+     sget-object v5, LJe/c$b;->a:LJe/c;
+@@ -8553,7 +8672,7 @@
+ 
+     move-result v6
+ 
+-    if-eqz v6, :cond_12
++    if-eqz v6, :cond_15
+ 
+     invoke-static {}, Lu6/f;->T()Lu6/f;
+ 
+@@ -8563,17 +8682,17 @@
+ 
+     move-result v6
+ 
+-    if-eqz v6, :cond_12
++    if-eqz v6, :cond_15
+ 
+     const/16 v6, 0x80
+ 
+-    if-ne v2, v6, :cond_11
++    if-ne v2, v6, :cond_14
+ 
+     invoke-static {}, Lcom/android/camera/data/data/E;->b0()Z
+ 
+     move-result v6
+ 
+-    if-nez v6, :cond_12
++    if-nez v6, :cond_15
+ 
+     invoke-virtual {v0, v3, v3}, LH4/f0;->dg(ZZ)V
+ 
+@@ -8581,13 +8700,13 @@
+ 
+     invoke-virtual {v6, v7}, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->setNeedZoomToggleSwitchAnimation(Z)V
+ 
+-    goto :goto_6
++    goto :goto_7
+ 
+-    :cond_11
++    :cond_14
+     invoke-virtual {v0, v7, v3}, LH4/f0;->dg(ZZ)V
+ 
+-    :cond_12
+-    :goto_6
++    :cond_15
++    :goto_7
+     new-instance v6, Ljava/lang/StringBuilder;
+ 
+     invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+@@ -8612,21 +8731,21 @@
+ 
+     iget-boolean v6, v6, Lv2/C0;->w:Z
+ 
+-    if-eqz v6, :cond_13
++    if-eqz v6, :cond_16
+ 
+     const/16 v6, 0xd1
+ 
+-    goto :goto_7
++    goto :goto_8
+ 
+-    :cond_13
++    :cond_16
+     move v6, v9
+ 
+-    :goto_7
++    :goto_8
+     iget v8, v0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+     const/16 v9, 0x8
+ 
+-    if-ne v2, v4, :cond_15
++    if-ne v2, v4, :cond_18
+ 
+     iget-object v10, v0, LH4/f0;->a:Landroid/os/Handler;
+ 
+@@ -8636,7 +8755,7 @@
+ 
+     move-result v10
+ 
+-    if-eqz v10, :cond_14
++    if-eqz v10, :cond_17
+ 
+     iget-object v10, v0, LH4/f0;->a:Landroid/os/Handler;
+ 
+@@ -8648,18 +8767,18 @@
+ 
+     invoke-virtual {v10}, LH3/j;->run()V
+ 
+-    :cond_14
++    :cond_17
+     invoke-virtual {v0}, LH4/f0;->tr()Z
+ 
+-    goto :goto_8
++    goto :goto_9
+ 
+-    :cond_15
+-    if-ne v2, v9, :cond_16
++    :cond_18
++    if-ne v2, v9, :cond_19
+ 
+     invoke-virtual {v0}, LH4/f0;->tr()Z
+ 
+-    :cond_16
+-    :goto_8
++    :cond_19
++    :goto_9
+     invoke-super {v0, v6, v1, v2}, Lcom/android/camera/fragment/h;->provideAnimateElement(ILjava/util/List;I)V
+ 
+     invoke-virtual {v5}, LJe/c;->J0()Z
+@@ -8668,7 +8787,7 @@
+ 
+     const/4 v13, 0x2
+ 
+-    if-eqz v10, :cond_18
++    if-eqz v10, :cond_1b
+ 
+     iput v8, v0, LH4/f0;->i:I
+ 
+@@ -8676,7 +8795,7 @@
+ 
+     move-result v10
+ 
+-    if-nez v10, :cond_17
++    if-nez v10, :cond_1a
+ 
+     iget v10, v0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+@@ -8684,13 +8803,13 @@
+ 
+     move-result v10
+ 
+-    if-nez v10, :cond_17
++    if-nez v10, :cond_1a
+ 
+     invoke-static {v8}, Lcom/android/camera/module/a0;->l(I)Z
+ 
+     move-result v10
+ 
+-    if-nez v10, :cond_17
++    if-nez v10, :cond_1a
+ 
+     iget v10, v0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+@@ -8698,9 +8817,9 @@
+ 
+     move-result v10
+ 
+-    if-eqz v10, :cond_1d
++    if-eqz v10, :cond_20
+ 
+-    :cond_17
++    :cond_1a
+     iget v10, v0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+     invoke-virtual {v0, v10}, LH4/f0;->Xq(I)I
+@@ -8709,20 +8828,20 @@
+ 
+     invoke-virtual {v0, v10}, LH4/f0;->wr(I)V
+ 
+-    goto :goto_9
++    goto :goto_a
+ 
+-    :cond_18
++    :cond_1b
+     invoke-static {}, LK2/b;->a0()Z
+ 
+     move-result v10
+ 
+-    if-nez v10, :cond_1d
++    if-nez v10, :cond_20
+ 
+     invoke-static {}, LK2/b;->b0()Z
+ 
+     move-result v10
+ 
+-    if-nez v10, :cond_1d
++    if-nez v10, :cond_20
+ 
+     invoke-virtual {v0, v6}, LH4/f0;->Xq(I)I
+ 
+@@ -8730,19 +8849,19 @@
+ 
+     iget-boolean v14, v0, LH4/f0;->o:Z
+ 
+-    if-eqz v14, :cond_19
++    if-eqz v14, :cond_1c
+ 
+-    if-ne v2, v4, :cond_19
++    if-ne v2, v4, :cond_1c
+ 
+     iget v14, v0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+-    if-eq v14, v11, :cond_19
++    if-eq v14, v11, :cond_1c
+ 
+     invoke-static {}, LK2/b;->U()Z
+ 
+     move-result v14
+ 
+-    if-eqz v14, :cond_19
++    if-eqz v14, :cond_1c
+ 
+     iget-object v14, v0, LH4/f0;->j:Lcom/android/camera/ui/zoom/ZoomRatioToggleView;
+ 
+@@ -8762,29 +8881,29 @@
+ 
+     sub-int/2addr v10, v15
+ 
+-    :cond_19
+-    if-nez v1, :cond_1a
++    :cond_1c
++    if-nez v1, :cond_1d
+ 
+     invoke-virtual {v0, v10}, LH4/f0;->wr(I)V
+ 
+-    goto :goto_9
++    goto :goto_a
+ 
+-    :cond_1a
++    :cond_1d
+     invoke-static {}, LK2/b;->W()Z
+ 
+     move-result v14
+ 
+-    if-nez v14, :cond_1d
++    if-nez v14, :cond_20
+ 
+     invoke-static {}, LK2/b;->a0()Z
+ 
+     move-result v14
+ 
+-    if-eqz v14, :cond_1b
++    if-eqz v14, :cond_1e
+ 
+-    goto :goto_9
++    goto :goto_a
+ 
+-    :cond_1b
++    :cond_1e
+     iget-object v14, v0, LH4/f0;->b:Landroid/view/View;
+ 
+     invoke-virtual {v14}, Landroid/view/View;->getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
+@@ -8795,7 +8914,7 @@
+ 
+     iget v14, v14, Landroid/widget/FrameLayout$LayoutParams;->bottomMargin:I
+ 
+-    if-le v10, v14, :cond_1c
++    if-le v10, v14, :cond_1f
+ 
+     new-instance v15, Lsq/a;
+ 
+@@ -8811,13 +8930,13 @@
+ 
+     invoke-interface {v1, v10}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+ 
+-    goto :goto_9
++    goto :goto_a
+ 
+-    :cond_1c
++    :cond_1f
+     iput v10, v0, LH4/f0;->h:I
+ 
+-    :cond_1d
+-    :goto_9
++    :cond_20
++    :goto_a
+     invoke-virtual {v0}, LH4/f0;->Uq()V
+ 
+     iget v10, v0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+@@ -8826,9 +8945,9 @@
+ 
+     const/16 v15, 0xb7
+ 
+-    if-eq v10, v15, :cond_1e
++    if-eq v10, v15, :cond_21
+ 
+-    if-eq v10, v14, :cond_1e
++    if-eq v10, v14, :cond_21
+ 
+     iget-object v10, v5, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+ 
+@@ -8836,22 +8955,22 @@
+ 
+     move-result v10
+ 
+-    if-nez v10, :cond_1e
++    if-nez v10, :cond_21
+ 
+     iget v10, v0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+     const/16 v13, 0xa2
+ 
+-    if-eq v10, v13, :cond_1e
++    if-eq v10, v13, :cond_21
+ 
+     iput-boolean v7, v0, LH4/f0;->o:Z
+ 
+-    :cond_1e
++    :cond_21
+     invoke-virtual {v0}, Lcom/android/camera/fragment/h;->getResetType()I
+ 
+     move-result v10
+ 
+-    if-ne v10, v9, :cond_1f
++    if-ne v10, v9, :cond_22
+ 
+     iget-object v10, v0, LH4/f0;->a:Landroid/os/Handler;
+ 
+@@ -8863,7 +8982,7 @@
+ 
+     invoke-virtual {v10}, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->K()V
+ 
+-    :cond_1f
++    :cond_22
+     invoke-virtual {v0}, LH4/f0;->ar()V
+ 
+     iget-object v10, v0, LH4/f0;->j:Lcom/android/camera/ui/zoom/ZoomRatioToggleView;
+@@ -8872,21 +8991,21 @@
+ 
+     move-result v10
+ 
+-    if-eq v8, v12, :cond_20
++    if-eq v8, v12, :cond_23
+ 
+-    if-eq v8, v11, :cond_20
++    if-eq v8, v11, :cond_23
+ 
+     const/16 v13, 0xa4
+ 
+-    if-eq v8, v13, :cond_20
++    if-eq v8, v13, :cond_23
+ 
+-    if-nez v10, :cond_20
++    if-nez v10, :cond_23
+ 
+     iget-object v10, v0, LH4/f0;->j:Lcom/android/camera/ui/zoom/ZoomRatioToggleView;
+ 
+     invoke-virtual {v10}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+ 
+-    :cond_20
++    :cond_23
+     invoke-virtual {v5}, LJe/c;->s1()V
+ 
+     iget-object v10, v0, LH4/f0;->j:Lcom/android/camera/ui/zoom/ZoomRatioToggleView;
+@@ -8897,30 +9016,30 @@
+ 
+     iget v10, v0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+-    if-eq v10, v12, :cond_22
++    if-eq v10, v12, :cond_25
+ 
+-    if-eq v10, v11, :cond_22
++    if-eq v10, v11, :cond_25
+ 
+     const/16 v13, 0xa4
+ 
+-    if-ne v10, v13, :cond_21
++    if-ne v10, v13, :cond_24
+ 
+-    goto :goto_a
++    goto :goto_b
+ 
+-    :cond_21
++    :cond_24
+     iget-object v5, v0, LH4/f0;->j:Lcom/android/camera/ui/zoom/ZoomRatioToggleView;
+ 
+     invoke-virtual {v5, v3}, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->setIsSupportedPanelShow(Z)V
+ 
+-    goto :goto_b
++    goto :goto_c
+ 
+-    :cond_22
+-    :goto_a
++    :cond_25
++    :goto_b
+     invoke-static {}, Lcom/android/camera/data/data/m;->l0()Z
+ 
+     move-result v10
+ 
+-    if-eqz v10, :cond_23
++    if-eqz v10, :cond_26
+ 
+     iget-object v5, v5, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+ 
+@@ -8928,26 +9047,26 @@
+ 
+     move-result v5
+ 
+-    if-nez v5, :cond_23
++    if-nez v5, :cond_26
+ 
+     invoke-static {}, Lj9/f;->l3()Z
+ 
+     move-result v5
+ 
+-    if-nez v5, :cond_23
++    if-nez v5, :cond_26
+ 
+     iget-object v5, v0, LH4/f0;->j:Lcom/android/camera/ui/zoom/ZoomRatioToggleView;
+ 
+     invoke-virtual {v5, v7}, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->setIsSupportedPanelShow(Z)V
+ 
+-    goto :goto_b
++    goto :goto_c
+ 
+-    :cond_23
++    :cond_26
+     iget-object v5, v0, LH4/f0;->j:Lcom/android/camera/ui/zoom/ZoomRatioToggleView;
+ 
+     invoke-virtual {v5, v3}, Lcom/android/camera/ui/zoom/ZoomRatioToggleView;->setIsSupportedPanelShow(Z)V
+ 
+-    :goto_b
++    :goto_c
+     iget v5, v0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+     invoke-static {v5, v7, v7}, LH4/h0;->a(IZZ)Lcom/android/camera/ui/zoom/ZoomRatioToggleView$f;
+@@ -8956,37 +9075,37 @@
+ 
+     iget v10, v5, Lcom/android/camera/ui/zoom/ZoomRatioToggleView$f;->a:I
+ 
+-    if-ne v10, v3, :cond_24
++    if-ne v10, v3, :cond_27
+ 
+     invoke-virtual {v0, v5, v7, v2}, LH4/f0;->qr(Lcom/android/camera/ui/zoom/ZoomRatioToggleView$f;ZI)V
+ 
+-    :cond_24
+-    if-eq v2, v9, :cond_25
++    :cond_27
++    if-eq v2, v9, :cond_28
+ 
+     const/16 v9, 0x100
+ 
+-    if-eq v2, v9, :cond_25
++    if-eq v2, v9, :cond_28
+ 
+     const/4 v9, 0x4
+ 
+-    if-eq v2, v9, :cond_25
++    if-eq v2, v9, :cond_28
+ 
+-    if-ne v2, v4, :cond_26
++    if-ne v2, v4, :cond_29
+ 
+-    :cond_25
++    :cond_28
+     invoke-virtual {v0}, LH4/f0;->Wq()LH4/f0$f;
+ 
+     move-result-object v4
+ 
+     iget-object v9, v0, LH4/f0;->s:LH4/f0$f;
+ 
+-    if-eq v4, v9, :cond_26
++    if-eq v4, v9, :cond_29
+ 
+     invoke-virtual {v0}, LH4/f0;->ie()Z
+ 
+     invoke-virtual {v0}, LH4/f0;->Gb()V
+ 
+-    :cond_26
++    :cond_29
+     invoke-virtual {v0}, LH4/f0;->yr()V
+ 
+     invoke-virtual {v0}, LH4/f0;->xr()V
+@@ -8995,59 +9114,59 @@
+ 
+     const/4 v9, -0x1
+ 
+-    if-eq v4, v12, :cond_29
++    if-eq v4, v12, :cond_2c
+ 
+-    if-ne v4, v11, :cond_27
++    if-ne v4, v11, :cond_2a
+ 
+-    goto :goto_c
++    goto :goto_d
+ 
+-    :cond_27
++    :cond_2a
+     iget v4, v5, Lcom/android/camera/ui/zoom/ZoomRatioToggleView$f;->a:I
+ 
+     invoke-static {}, Lcom/android/camera/data/data/m;->j0()Z
+ 
+     move-result v10
+ 
+-    if-eqz v10, :cond_2c
++    if-eqz v10, :cond_2f
+ 
+     iget v10, v0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+-    if-eq v10, v15, :cond_28
++    if-eq v10, v15, :cond_2b
+ 
+-    if-ne v10, v14, :cond_2c
++    if-ne v10, v14, :cond_2f
+ 
+-    :cond_28
++    :cond_2b
+     iget-boolean v10, v0, LH4/f0;->o:Z
+ 
+-    if-eqz v10, :cond_2c
++    if-eqz v10, :cond_2f
+ 
+     iget v5, v5, Lcom/android/camera/ui/zoom/ZoomRatioToggleView$f;->a:I
+ 
+-    if-ne v5, v3, :cond_2c
++    if-ne v5, v3, :cond_2f
+ 
+     const/4 v4, 0x2
+ 
+-    goto :goto_e
++    goto :goto_f
+ 
+-    :cond_29
+-    :goto_c
+-    if-eq v8, v12, :cond_2b
++    :cond_2c
++    :goto_d
++    if-eq v8, v12, :cond_2e
+ 
+-    if-ne v8, v11, :cond_2a
++    if-ne v8, v11, :cond_2d
+ 
+-    goto :goto_d
++    goto :goto_e
+ 
+-    :cond_2a
++    :cond_2d
+     move v4, v9
+ 
+-    goto :goto_e
++    goto :goto_f
+ 
+-    :cond_2b
+-    :goto_d
++    :cond_2e
++    :goto_e
+     iget v4, v5, Lcom/android/camera/ui/zoom/ZoomRatioToggleView$f;->a:I
+ 
+-    :cond_2c
+-    :goto_e
++    :cond_2f
++    :goto_f
+     iget-object v5, v0, Lcom/xiaomi/camera/base/ui/fragments/d;->TAG:Ljava/lang/String;
+ 
+     const-string v10, "newState = "
+@@ -9072,13 +9191,13 @@
+ 
+     iget v5, v0, LH4/f0;->k:I
+ 
+-    if-ne v4, v5, :cond_2d
++    if-ne v4, v5, :cond_30
+ 
+     invoke-static {}, Landroid/os/Trace;->endSection()V
+ 
+     return-void
+ 
+-    :cond_2d
++    :cond_30
+     iput v4, v0, LH4/f0;->k:I
+ 
+     invoke-static {}, LQ6/K0;->b()LQ6/K0;
+@@ -9125,11 +9244,11 @@
+ 
+     move-result v14
+ 
+-    if-eqz v14, :cond_2f
++    if-eqz v14, :cond_32
+ 
+     iget-boolean v13, v0, LH4/f0;->o:Z
+ 
+-    if-eqz v13, :cond_2e
++    if-eqz v13, :cond_31
+ 
+     iget v13, v0, Lcom/android/camera/fragment/h;->mCurrentMode:I
+ 
+@@ -9137,60 +9256,60 @@
+ 
+     move-result v13
+ 
+-    if-nez v13, :cond_2e
++    if-nez v13, :cond_31
+ 
+     move v13, v3
+ 
+-    goto :goto_f
++    goto :goto_10
+ 
+-    :cond_2e
++    :cond_31
+     move v13, v7
+ 
+-    :cond_2f
+-    :goto_f
++    :cond_32
++    :goto_10
+     invoke-static {}, Lcom/android/camera/data/data/E;->N()Z
+ 
+     move-result v14
+ 
+-    if-nez v14, :cond_34
++    if-nez v14, :cond_37
+ 
+     const/16 v14, 0x40
+ 
+-    if-eq v2, v14, :cond_30
++    if-eq v2, v14, :cond_33
+ 
+     const/4 v14, 0x2
+ 
+-    if-ne v2, v14, :cond_31
++    if-ne v2, v14, :cond_34
+ 
+-    :cond_30
+-    if-eqz v11, :cond_31
++    :cond_33
++    if-eqz v11, :cond_34
+ 
+     invoke-interface {v11}, LQ6/N;->Em()Z
+ 
+     move-result v2
+ 
+-    if-nez v2, :cond_34
++    if-nez v2, :cond_37
+ 
+-    :cond_31
+-    if-eqz v4, :cond_32
++    :cond_34
++    if-eqz v4, :cond_35
+ 
+     invoke-interface {v4}, LQ6/K0;->o1()Z
+ 
+     move-result v2
+ 
+-    if-nez v2, :cond_34
++    if-nez v2, :cond_37
+ 
+-    :cond_32
+-    if-eqz v13, :cond_33
++    :cond_35
++    if-eqz v13, :cond_36
+ 
+     invoke-static {}, LK2/b;->b0()Z
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_34
++    if-eqz v2, :cond_37
+ 
+-    :cond_33
+-    if-nez v5, :cond_34
++    :cond_36
++    if-nez v5, :cond_37
+ 
+     invoke-static {}, Lz3/a;->a()Ljava/util/Optional;
+ 
+@@ -9214,46 +9333,46 @@
+ 
+     move-result v2
+ 
+-    if-nez v2, :cond_34
++    if-nez v2, :cond_37
+ 
+     invoke-static {}, LK2/b;->b0()Z
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_35
++    if-eqz v2, :cond_38
+ 
+     invoke-static {}, Lcom/android/camera/data/data/w;->W()Z
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_35
++    if-eqz v2, :cond_38
+ 
+-    :cond_34
++    :cond_37
+     iput v9, v0, LH4/f0;->k:I
+ 
+-    :cond_35
++    :cond_38
+     iget v2, v0, LH4/f0;->k:I
+ 
+-    if-eq v2, v9, :cond_3a
++    if-eq v2, v9, :cond_3d
+ 
+-    if-eq v2, v3, :cond_36
++    if-eq v2, v3, :cond_39
+ 
+     const/4 v14, 0x2
+ 
+-    if-eq v2, v14, :cond_36
++    if-eq v2, v14, :cond_39
+ 
+-    goto :goto_11
++    goto :goto_12
+ 
+-    :cond_36
++    :cond_39
+     iget-object v2, v0, LH4/f0;->j:Lcom/android/camera/ui/zoom/ZoomRatioToggleView;
+ 
+     invoke-static {v2}, LU1/b;->e(Landroid/view/View;)V
+ 
+-    if-eqz v1, :cond_39
++    if-eqz v1, :cond_3c
+ 
+     const/16 v2, 0xa3
+ 
+-    if-ne v6, v2, :cond_37
++    if-ne v6, v2, :cond_3a
+ 
+     invoke-static {}, Lg2/a;->a()Lr2/g1;
+ 
+@@ -9271,14 +9390,14 @@
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_37
++    if-eqz v2, :cond_3a
+ 
+-    if-eq v8, v12, :cond_37
++    if-eq v8, v12, :cond_3a
+ 
+-    goto :goto_10
++    goto :goto_11
+ 
+-    :cond_37
+-    if-ne v8, v12, :cond_38
++    :cond_3a
++    if-ne v8, v12, :cond_3b
+ 
+     new-instance v2, LU1/b;
+ 
+@@ -9296,9 +9415,9 @@
+ 
+     invoke-interface {v1, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+ 
+-    goto :goto_11
++    goto :goto_12
+ 
+-    :cond_38
++    :cond_3b
+     new-instance v2, LU1/b;
+ 
+     iget-object v0, v0, LH4/f0;->j:Lcom/android/camera/ui/zoom/ZoomRatioToggleView;
+@@ -9311,28 +9430,28 @@
+ 
+     invoke-interface {v1, v0}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+ 
+-    goto :goto_11
++    goto :goto_12
+ 
+-    :cond_39
+-    :goto_10
++    :cond_3c
++    :goto_11
+     iget-object v0, v0, LH4/f0;->j:Lcom/android/camera/ui/zoom/ZoomRatioToggleView;
+ 
+     invoke-static {v0}, LU1/b;->e(Landroid/view/View;)V
+ 
+-    goto :goto_11
++    goto :goto_12
+ 
+-    :cond_3a
++    :cond_3d
+     iget-object v0, v0, LH4/f0;->j:Lcom/android/camera/ui/zoom/ZoomRatioToggleView;
+ 
+     invoke-static {v0}, LU1/d;->e(Landroid/view/View;)V
+ 
+-    :goto_11
++    :goto_12
+     invoke-static {}, Landroid/os/Trace;->endSection()V
+ 
+     return-void
+ 
+-    :cond_3b
+-    :goto_12
++    :cond_3e
++    :goto_13
+     const/16 v1, 0xa
+ 
+     invoke-virtual {v0, v1}, LH4/f0;->onBackEvent(I)Z

@@ -1,0 +1,1895 @@
+From pearl-miui-camera-6.6-compat
+Subject: [PATCH] Enable document/night and disable slow motion on pearl
+
+This squashed patch contains the verified pearl camera fixes:
+- Document mode works end-to-end (save path + full-res processing).
+- Night mode is enabled and can use the ultra-wide lens.
+- Slow motion is disabled to avoid the unsupported HAL path crashing.
+- Watermark edit activity is made immersive so system bars are not gray.
+
+---
+--- a/smali/com/android/camera/data/data/j.smali	2026-08-27 20:35:02.451916219 +0800
++++ b/smali/com/android/camera/data/data/j.smali	2026-08-27 20:39:34.863112338 +0800
+@@ -5364,20 +5364,27 @@
+     move-result-object v0
+ 
+     :cond_13
++    const/16 v3, 0xad
++
++    if-ne p0, v3, :cond_14
++
++    return-object v0
++
++    :cond_14
+     invoke-static {p0, v4}, Lcom/android/camera/data/data/j;->f(IZ)Z
+ 
+     move-result v1
+ 
+-    if-nez v1, :cond_14
++    if-nez v1, :cond_15
+ 
+     invoke-static {p0, v4}, Lcom/android/camera/data/data/j;->e(IZ)Z
+ 
+     move-result p0
+ 
+-    if-eqz p0, :cond_15
++    if-eqz p0, :cond_16
+ 
+-    :cond_14
+-    if-eqz p1, :cond_15
++    :cond_15
++    if-eqz p1, :cond_16
+ 
+     array-length p0, v0
+ 
+@@ -5389,7 +5396,7 @@
+ 
+     return-object p1
+ 
+-    :cond_15
++    :cond_16
+     new-instance p0, Ljava/lang/StringBuilder;
+ 
+     const-string p1, "getSupportedBackZoomOuterValues(): supportedZoomRatios = "
+@@ -5678,10 +5685,37 @@
+     return-object p0
+ 
+     :cond_0
+-    const/16 v3, 0xe8
++    const/16 v3, 0xad
+ 
+     if-ne p0, v3, :cond_1
+ 
++    const/4 v3, 0x3
++
++    new-array p1, v3, [F
++
++    const v3, 0x3f19999a    # 0.6f
++
++    aput v3, p1, v2
++
++    const/high16 v3, 0x3f800000    # 1.0f
++
++    const/4 v4, 0x1
++
++    aput v3, p1, v4
++
++    const/high16 v3, 0x40000000    # 2.0f
++
++    const/4 v4, 0x2
++
++    aput v3, p1, v4
++
++    return-object p1
++
++    :cond_1
++    const/16 v3, 0xac
++
++    if-ne p0, v3, :cond_2
++
+     const/4 v3, 0x4
+ 
+     new-array p1, v3, [F
+@@ -5710,10 +5744,43 @@
+ 
+     return-object p1
+ 
+-    :cond_1
++    :cond_2
++    const/16 v3, 0xe8
++
++    if-ne p0, v3, :cond_3
++
++    const/4 v3, 0x4
++
++    new-array p1, v3, [F
++
++    const/high16 v3, 0x3f800000    # 1.0f
++
++    aput v3, p1, v2
++
++    const/high16 v3, 0x40000000    # 2.0f
++
++    const/4 v4, 0x1
++
++    aput v3, p1, v4
++
++    const/high16 v3, 0x40a00000    # 5.0f
++
++    const/4 v4, 0x2
++
++    aput v3, p1, v4
++
++    const/high16 v3, 0x41200000    # 10.0f
++
++    const/4 v4, 0x3
++
++    aput v3, p1, v4
++
++    return-object p1
++
++    :cond_3
+     const/16 v3, 0xab
+ 
+-    if-ne p0, v3, :cond_7
++    if-ne p0, v3, :cond_9
+ 
+     const/4 v3, 0x4
+ 
+@@ -5751,15 +5818,15 @@
+ 
+     move-result v4
+ 
+-    if-nez v4, :cond_3
++    if-nez v4, :cond_5
+ 
+     invoke-static {}, Lcom/android/camera/data/data/E;->i0()Z
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_2
++    if-eqz v4, :cond_4
+ 
+-    if-eqz v1, :cond_3
++    if-eqz v1, :cond_5
+ 
+     sget-boolean v4, LJe/c;->k:Z
+ 
+@@ -5771,9 +5838,9 @@
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_3
++    if-eqz v4, :cond_5
+ 
+-    :cond_2
++    :cond_4
+     sget-boolean v4, LJe/c;->k:Z
+ 
+     sget-object v4, LJe/c$b;->a:LJe/c;
+@@ -5784,14 +5851,14 @@
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_7
++    if-eqz v4, :cond_9
+ 
+-    :cond_3
++    :cond_5
+     invoke-static {}, Lcom/android/camera/data/data/E;->i0()Z
+ 
+     move-result p0
+ 
+-    if-nez p0, :cond_4
++    if-nez p0, :cond_6
+ 
+     sget-boolean p0, LJe/c;->k:Z
+ 
+@@ -5803,9 +5870,9 @@
+ 
+     move-result p0
+ 
+-    if-eqz p0, :cond_6
++    if-eqz p0, :cond_8
+ 
+-    :cond_4
++    :cond_6
+     sget-boolean p0, LJe/c;->k:Z
+ 
+     sget-object p0, LJe/c$b;->a:LJe/c;
+@@ -5816,13 +5883,13 @@
+ 
+     move-result-object p0
+ 
+-    if-eqz p0, :cond_6
++    if-eqz p0, :cond_8
+ 
+     invoke-virtual {p0, v3}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+ 
+     move-result-object p1
+ 
+-    if-eqz p1, :cond_6
++    if-eqz p1, :cond_8
+ 
+     invoke-virtual {p0, v3}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
+ 
+@@ -5837,7 +5904,7 @@
+     :goto_0
+     array-length v1, p0
+ 
+-    if-ge v2, v1, :cond_5
++    if-ge v2, v1, :cond_7
+ 
+     aget-object v1, p0, v2
+ 
+@@ -5851,10 +5918,10 @@
+ 
+     goto :goto_0
+ 
+-    :cond_5
++    :cond_7
+     return-object p1
+ 
+-    :cond_6
++    :cond_8
+     invoke-static {}, Lg2/a;->j()Lv2/C0;
+ 
+     move-result-object p0
+@@ -5873,8 +5940,8 @@
+ 
+     return-object p0
+ 
+-    :cond_7
+-    if-eqz v1, :cond_8
++    :cond_9
++    if-eqz v1, :cond_a
+ 
+     invoke-static {p0}, Lcom/android/camera/data/data/j;->T(I)[F
+ 
+@@ -5882,21 +5949,21 @@
+ 
+     return-object p0
+ 
+-    :cond_8
+-    if-nez p1, :cond_a
++    :cond_a
++    if-nez p1, :cond_c
+ 
+     invoke-static {}, Lcom/android/camera/data/data/j;->F1()Z
+ 
+     move-result p1
+ 
+-    if-nez p1, :cond_9
++    if-nez p1, :cond_b
+ 
+     goto :goto_1
+ 
+-    :cond_9
++    :cond_b
+     move v0, v2
+ 
+-    :cond_a
++    :cond_c
+     :goto_1
+     invoke-static {p0, v0}, Lcom/android/camera/data/data/j;->S(IZ)[F
+ 
+--- a/smali/com/android/camera/data/data/m.smali	2026-08-27 20:35:02.437081360 +0800
++++ b/smali/com/android/camera/data/data/m.smali	2026-08-27 20:39:34.847135496 +0800
+@@ -555,91 +555,13 @@
+ .end method
+ 
+ .method public static I(I)Z
+-    .locals 3
++    .locals 0
+     .annotation build Lcom/android/camera/jacoco/JacocoIgnore;
+         ignore = false
+         key = "useSlowMotionTab"
+         type = 0x0
+     .end annotation
+ 
+-    const/16 v0, 0xac
+-
+-    if-ne p0, v0, :cond_1
+-
+-    sget-boolean p0, LJe/c;->k:Z
+-
+-    sget-object p0, LJe/c$b;->a:LJe/c;
+-
+-    iget-object p0, p0, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+-
+-    invoke-virtual {p0}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->O0()S
+-
+-    move-result p0
+-
+-    const/16 v1, 0x1e0
+-
+-    if-lt p0, v1, :cond_1
+-
+-    invoke-static {}, Lg2/a;->a()Lr2/g1;
+-
+-    move-result-object p0
+-
+-    const-class v1, Lr2/X;
+-
+-    invoke-virtual {p0, v1}, LWh/b;->x(Ljava/lang/Class;)Ljava/lang/Object;
+-
+-    move-result-object p0
+-
+-    check-cast p0, Lr2/X;
+-
+-    invoke-virtual {p0, v0}, Lr2/X;->getComponentValue(I)Ljava/lang/String;
+-
+-    move-result-object v1
+-
+-    const-string/jumbo v2, "slow_motion_480"
+-
+-    invoke-virtual {v2, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+-
+-    move-result v1
+-
+-    if-nez v1, :cond_0
+-
+-    invoke-virtual {p0, v0}, Lr2/X;->getComponentValue(I)Ljava/lang/String;
+-
+-    move-result-object v1
+-
+-    const-string/jumbo v2, "slow_motion_960"
+-
+-    invoke-virtual {v2, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+-
+-    move-result v1
+-
+-    if-nez v1, :cond_0
+-
+-    invoke-virtual {p0, v0}, Lr2/X;->getComponentValue(I)Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    const-string/jumbo v1, "slow_motion_1920"
+-
+-    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+-
+-    move-result v0
+-
+-    if-nez v0, :cond_0
+-
+-    invoke-virtual {p0}, Lr2/X;->q()Z
+-
+-    move-result p0
+-
+-    if-eqz p0, :cond_1
+-
+-    :cond_0
+-    const/4 p0, 0x1
+-
+-    return p0
+-
+-    :cond_1
+     const/4 p0, 0x0
+ 
+     return p0
+--- a/smali/com/android/camera/data/data/r.smali	2026-08-27 20:35:02.434791697 +0800
++++ b/smali/com/android/camera/data/data/r.smali	2026-08-27 20:39:34.845562860 +0800
+@@ -735,18 +735,6 @@
+         type = 0x0
+     .end annotation
+ 
+-    sget-boolean v0, LJe/c;->k:Z
+-
+-    sget-object v0, LJe/c$b;->a:LJe/c;
+-
+-    iget-object v0, v0, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+-
+-    invoke-virtual {v0}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->Z5()Z
+-
+-    move-result v0
+-
+-    if-eqz v0, :cond_0
+-
+     const/16 v0, 0xad
+ 
+     if-ne p0, v0, :cond_0
+--- a/smali/com/android/camera/DocumentTileService.smali	2026-08-27 20:35:02.425700659 +0800
++++ b/smali/com/android/camera/DocumentTileService.smali	2026-08-27 20:39:34.835414771 +0800
+@@ -32,42 +32,15 @@
+         type = 0x0
+     .end annotation
+ 
+-    const-string/jumbo v0, "ro.miui.region"
+-
+-    invoke-static {v0}, Lur/g;->a(Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    const-string v1, "ID"
+-
+-    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+-
+-    move-result v0
+-
+-    if-eqz v0, :cond_1
+-
+-    sget-boolean v0, LJe/c;->k:Z
+-
+-    sget-object v0, LJe/c$b;->a:LJe/c;
+-
+-    invoke-virtual {v0}, LJe/c;->F0()Z
+-
+-    move-result v0
+-
+-    if-nez v0, :cond_0
+-
+-    goto :goto_0
+-
+-    :cond_0
+     sget-object v0, Lcom/android/camera/DocumentTileService;->a:Lcom/android/camera/DocumentTileService;
+ 
+-    if-eqz v0, :cond_1
++    if-eqz v0, :cond_0
+ 
+     invoke-virtual {v0}, Landroid/service/quicksettings/TileService;->getQsTile()Landroid/service/quicksettings/Tile;
+ 
+     move-result-object v1
+ 
+-    if-eqz v1, :cond_1
++    if-eqz v1, :cond_0
+ 
+     invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+ 
+@@ -105,8 +78,7 @@
+ 
+     invoke-virtual {v1}, Landroid/service/quicksettings/Tile;->updateTile()V
+ 
+-    :cond_1
+-    :goto_0
++    :cond_0
+     return-void
+ .end method
+ 
+--- a/smali/com/android/camera/features/mode/doc/DocModule.smali	2026-08-27 20:35:02.462208420 +0800
++++ b/smali/com/android/camera/features/mode/doc/DocModule.smali	2026-08-27 20:39:34.876235255 +0800
+@@ -2350,6 +2350,20 @@
+ 
+     invoke-super {p0, p1, p2}, Lcom/android/camera/module/Camera2Module;->prepareNormalCapture(Landroid/hardware/camera2/CaptureResult;Lj9/H1$a;)V
+ 
++    const/4 p2, 0x1
++
++    iput-boolean p2, p0, Lcom/android/camera/module/Camera2Module;->mEnableShot2Gallery:Z
++
++    iget-object p1, p0, Lcom/android/camera/module/s;->mCameraManager:Lj6/j;
++
++    invoke-interface {p1}, Lj6/j;->K0()Lj9/h0;
++
++    move-result-object p1
++
++    iget-object p1, p1, Lj9/h0;->a:Lj9/i0;
++
++    iput-boolean p2, p1, Lj9/i0;->Z0:Z
++
+     iget-object p1, p0, Lcom/android/camera/features/mode/doc/DocModule;->mLastDocInfo:Lyn/d;
+ 
+     sget-boolean p2, LJe/c;->k:Z
+--- a/smali/com/android/camera/features/mode/night/photo/NightModuleEntry.smali	2026-08-27 20:35:02.466394620 +0800
++++ b/smali/com/android/camera/features/mode/night/photo/NightModuleEntry.smali	2026-08-27 20:39:34.880678045 +0800
+@@ -110,15 +110,7 @@
+         type = 0x0
+     .end annotation
+ 
+-    sget-boolean p0, LJe/c;->k:Z
+-
+-    sget-object p0, LJe/c$b;->a:LJe/c;
+-
+-    iget-object p0, p0, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+-
+-    invoke-virtual {p0}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->W5()Z
+-
+-    move-result p0
++    const/4 p0, 0x1
+ 
+     return p0
+ .end method
+--- a/smali/com/android/camera/features/mode/night/video/NightVideoModuleEntry.smali	2026-08-27 20:35:02.466394620 +0800
++++ b/smali/com/android/camera/features/mode/night/video/NightVideoModuleEntry.smali	2026-08-27 20:39:34.880678045 +0800
+@@ -74,36 +74,11 @@
+ .end method
+ 
+ .method public support()Z
+-    .locals 1
++    .locals 0
+     .annotation build Lcom/android/camera/jacoco/JacocoForceIgnore;
+     .end annotation
+ 
+-    sget-boolean p0, LJe/c;->k:Z
+-
+-    sget-object p0, LJe/c$b;->a:LJe/c;
+-
+-    iget-object v0, p0, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+-
+-    invoke-virtual {v0}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->W5()Z
+-
+-    move-result v0
+-
+-    if-eqz v0, :cond_0
+-
+-    iget-object p0, p0, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+-
+-    invoke-virtual {p0}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->P7()Z
+-
+-    move-result p0
+-
+-    if-eqz p0, :cond_0
+-
+     const/4 p0, 0x1
+ 
+     return p0
+-
+-    :cond_0
+-    const/4 p0, 0x0
+-
+-    return p0
+ .end method
+--- a/smali/com/android/camera/features/mode/slow/SlowMotionModuleEntry.smali	2026-08-27 20:35:02.474138281 +0800
++++ b/smali/com/android/camera/features/mode/slow/SlowMotionModuleEntry.smali	2026-08-27 20:39:34.890068374 +0800
+@@ -123,13 +123,7 @@
+ .method public support()Z
+     .locals 0
+ 
+-    sget-boolean p0, LJe/c;->k:Z
+-
+-    sget-object p0, LJe/c$b;->a:LJe/c;
+-
+-    invoke-virtual {p0}, LJe/c;->D2()Z
+-
+-    move-result p0
++    const/4 p0, 0x0
+ 
+     return p0
+ .end method
+--- a/smali/com/android/camera/module/video/G.smali	2026-08-27 20:35:02.573502102 +0800
++++ b/smali/com/android/camera/module/video/G.smali	2026-08-27 20:39:34.997195861 +0800
+@@ -2448,6 +2448,11 @@
+     goto :goto_0
+ 
+     :cond_2
++    if-nez v2, :cond_3
++
++    return-void
++
++    :cond_3
+     iput-object v2, p0, Lcom/android/camera/module/video/G;->g:Landroid/util/Range;
+     :try_end_0
+     .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
+--- a/smali/j9/i0.smali	2026-08-27 20:35:02.703007717 +0800
++++ b/smali/j9/i0.smali	2026-08-27 20:39:35.126919189 +0800
+@@ -820,20 +820,9 @@
+ 
+     invoke-virtual {p4, p1}, Ljava/util/ArrayDeque;->offer(Ljava/lang/Object;)Z
+ 
+-    if-nez p2, :cond_1
+-
+-    const-string/jumbo p0, "setShotPath: skip. not parallel"
+-
+-    new-array p1, v1, [Ljava/lang/Object;
+-
+-    invoke-static {v3, p0, p1}, Lcom/android/camera/log/Log;->d(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    return-void
+-
+-    :cond_1
+     iget-object p2, p0, Lj9/i0;->c1:Ljava/util/ArrayDeque;
+ 
+-    if-nez p2, :cond_2
++    if-nez p2, :cond_1
+ 
+     new-instance p2, Ljava/util/ArrayDeque;
+ 
+@@ -841,8 +830,8 @@
+ 
+     iput-object p2, p0, Lj9/i0;->c1:Ljava/util/ArrayDeque;
+ 
+-    :cond_2
+-    if-nez p3, :cond_3
++    :cond_1
++    if-nez p3, :cond_2
+ 
+     const-string p2, "offer ShotPathThumbnail: "
+ 
+@@ -860,7 +849,7 @@
+ 
+     return-void
+ 
+-    :cond_3
++    :cond_2
+     const-string p0, "offer ShotPathThumbnail: skip. isRefuseOffer"
+ 
+     new-array p1, v1, [Ljava/lang/Object;
+--- a/smali/r2/X.smali	2026-08-27 20:35:02.801719416 +0800
++++ b/smali/r2/X.smali	2026-08-27 20:39:35.221837352 +0800
+@@ -772,6 +772,14 @@
+ .method public final p(Ljava/lang/String;)Z
+     .locals 1
+ 
++    const-string/jumbo v0, "ultra_wide"
++
++    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_1
++
+     iget-object p0, p0, Lr2/X;->e:Ljava/util/Map;
+ 
+     if-nez p0, :cond_0
+@@ -792,6 +800,11 @@
+     move-result p0
+ 
+     return p0
++
++    :cond_1
++    const/4 p0, 0x1
++
++    return p0
+ .end method
+ 
+ .method public final q()Z
+@@ -1163,7 +1176,7 @@
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_6
++    nop
+ 
+     new-instance v2, Lcom/android/camera/data/data/d;
+ 
+@@ -1480,7 +1493,13 @@
+ 
+     :cond_c
+     :goto_4
+-    if-eq v4, v13, :cond_e
++    const-string v15, "1280x720:"
++
++    invoke-virtual {v3, v15}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v15
++
++    if-eqz v15, :cond_e
+ 
+     invoke-virtual {v5, v12}, Ljava/lang/StringBuffer;->setLength(I)V
+ 
+--- a/smali/y3/e.smali	2026-08-27 20:35:02.876349906 +0800
++++ b/smali/y3/e.smali	2026-08-27 20:39:35.297148781 +0800
+@@ -1603,17 +1603,21 @@
+     return-void
+ 
+     :cond_8
+-    new-instance p0, Ljava/lang/UnsupportedOperationException;
++    const/16 v3, 0x78
+ 
+-    const-string p1, "Unsupported Slow Motion Recording: "
++    sget-object v0, Lga/y0;->i:[I
+ 
+-    invoke-static {p1, v0}, LQ4/D;->e(Ljava/lang/String;Landroid/util/Range;)Ljava/lang/String;
++    invoke-interface {p1}, Lj6/j;->K0()Lj9/h0;
+ 
+-    move-result-object p1
++    move-result-object v4
+ 
+-    invoke-direct {p0, p1}, Ljava/lang/UnsupportedOperationException;-><init>(Ljava/lang/String;)V
++    iget-object v4, v4, Lj9/h0;->b:Lj9/G1;
+ 
+-    throw p0
++    sget-object v5, Lga/y0;->l:Lga/D0;
++
++    invoke-virtual {v4, v5, v0}, Lj9/G1;->a(Lga/D0;Ljava/lang/Object;)V
++
++    goto :goto_4
+ 
+     :cond_9
+     invoke-virtual {p0, p1}, Ly3/e;->w(Lj6/j;)V
+--- a/smali_classes3/Ac/e.smali	2026-08-27 20:35:04.000853685 +0800
++++ b/smali_classes3/Ac/e.smali	2026-08-27 20:39:36.432437080 +0800
+@@ -187,7 +187,7 @@
+ 
+     invoke-static {v6, v0, v1}, Lcom/android/camera/log/Log;->d(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    goto/16 :goto_45
++    goto/16 :goto_43
+ 
+     :cond_2
+     invoke-static {}, LJe/c;->d0()Z
+@@ -1056,7 +1056,7 @@
+ 
+     move-object/from16 v22, v7
+ 
+-    goto/16 :goto_29
++    goto/16 :goto_27
+ 
+     :cond_20
+     sget-boolean v0, LJe/c;->k:Z
+@@ -1248,43 +1248,9 @@
+     invoke-static {v3, v0, v4}, Lcom/android/camera/log/Log;->w(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+     :goto_1c
+-    const-string/jumbo v0, "ro.miui.region"
+-
+-    const-string v2, "CN"
+-
+-    invoke-static {v0, v2}, Lur/g;->b(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    const-string v2, "ID"
+-
+-    invoke-virtual {v0, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+-
+-    move-result v0
+-
+-    if-eqz v0, :cond_27
+-
+-    sget-object v0, LJe/c$b;->a:LJe/c;
+-
+-    invoke-virtual {v0}, LJe/c;->F0()Z
+-
+-    move-result v0
+-
+-    if-nez v0, :cond_26
+-
+-    goto :goto_1d
+-
+-    :cond_26
+     const/4 v0, 0x0
+ 
+-    goto :goto_1e
+-
+-    :cond_27
+-    :goto_1d
+-    const/4 v0, 0x1
+-
+-    :goto_1e
+-    if-eqz v0, :cond_28
++    if-eqz v0, :cond_26
+ 
+     const-string/jumbo v2, "updateComponents: disable document mode"
+ 
+@@ -1294,12 +1260,12 @@
+ 
+     invoke-static {v6, v2, v3}, Lcom/android/camera/log/Log;->d(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    goto :goto_1f
++    goto :goto_1d
+ 
+-    :cond_28
++    :cond_26
+     const/4 v9, 0x0
+ 
+-    :goto_1f
++    :goto_1d
+     sget-object v2, LJe/c$b;->a:LJe/c;
+ 
+     iget-object v3, v2, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+@@ -1340,94 +1306,94 @@
+ 
+     invoke-static {v6, v8, v10}, Lcom/android/camera/log/Log;->d(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    if-eqz v3, :cond_29
++    if-eqz v3, :cond_27
+ 
+     const/4 v8, 0x2
+ 
+-    goto :goto_20
++    goto :goto_1e
+ 
+-    :cond_29
++    :cond_27
+     const/4 v8, 0x1
+ 
+-    :goto_20
+-    if-eqz v3, :cond_2a
++    :goto_1e
++    if-eqz v3, :cond_28
+ 
+     const/4 v9, 0x1
+ 
+-    goto :goto_21
++    goto :goto_1f
+ 
+-    :cond_2a
++    :cond_28
+     const/4 v9, 0x2
+ 
+-    :goto_21
+-    if-eqz v3, :cond_2b
++    :goto_1f
++    if-eqz v3, :cond_29
+ 
+     const/4 v10, 0x2
+ 
+-    goto :goto_22
++    goto :goto_20
+ 
+-    :cond_2b
++    :cond_29
+     const/4 v10, 0x1
+ 
+-    :goto_22
+-    if-eqz v3, :cond_2c
++    :goto_20
++    if-eqz v3, :cond_2a
+ 
+     const/4 v11, 0x1
+ 
+-    goto :goto_23
++    goto :goto_21
+ 
+-    :cond_2c
++    :cond_2a
+     const/4 v11, 0x2
+ 
+-    :goto_23
+-    if-nez v3, :cond_2d
++    :goto_21
++    if-nez v3, :cond_2b
+ 
+-    if-eqz v4, :cond_2d
++    if-eqz v4, :cond_2b
+ 
+     const/4 v12, 0x1
+ 
+-    goto :goto_24
++    goto :goto_22
+ 
+-    :cond_2d
++    :cond_2b
+     const/4 v12, 0x2
+ 
+-    :goto_24
+-    if-eqz v3, :cond_2e
++    :goto_22
++    if-eqz v3, :cond_2c
+ 
+-    if-eqz v4, :cond_2e
++    if-eqz v4, :cond_2c
+ 
+     const/4 v4, 0x1
+ 
+-    goto :goto_25
++    goto :goto_23
+ 
+-    :cond_2e
++    :cond_2c
+     const/4 v4, 0x2
+ 
+-    :goto_25
+-    if-nez v3, :cond_2f
++    :goto_23
++    if-nez v3, :cond_2d
+ 
+-    if-eqz v2, :cond_2f
++    if-eqz v2, :cond_2d
+ 
+     const/4 v13, 0x1
+ 
+-    goto :goto_26
++    goto :goto_24
+ 
+-    :cond_2f
++    :cond_2d
+     const/4 v13, 0x2
+ 
+-    :goto_26
+-    if-eqz v3, :cond_30
++    :goto_24
++    if-eqz v3, :cond_2e
+ 
+-    if-eqz v2, :cond_30
++    if-eqz v2, :cond_2e
+ 
+     const/4 v2, 0x1
+ 
+-    goto :goto_27
++    goto :goto_25
+ 
+-    :cond_30
++    :cond_2e
+     const/4 v2, 0x2
+ 
+-    :goto_27
++    :goto_25
+     sget v3, Landroid/os/Build$VERSION;->SDK_INT:I
+ 
+     const-string v15, "com.xiaomi.camera.IntentDocCapture"
+@@ -1466,13 +1432,13 @@
+ 
+     const/16 v14, 0x21
+ 
+-    if-lt v3, v14, :cond_32
++    if-lt v3, v14, :cond_30
+ 
+     new-instance v3, Ljava/util/ArrayList;
+ 
+     invoke-direct {v3}, Ljava/util/ArrayList;-><init>()V
+ 
+-    if-eqz v21, :cond_31
++    if-eqz v21, :cond_2f
+ 
+     invoke-static {}, LF1/H2;->a()V
+ 
+@@ -1486,7 +1452,7 @@
+ 
+     invoke-virtual {v3, v13}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    :cond_31
++    :cond_2f
+     invoke-static {}, LF1/H2;->a()V
+ 
+     new-instance v13, Landroid/content/ComponentName;
+@@ -1595,9 +1561,9 @@
+ 
+     invoke-static {v1, v3}, LF1/J2;->a(Landroid/content/pm/PackageManager;Ljava/util/ArrayList;)V
+ 
+-    goto :goto_29
++    goto :goto_27
+ 
+-    :cond_32
++    :cond_30
+     move-object/from16 v3, v24
+ 
+     move/from16 v30, v25
+@@ -1608,7 +1574,7 @@
+ 
+     move-object/from16 v14, v28
+ 
+-    if-eqz v21, :cond_33
++    if-eqz v21, :cond_31
+ 
+     move-object/from16 v28, v14
+ 
+@@ -1624,16 +1590,16 @@
+ 
+     invoke-virtual {v3, v14, v13, v4}, Landroid/content/pm/PackageManager;->setComponentEnabledSetting(Landroid/content/ComponentName;II)V
+ 
+-    goto :goto_28
++    goto :goto_26
+ 
+-    :cond_33
++    :cond_31
+     move/from16 v17, v4
+ 
+     move-object/from16 v28, v14
+ 
+     const/4 v4, 0x1
+ 
+-    :goto_28
++    :goto_26
+     new-instance v13, Landroid/content/ComponentName;
+ 
+     invoke-direct {v13, v5, v15}, Landroid/content/ComponentName;-><init>(Landroid/content/Context;Ljava/lang/String;)V
+@@ -1692,7 +1658,7 @@
+ 
+     invoke-virtual {v3, v0, v1, v4}, Landroid/content/pm/PackageManager;->setComponentEnabledSetting(Landroid/content/ComponentName;II)V
+ 
+-    :goto_29
++    :goto_27
+     invoke-static {}, Lg2/a;->a()Lr2/g1;
+ 
+     invoke-static {}, Lg2/a;->h()Lt2/j;
+@@ -1705,16 +1671,16 @@
+ 
+     move-result v1
+ 
+-    if-nez v1, :cond_34
++    if-nez v1, :cond_32
+ 
+     const/4 v1, 0x1
+ 
+-    goto :goto_2a
++    goto :goto_28
+ 
+-    :cond_34
++    :cond_32
+     const/4 v1, 0x0
+ 
+-    :goto_2a
++    :goto_28
+     check-cast v0, LA2/a$a;
+ 
+     invoke-virtual {v0, v1}, LA2/a$a;->b(I)Lr2/g1;
+@@ -1733,7 +1699,7 @@
+ 
+     const-string v2, "ClassUseInLaunch"
+ 
+-    if-eqz v0, :cond_37
++    if-eqz v0, :cond_35
+ 
+     :try_start_1
+     const-class v0, LF1/a3;
+@@ -1749,10 +1715,10 @@
+ 
+     const/4 v4, 0x0
+ 
+-    :goto_2b
++    :goto_29
+     const/16 v6, 0x27f
+ 
+-    if-ge v4, v6, :cond_35
++    if-ge v4, v6, :cond_33
+ 
+     aget-object v6, v3, v4
+ 
+@@ -1764,22 +1730,22 @@
+ 
+     add-int/lit8 v4, v4, 0x1
+ 
+-    goto :goto_2b
++    goto :goto_29
+ 
+     :catch_1
+     move-exception v0
+ 
+-    goto :goto_2d
++    goto :goto_2b
+ 
+-    :cond_35
++    :cond_33
+     sget-object v3, LF1/a3;->b:[Ljava/lang/String;
+ 
+     const/4 v4, 0x0
+ 
+-    :goto_2c
++    :goto_2a
+     const/4 v6, 0x4
+ 
+-    if-ge v4, v6, :cond_36
++    if-ge v4, v6, :cond_34
+ 
+     aget-object v6, v3, v4
+ 
+@@ -1791,14 +1757,14 @@
+ 
+     add-int/2addr v4, v9
+ 
+-    goto :goto_2c
++    goto :goto_2a
+ 
+-    :cond_36
++    :cond_34
+     const/4 v9, 0x0
+ 
+-    goto :goto_2e
++    goto :goto_2c
+ 
+-    :goto_2d
++    :goto_2b
+     sget-object v3, Ljava/util/Locale;->ENGLISH:Ljava/util/Locale;
+ 
+     const-string v4, "ClassNotFoundException when loading: %s"
+@@ -1817,7 +1783,7 @@
+ 
+     invoke-static {v2, v0, v3}, Lcom/android/camera/log/Log;->w(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    goto :goto_2e
++    goto :goto_2c
+ 
+     :catch_2
+     const/4 v9, 0x0
+@@ -1828,17 +1794,17 @@
+ 
+     invoke-static {v2, v0, v3}, Lcom/android/camera/log/Log;->w(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    :cond_37
+-    :goto_2e
++    :cond_35
++    :goto_2c
+     :try_start_3
+     sget-object v0, LF1/a3;->a:[Ljava/lang/Class;
+ 
+     const/4 v3, 0x0
+ 
+-    :goto_2f
++    :goto_2d
+     const/4 v4, 0x2
+ 
+-    if-ge v3, v4, :cond_38
++    if-ge v3, v4, :cond_36
+ 
+     aget-object v4, v0, v3
+ 
+@@ -1852,14 +1818,14 @@
+ 
+     add-int/lit8 v3, v3, 0x1
+ 
+-    goto :goto_2f
++    goto :goto_2d
+ 
+     :catch_3
+     move-exception v0
+ 
+     invoke-static {v2, v0}, Lcom/android/camera/log/Log;->w(Ljava/lang/String;Ljava/lang/Throwable;)V
+ 
+-    :cond_38
++    :cond_36
+     sget-boolean v0, LJe/c;->k:Z
+ 
+     sget-object v0, LJe/c$b;->a:LJe/c;
+@@ -1898,19 +1864,19 @@
+ 
+     check-cast v0, Landroid/os/UserManager;
+ 
+-    if-eqz v0, :cond_39
++    if-eqz v0, :cond_37
+ 
+     invoke-virtual {v0}, Landroid/os/UserManager;->isUserUnlocked()Z
+ 
+     move-result v0
+ 
+-    goto :goto_30
++    goto :goto_2e
+ 
+-    :cond_39
++    :cond_37
+     const/4 v0, 0x0
+ 
+-    :goto_30
+-    if-eqz v0, :cond_3f
++    :goto_2e
++    if-eqz v0, :cond_3d
+ 
+     invoke-static {}, LF6/c;->d()LF6/c;
+ 
+@@ -1939,7 +1905,7 @@
+     :try_end_4
+     .catchall {:try_start_4 .. :try_end_4} :catchall_0
+ 
+-    goto :goto_31
++    goto :goto_2f
+ 
+     :catchall_0
+     move-exception v0
+@@ -1948,12 +1914,12 @@
+ 
+     move-result-object v0
+ 
+-    :goto_31
++    :goto_2f
+     invoke-static {v0}, LPu/k;->a(Ljava/lang/Object;)Ljava/lang/Throwable;
+ 
+     move-result-object v8
+ 
+-    if-eqz v8, :cond_3c
++    if-eqz v8, :cond_3a
+ 
+     sget-object v9, Luh/a;->a:Luh/a;
+ 
+@@ -1963,32 +1929,32 @@
+ 
+     move-result v9
+ 
+-    if-eqz v9, :cond_3a
++    if-eqz v9, :cond_38
+ 
+-    goto :goto_32
++    goto :goto_30
+ 
+-    :cond_3a
++    :cond_38
+     const/4 v8, 0x0
+ 
+-    :goto_32
++    :goto_30
+     sget-object v9, Lyh/b;->b:Ljava/util/LinkedHashMap;
+ 
+     invoke-virtual {v9, v4}, Ljava/util/LinkedHashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+ 
+     move-result-object v4
+ 
+-    if-eqz v4, :cond_3b
++    if-eqz v4, :cond_39
+ 
+     invoke-virtual {v4}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+ 
+     move-result-object v4
+ 
+-    goto :goto_33
++    goto :goto_31
+ 
+-    :cond_3b
++    :cond_39
+     const/4 v4, 0x0
+ 
+-    :goto_33
++    :goto_31
+     new-instance v9, Ljava/lang/StringBuilder;
+ 
+     const-string v10, "failed cast "
+@@ -2011,35 +1977,35 @@
+ 
+     invoke-static {v7, v4, v8}, Lcom/android/camera/log/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+ 
+-    :cond_3c
++    :cond_3a
+     instance-of v4, v0, LPu/k$a;
+ 
+-    if-eqz v4, :cond_3d
++    if-eqz v4, :cond_3b
+ 
+     const/4 v0, 0x0
+ 
+-    :cond_3d
+-    if-nez v0, :cond_3e
++    :cond_3b
++    if-nez v0, :cond_3c
+ 
+-    goto :goto_34
++    goto :goto_32
+ 
+-    :cond_3e
++    :cond_3c
+     move-object v6, v0
+ 
+-    :goto_34
++    :goto_32
+     check-cast v6, Ljava/lang/Boolean;
+ 
+     invoke-virtual {v6}, Ljava/lang/Boolean;->booleanValue()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_40
++    if-eqz v0, :cond_3e
+ 
+     invoke-virtual {v3}, Lbi/b;->clear()V
+ 
+-    goto :goto_35
++    goto :goto_33
+ 
+-    :cond_3f
++    :cond_3d
+     const-string/jumbo v0, "preloadMore: isUserUnlocked > false"
+ 
+     const/4 v9, 0x0
+@@ -2048,8 +2014,8 @@
+ 
+     invoke-static {v2, v0, v3}, Lcom/android/camera/log/Log;->w(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    :cond_40
+-    :goto_35
++    :cond_3e
++    :goto_33
+     :try_start_5
+     sget-boolean v0, LJe/c;->k:Z
+ 
+@@ -2063,20 +2029,20 @@
+ 
+     array-length v3, v0
+ 
+-    if-nez v3, :cond_42
++    if-nez v3, :cond_40
+ 
+-    :cond_41
++    :cond_3f
+     const/4 v9, 0x0
+ 
+-    goto :goto_39
++    goto :goto_37
+ 
+-    :cond_42
++    :cond_40
+     array-length v3, v0
+ 
+     const/4 v4, 0x0
+ 
+-    :goto_36
+-    if-ge v4, v3, :cond_41
++    :goto_34
++    if-ge v4, v3, :cond_3f
+ 
+     aget-object v6, v0, v4
+ 
+@@ -2084,24 +2050,24 @@
+ 
+     move-result v7
+ 
+-    if-eqz v7, :cond_43
++    if-eqz v7, :cond_41
+ 
+-    :goto_37
++    :goto_35
+     const/16 v17, 0x1
+ 
+-    goto :goto_38
++    goto :goto_36
+ 
+-    :cond_43
++    :cond_41
+     invoke-static {v6}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
+     :try_end_5
+     .catchall {:try_start_5 .. :try_end_5} :catchall_1
+ 
+-    goto :goto_37
++    goto :goto_35
+ 
+-    :goto_38
++    :goto_36
+     add-int/lit8 v4, v4, 0x1
+ 
+-    goto :goto_36
++    goto :goto_34
+ 
+     :catchall_1
+     move-exception v0
+@@ -2122,7 +2088,7 @@
+ 
+     invoke-static {v2, v0, v3}, Lcom/android/camera/log/Log;->w(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    :goto_39
++    :goto_37
+     invoke-static {}, LF6/q;->i()LF6/q;
+ 
+     move-result-object v0
+@@ -2153,20 +2119,20 @@
+ 
+     move-result v4
+ 
+-    if-nez v1, :cond_44
++    if-nez v1, :cond_42
+ 
+-    if-nez v3, :cond_44
++    if-nez v3, :cond_42
+ 
+-    if-eqz v4, :cond_45
++    if-eqz v4, :cond_43
+ 
+-    :cond_44
++    :cond_42
+     invoke-static {}, Lg2/a;->h()Lt2/j;
+ 
+     move-result-object v1
+ 
+     invoke-virtual {v1}, LWh/a;->g()LWh/a;
+ 
+-    :cond_45
++    :cond_43
+     invoke-static {}, Lg2/a;->i()Lai/a;
+ 
+     move-result-object v1
+@@ -2185,19 +2151,19 @@
+ 
+     move-result v1
+ 
+-    if-eqz v1, :cond_46
++    if-eqz v1, :cond_44
+ 
+     invoke-static {}, LJe/c;->d0()Z
+ 
+     move-result v1
+ 
+-    if-eqz v1, :cond_46
++    if-eqz v1, :cond_44
+ 
+     invoke-static {}, LH6/d;->d()Z
+ 
+     move-result v1
+ 
+-    if-eqz v1, :cond_46
++    if-eqz v1, :cond_44
+ 
+     sget-object v1, Ls3/b$b;->a:Ls3/b;
+ 
+@@ -2207,12 +2173,12 @@
+ 
+     invoke-virtual {v1, v3}, Ls3/b;->a(Landroid/content/Context;)V
+ 
+-    :cond_46
++    :cond_44
+     invoke-static {}, LSh/c;->c()Z
+ 
+     move-result v1
+ 
+-    if-eqz v1, :cond_47
++    if-eqz v1, :cond_45
+ 
+     const-string v1, "Track init start"
+ 
+@@ -2226,14 +2192,14 @@
+ 
+     invoke-static {}, LA7/a;->a()V
+ 
+-    :cond_47
++    :cond_45
+     iget-object v1, v0, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+ 
+     invoke-virtual {v1}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->i5()Z
+ 
+     move-result v1
+ 
+-    if-eqz v1, :cond_48
++    if-eqz v1, :cond_46
+ 
+     invoke-static {}, Lg2/a;->g()Lu2/V;
+ 
+@@ -2247,7 +2213,7 @@
+ 
+     move-result v1
+ 
+-    if-nez v1, :cond_49
++    if-nez v1, :cond_47
+ 
+     invoke-static {}, Lg2/a;->a()Lr2/g1;
+ 
+@@ -2257,13 +2223,13 @@
+ 
+     invoke-virtual {v1, v3}, LWh/a;->s(Ljava/lang/String;)LWh/a;
+ 
+-    goto :goto_3a
++    goto :goto_38
+ 
+-    :cond_48
++    :cond_46
+     const/4 v9, 0x0
+ 
+-    :cond_49
+-    :goto_3a
++    :cond_47
++    :goto_38
+     new-array v1, v9, [Ljava/lang/Object;
+ 
+     const-string v3, "PushInitializer"
+@@ -2288,16 +2254,16 @@
+ 
+     and-int/lit8 v1, v1, 0x2
+ 
+-    if-eqz v1, :cond_4a
++    if-eqz v1, :cond_48
+ 
+     const/4 v1, 0x1
+ 
+-    goto :goto_3b
++    goto :goto_39
+ 
+-    :cond_4a
++    :cond_48
+     const/4 v1, 0x0
+ 
+-    :goto_3b
++    :goto_39
+     const-string v4, "isDebug: "
+ 
+     invoke-static {v4, v1}, LF1/O;->a(Ljava/lang/String;Z)Ljava/lang/String;
+@@ -2372,7 +2338,7 @@
+ 
+     iget-object v6, v1, LBr/e;->c:LKy/b;
+ 
+-    if-nez v6, :cond_4b
++    if-nez v6, :cond_49
+ 
+     new-instance v6, LKy/b;
+ 
+@@ -2384,18 +2350,18 @@
+ 
+     iput-object v6, v1, LBr/e;->c:LKy/b;
+ 
+-    :cond_4b
++    :cond_49
+     iget-object v6, v1, LBr/e;->c:LKy/b;
+ 
+     invoke-virtual {v6}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+ 
+     sget-boolean v6, LKy/b;->b:Z
+ 
+-    if-eqz v6, :cond_4e
++    if-eqz v6, :cond_4c
+ 
+     iget-boolean v6, v1, LBr/e;->a:Z
+ 
+-    if-nez v6, :cond_4e
++    if-nez v6, :cond_4c
+ 
+     sget-object v6, Lmiuix/view/HapticCompat;->a:Ljava/lang/String;
+ 
+@@ -2405,15 +2371,15 @@
+ 
+     move-result v6
+ 
+-    if-eqz v6, :cond_4d
++    if-eqz v6, :cond_4b
+ 
+     iget-object v7, v1, LBr/e;->b:[F
+ 
+-    if-eqz v7, :cond_4c
++    if-eqz v7, :cond_4a
+ 
+     move-object v0, v7
+ 
+-    :cond_4c
++    :cond_4a
+     new-instance v7, LBr/c;
+ 
+     iget-object v8, v1, LBr/e;->c:LKy/b;
+@@ -2422,12 +2388,12 @@
+ 
+     iput-object v7, v1, LBr/e;->e:LBr/a;
+ 
+-    :goto_3c
++    :goto_3a
+     const/4 v9, 0x1
+ 
+-    goto :goto_3d
++    goto :goto_3b
+ 
+-    :cond_4d
++    :cond_4b
+     new-instance v0, LBr/b;
+ 
+     iget-object v4, v1, LBr/e;->c:LKy/b;
+@@ -2436,9 +2402,9 @@
+ 
+     iput-object v0, v1, LBr/e;->e:LBr/a;
+ 
+-    goto :goto_3c
++    goto :goto_3a
+ 
+-    :goto_3d
++    :goto_3b
+     iput-boolean v9, v1, LBr/e;->a:Z
+ 
+     const-string v0, "VibratorContext: init LinearMotorStrategy: isHapticVersion2 = "
+@@ -2455,7 +2421,7 @@
+ 
+     invoke-static {v6, v0, v4}, Lcom/android/camera/log/Log;->d(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    :cond_4e
++    :cond_4c
+     iput-boolean v3, v1, LBr/e;->d:Z
+ 
+     invoke-static {}, LBr/e;->r()LBr/e;
+@@ -2496,11 +2462,11 @@
+ 
+     const/4 v3, 0x0
+ 
+-    :goto_3e
++    :goto_3c
+     :try_start_6
+     array-length v4, v0
+ 
+-    if-ge v3, v4, :cond_4f
++    if-ge v3, v4, :cond_4d
+ 
+     aget-object v4, v0, v3
+ 
+@@ -2542,7 +2508,7 @@
+ 
+     add-int/lit8 v3, v3, 0x1
+ 
+-    goto :goto_3e
++    goto :goto_3c
+ 
+     :catch_4
+     move-exception v0
+@@ -2551,7 +2517,7 @@
+ 
+     invoke-static {v1, v3, v0}, Lcom/android/camera/log/Log;->d(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+ 
+-    :cond_4f
++    :cond_4d
+     const-string v0, "clearLivephotoCache X "
+ 
+     const/4 v9, 0x0
+@@ -2568,18 +2534,18 @@
+ 
+     move-result-object v1
+ 
+-    if-eqz v0, :cond_50
++    if-eqz v0, :cond_4e
+ 
+     invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+ 
+     move-result-object v0
+ 
+-    :goto_3f
++    :goto_3d
+     invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+ 
+     move-result v3
+ 
+-    if-eqz v3, :cond_50
++    if-eqz v3, :cond_4e
+ 
+     invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+ 
+@@ -2627,21 +2593,21 @@
+ 
+     invoke-static/range {v21 .. v26}, Lki/c;->b(IJIILjava/util/HashMap;)V
+ 
+-    goto :goto_3f
++    goto :goto_3d
+ 
+-    :cond_50
+-    if-eqz v1, :cond_51
++    :cond_4e
++    if-eqz v1, :cond_4f
+ 
+     invoke-interface {v1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+ 
+     move-result-object v0
+ 
+-    :goto_40
++    :goto_3e
+     invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+ 
+     move-result v1
+ 
+-    if-eqz v1, :cond_51
++    if-eqz v1, :cond_4f
+ 
+     invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+ 
+@@ -2689,9 +2655,9 @@
+ 
+     invoke-static/range {v21 .. v26}, Lki/c;->b(IJIILjava/util/HashMap;)V
+ 
+-    goto :goto_40
++    goto :goto_3e
+ 
+-    :cond_51
++    :cond_4f
+     sget-object v0, LJe/c$b;->a:LJe/c;
+ 
+     iget-object v1, v0, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+@@ -2708,15 +2674,15 @@
+ 
+     sget-boolean v1, LJe/d;->m:Z
+ 
+-    if-nez v1, :cond_52
++    if-nez v1, :cond_50
+ 
+     invoke-virtual {v0}, LJe/c;->F()V
+ 
+     invoke-virtual {v0}, LJe/c;->E()V
+ 
+-    goto/16 :goto_45
++    goto/16 :goto_43
+ 
+-    :cond_52
++    :cond_50
+     const-string v0, "initializeApp E"
+ 
+     const/4 v9, 0x0
+@@ -2784,28 +2750,28 @@
+ 
+     const/4 v9, 0x0
+ 
+-    goto :goto_44
++    goto :goto_42
+ 
+     :catch_5
+     move-exception v0
+ 
+-    goto :goto_41
++    goto :goto_3f
+ 
+     :catch_6
+     move-exception v0
+ 
+     const/4 v9, 0x0
+ 
+-    goto :goto_42
++    goto :goto_40
+ 
+     :catch_7
+     move-exception v0
+ 
+     const/4 v9, 0x0
+ 
+-    goto :goto_43
++    goto :goto_41
+ 
+-    :goto_41
++    :goto_3f
+     new-instance v3, Ljava/lang/StringBuilder;
+ 
+     const-string v4, "Failed to call FirebaseApp.initializeApp() via reflection: "
+@@ -2822,9 +2788,9 @@
+ 
+     invoke-static {v1, v0, v3}, Lcom/android/camera/log/Log;->e(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    goto :goto_44
++    goto :goto_42
+ 
+-    :goto_42
++    :goto_40
+     new-instance v3, Ljava/lang/StringBuilder;
+ 
+     const-string v4, "initializeApp method not found: "
+@@ -2845,9 +2811,9 @@
+ 
+     invoke-static {v1, v0, v3}, Lcom/android/camera/log/Log;->e(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    goto :goto_44
++    goto :goto_42
+ 
+-    :goto_43
++    :goto_41
+     new-instance v3, Ljava/lang/StringBuilder;
+ 
+     const-string v4, "FirebaseApp class not found: "
+@@ -2868,14 +2834,14 @@
+ 
+     invoke-static {v1, v0, v3}, Lcom/android/camera/log/Log;->e(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    :goto_44
++    :goto_42
+     const-string v0, "initializeApp X"
+ 
+     new-array v1, v9, [Ljava/lang/Object;
+ 
+     invoke-static {v2, v0, v1}, Lcom/android/camera/log/Log;->d(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    :goto_45
++    :goto_43
+     return-void
+ 
+     :pswitch_9
+--- a/smali_classes3/Je/c.smali	2026-08-27 20:35:04.043419767 +0800
++++ b/smali_classes3/Je/c.smali	2026-08-27 20:39:36.474041603 +0800
+@@ -911,34 +911,11 @@
+ .end method
+ 
+ .method public final D2()Z
+-    .locals 1
+-
+-    iget-object p0, p0, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+-
+-    invoke-virtual {p0}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->O0()S
+-
+-    move-result v0
+-
+-    if-gtz v0, :cond_1
+-
+-    invoke-virtual {p0}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->d0()S
+-
+-    move-result p0
+-
+-    if-lez p0, :cond_0
+-
+-    goto :goto_0
++    .locals 0
+ 
+-    :cond_0
+     const/4 p0, 0x0
+ 
+     return p0
+-
+-    :cond_1
+-    :goto_0
+-    const/4 p0, 0x1
+-
+-    return p0
+ .end method
+ 
+ .method public final E()V
+@@ -995,22 +972,9 @@
+ .method public final F0()Z
+     .locals 0
+ 
+-    iget-object p0, p0, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+-
+-    invoke-virtual {p0}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->R()I
+-
+-    move-result p0
+-
+-    if-lez p0, :cond_0
+-
+     const/4 p0, 0x1
+ 
+     return p0
+-
+-    :cond_0
+-    const/4 p0, 0x0
+-
+-    return p0
+ .end method
+ 
+ .method public final F1()Z
+@@ -1058,26 +1022,11 @@
+ .end method
+ 
+ .method public final G0()Z
+-    .locals 1
+-
+-    iget-object p0, p0, LJe/c;->e:L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;
+-
+-    invoke-virtual {p0}, L䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻;->R()I
+-
+-    move-result p0
+-
+-    const/4 v0, 0x2
+-
+-    if-ne p0, v0, :cond_0
++    .locals 0
+ 
+     const/4 p0, 0x1
+ 
+     return p0
+-
+-    :cond_0
+-    const/4 p0, 0x0
+-
+-    return p0
+ .end method
+ 
+ .method public final G1()Z
+--- a/smali_classes3/䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻.smali	2026-08-27 20:35:04.511813479 +0800
++++ b/smali_classes3/䦶䦺䦸䧻䦸䦼䧻䦱䦰䦣䦼䦶䦰䧻䦶䦺䦸䦸䦺䦻䧻䦖䦺䦸䦸䦺䦻.smali	2026-08-27 20:39:36.937685424 +0800
+@@ -1304,9 +1304,7 @@
+ .method public O0()S
+     .locals 0
+ 
+-    sget-object p0, L栫栧栥桦栥校桦栫栧栦栮校栯栬栩格栩桦栛栤栧栿栅栧格校栧栦栍栦栽栥;->b:L栫栧栥桦栥校桦栫栧栦栮校栯栬栩格栩桦栛栤栧栿栅栧格校栧栦栍栦栽栥;
+-
+-    iget-short p0, p0, L栫栧栥桦栥校桦栫栧栦栮校栯栬栩格栩桦栛栤栧栿栅栧格校栧栦栍栦栽栥;->a:S
++    const/16 p0, 0x3c0
+ 
+     return p0
+ .end method
+@@ -2021,7 +2019,7 @@
+ .method public W5()Z
+     .locals 0
+ 
+-    instance-of p0, p0, L쵡쵭쵯촬쵯쵫촬쵦쵧쵴쵫쵡쵧촬쵄쵷쵺쵫;
++    const/4 p0, 0x1
+ 
+     return p0
+ .end method
+--- a/smali_classes8/Gn/e.smali	2026-08-27 20:35:05.120862434 +0800
++++ b/smali_classes8/Gn/e.smali	2026-08-27 20:39:37.555562812 +0800
+@@ -527,6 +527,50 @@
+ 
+     invoke-static {p0}, Lmiuix/appcompat/app/C;->a(Landroid/app/Activity;)V
+ 
++    invoke-virtual {p0}, Landroid/app/Activity;->getWindow()Landroid/view/Window;
++
++    move-result-object v0
++
++    const/high16 v1, 0x8000000
++
++    invoke-virtual {v0, v1}, Landroid/view/Window;->clearFlags(I)V
++
++    const/high16 v1, 0x4000000
++
++    invoke-virtual {v0, v1}, Landroid/view/Window;->clearFlags(I)V
++
++    const/4 v1, 0x0
++
++    invoke-virtual {v0, v1}, Landroid/view/Window;->setNavigationBarColor(I)V
++
++    invoke-virtual {v0, v1}, Landroid/view/Window;->setStatusBarColor(I)V
++
++    invoke-virtual {v0, v1}, Landroid/view/Window;->setNavigationBarContrastEnforced(Z)V
++
++    invoke-virtual {v0, v1}, Landroid/view/Window;->setStatusBarContrastEnforced(Z)V
++
++    invoke-virtual {v0, v1}, Landroid/view/Window;->setDecorFitsSystemWindows(Z)V
++
++    invoke-virtual {v0}, Landroid/view/Window;->getAttributes()Landroid/view/WindowManager$LayoutParams;
++
++    move-result-object v0
++
++    invoke-virtual {v0, v1}, Landroid/view/WindowManager$LayoutParams;->setFitInsetsTypes(I)V
++
++    invoke-virtual {v0, v1}, Landroid/view/WindowManager$LayoutParams;->setFitInsetsSides(I)V
++
++    invoke-virtual {p0}, Landroid/app/Activity;->getWindow()Landroid/view/Window;
++
++    move-result-object v0
++
++    invoke-virtual {v0}, Landroid/view/Window;->getDecorView()Landroid/view/View;
++
++    move-result-object v0
++
++    const/16 v1, 0x2000
++
++    invoke-virtual {v0, v1}, Landroid/view/View;->setSystemUiVisibility(I)V
++
+     return-void
+ .end method
+ 

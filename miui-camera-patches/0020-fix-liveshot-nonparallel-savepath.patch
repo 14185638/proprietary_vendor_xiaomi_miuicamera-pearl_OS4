@@ -1,0 +1,129 @@
+From pearl-miui-camera-6.6-compat
+Subject: [PATCH] Fix LiveShot in non-parallel capture path
+
+When non-parallel capture is used, CameraConfigs skipped enqueuing the
+shot save path, so ParallelTaskData.savePath stayed null and LiveShot's
+video clip saving crashed with NPE. Always enqueue the main shot path and
+backfill StorageData.imageName from the save path.
+
+---
+ smali/j9/i0.smali           | 28 ++++-----------------------
+ smali_classes8/xm/b$a.smali |  4 ++++
+ 2 files changed, 7 insertions(+), 25 deletions(-)
+
+diff --git a/smali/j9/i0.smali b/smali/j9/i0.smali
+index 96d70af..cde6809 100644
+--- a/smali/j9/i0.smali
++++ b/smali/j9/i0.smali
+@@ -790,42 +790,14 @@
+ 
+     invoke-static {v3, v0, v2}, Lcom/android/camera/log/Log;->d(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-    if-nez p2, :cond_0
+-
+-    iget v0, p0, Lj9/i0;->a1:I
+-
+-    const/16 v2, 0x8
+-
+-    if-eq v0, v2, :cond_0
+-
+-    if-nez p4, :cond_0
+-
+-    new-instance p1, Ljava/lang/StringBuilder;
+-
+-    const-string/jumbo p2, "setShotPath: skip. shotType="
+-
+-    invoke-direct {p1, p2}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    iget p0, p0, Lj9/i0;->a1:I
+-
+-    invoke-virtual {p1, p0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object p0
+-
+-    new-array p1, v1, [Ljava/lang/Object;
+-
+-    invoke-static {v3, p0, p1}, Lcom/android/camera/log/Log;->d(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+-
+-    return-void
++    goto :goto_0
+ 
+-    :cond_0
++    :goto_0
+     iget-object p4, p0, Lj9/i0;->b1:Ljava/util/ArrayDeque;
+ 
+     const/4 v0, 0x5
+ 
+-    if-nez p4, :cond_1
++    if-nez p4, :cond_0
+ 
+     new-instance p4, Ljava/util/ArrayDeque;
+ 
+@@ -833,7 +805,7 @@
+ 
+     iput-object p4, p0, Lj9/i0;->b1:Ljava/util/ArrayDeque;
+ 
+-    :cond_1
++    :cond_0
+     const-string p4, "offer ShotPath: "
+ 
+     invoke-static {p4, p1}, LP0/g;->f(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+@@ -848,7 +820,7 @@
+ 
+     invoke-virtual {p4, p1}, Ljava/util/ArrayDeque;->offer(Ljava/lang/Object;)Z
+ 
+-    if-nez p2, :cond_2
++    if-nez p2, :cond_1
+ 
+     const-string/jumbo p0, "setShotPath: skip. not parallel"
+ 
+@@ -858,10 +830,10 @@
+ 
+     return-void
+ 
+-    :cond_2
++    :cond_1
+     iget-object p2, p0, Lj9/i0;->c1:Ljava/util/ArrayDeque;
+ 
+-    if-nez p2, :cond_3
++    if-nez p2, :cond_2
+ 
+     new-instance p2, Ljava/util/ArrayDeque;
+ 
+@@ -869,8 +841,8 @@
+ 
+     iput-object p2, p0, Lj9/i0;->c1:Ljava/util/ArrayDeque;
+ 
+-    :cond_3
+-    if-nez p3, :cond_4
++    :cond_2
++    if-nez p3, :cond_3
+ 
+     const-string p2, "offer ShotPathThumbnail: "
+ 
+@@ -888,7 +860,7 @@
+ 
+     return-void
+ 
+-    :cond_4
++    :cond_3
+     const-string p0, "offer ShotPathThumbnail: skip. isRefuseOffer"
+ 
+     new-array p1, v1, [Ljava/lang/Object;
+diff --git a/smali_classes8/xm/b$a.smali b/smali_classes8/xm/b$a.smali
+index 729d4b1..a6d64b3 100644
+--- a/smali_classes8/xm/b$a.smali
++++ b/smali_classes8/xm/b$a.smali
+@@ -433,6 +433,10 @@
+ 
+     move-result-object v5
+ 
++    iget-object v11, v10, LRh/r;->k:LRh/A;
++
++    iput-object v5, v11, LRh/A;->b:Ljava/lang/String;
++
+     goto :goto_0
+ 
+     :catchall_0
